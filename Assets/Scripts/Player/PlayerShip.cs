@@ -7,21 +7,11 @@ public class PlayerShip : MonoBehaviour
 {    
     [Header("systems")]
     [SerializeField] ShooterBase shooter;
-    [SerializeField] HeatSystem heatSystem;
     [SerializeField] Impactable impactable;
     [SerializeField] Damageable damageable;
 
     // MoveStandard와 RotateByInput 컴포넌트가 자동으로 이동/회전 처리
-
-    [Header("amounts")]
-    [SerializeField] float heatPerShot = 5;
-
-    [Header("sounds")]
-    [SerializeField] AudioClip failSound;
-
-    bool FireInput => InputManager.Instance.FireInput;    
-
-    bool canPrintOverHeat = true;
+    // ShooterBase 컴포넌트가 자동으로 사격 처리
 
     // Start is called before the first frame update
     void Start()
@@ -43,47 +33,6 @@ public class PlayerShip : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        bool onCombat = GameManager.Instance.GameState == GameState.OnCombat;
-        bool onTitle = GameManager.Instance.GameState == GameState.OnTitle;
-
-        if (!onCombat && !onTitle) return;
-
-        FireCheck();
-    }
-
-    void FireCheck()
-    {
-        if (!FireInput)
-        {
-            canPrintOverHeat = true;
-            return;
-        } 
-
-        if (heatSystem.OverHeated)
-        {
-            if (canPrintOverHeat)
-            {
-                UiManager.Instance.CreateText("OverHeat!", transform.position);
-                SoundManager.Instance.PlaySound(failSound);
-            } 
-
-            canPrintOverHeat = false;
-            return;
-        }
-        else
-        {
-            canPrintOverHeat = true;
-        }
-        
-        bool fired = shooter.TryFire();
-        if (fired)
-        {
-            heatSystem.AdjustHeat(heatPerShot);
-        }
-    }
 
     void UpdateHealthUI()
     {
@@ -93,10 +42,8 @@ public class PlayerShip : MonoBehaviour
     }
 
     public void InitShip(bool stackFull = false)
-    {        
+    {
         if(stackFull) UiManager.Instance.CreateText("Restore All!", transform.position);
-
-        heatSystem.InitHeat();
 
         damageable.InitHealth();
         UpdateHealthUI();
@@ -115,9 +62,6 @@ public class PlayerShip : MonoBehaviour
                 break;
             case UpgradeField.MultiShot:
                 shooter.SetMultiShot((int)amount);
-                break;
-            case UpgradeField.Heat:
-                heatPerShot = amount;
                 break;
         }
     }

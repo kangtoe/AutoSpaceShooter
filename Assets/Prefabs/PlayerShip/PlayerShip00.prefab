@@ -96,15 +96,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6132333469171452740}
-  - component: {fileID: 3150230518350799510}
   - component: {fileID: 6958132410236612927}
   - component: {fileID: 39042451434033265}
   - component: {fileID: 1377187071243355723}
   - component: {fileID: 1160230098051440518}
-  - component: {fileID: 3604487619833042987}
   - component: {fileID: 3108423768624995501}
   - component: {fileID: 5180353278583599535}
   - component: {fileID: 6824758561421440069}
+  - component: {fileID: 4574412108710571623}
+  - component: {fileID: 480949263162120028}
   m_Layer: 7
   m_Name: PlayerShip00
   m_TagString: Untagged
@@ -131,19 +131,6 @@ Transform:
   - {fileID: 2989591034136841182}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3150230518350799510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4081560418568897476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 578892c88bd6e76488430cc8b48fc87b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotateSpeed: 5
 --- !u!114 &6958132410236612927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +151,7 @@ MonoBehaviour:
       m_Calls: []
 --- !u!50 &39042451434033265
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -175,8 +162,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
-  m_AngularDrag: 1
+  m_LinearDamping: 2
+  m_AngularDamping: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -188,7 +175,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1377187071243355723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,15 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shooter: {fileID: 1160230098051440518}
-  heatSystem: {fileID: 3604487619833042987}
-  movement: {fileID: 3108423768624995501}
   impactable: {fileID: 5180353278583599535}
-  brakeSystem: {fileID: 0}
   damageable: {fileID: 6824758561421440069}
-  missleSystem: {fileID: 3285651707995771618}
-  pulseSystem: {fileID: 4482353955002823001}
-  heatPerShot: 8
-  failSound: {fileID: 8300000, guid: eb8b85795fa4cfd4882479bbe3adb6df, type: 3}
 --- !u!114 &1160230098051440518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +207,8 @@ MonoBehaviour:
   - {fileID: 5233017567571963292}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 512
-  manualFire: 1
+    m_Bits: 0
+  manualFire: 0
   firePointDelay: 0
   fireStartDelay: 0
   fireDelay: 0.2
@@ -245,20 +225,6 @@ MonoBehaviour:
   createBulletAsChild: 0
   shootSound: {fileID: 8300000, guid: 1743f0d445b86480b8ecfdbc8c84a5f9, type: 3}
   onHitSound: {fileID: 8300000, guid: 9514a408285a205409a06d2166250665, type: 3}
---- !u!114 &3604487619833042987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4081560418568897476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35c190e03e615ad41af875cb367637de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnOverHeatSound: {fileID: 0}
-  OffOverHeatSound: {fileID: 8300000, guid: 4f8b4205a895a2c498a5949e14377460, type: 3}
 --- !u!114 &3108423768624995501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,6 +279,35 @@ MonoBehaviour:
   maxHealth: 100
   deathSound: {fileID: 8300000, guid: cc7da5800bd3b4cb4b196ef674bee2e5, type: 3}
   hitSound: {fileID: 8300000, guid: d374ec2186de7234bb3fe0828ee1d823, type: 3}
+--- !u!114 &4574412108710571623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4081560418568897476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 887bf4c69102729409ec0c2ff7eeada2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RotateByInput
+  rotationSpeed: 180
+  usePhysics: 0
+--- !u!114 &480949263162120028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4081560418568897476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2944e722a606499449c50a7761d32bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveStandard
+  moveManually: 0
+  limitMaxSpeed: 0
+  movePower: 10
 --- !u!1 &4117097342629664592
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +344,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7421103951007537889
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -364,6 +360,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -385,9 +386,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1624786874, guid: dafe7cb604a809a47afe3640711453bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -397,7 +400,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &397852963891869958
 CapsuleCollider2D:
@@ -407,6 +409,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4117097342629664592}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -430,7 +433,8 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.6666667, y: 0.7083333}
   m_Direction: 0
