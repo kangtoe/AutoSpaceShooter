@@ -17,8 +17,8 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
             {                
                 if (!has_instance)
                 {
-                    instance = FindObjectOfType<T>();
-                    
+                    instance = FindFirstObjectByType<T>();
+
                     if (!has_instance)
                     {
                         GameObject go = new GameObject();

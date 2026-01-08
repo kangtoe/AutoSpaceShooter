@@ -16,7 +16,7 @@ public class GameManager : MonoSingleton<GameManager>
     public PlayerShip PlayerShip
     {
         get {
-            if (!playerShip) playerShip = FindObjectOfType<PlayerShip>();
+            if (!playerShip) playerShip = FindFirstObjectByType<PlayerShip>();
             return playerShip;
         }
     }
