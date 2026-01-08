@@ -8,19 +8,16 @@ public class PlayerShip : MonoBehaviour
     [Header("systems")]
     [SerializeField] ShooterBase shooter;
     [SerializeField] HeatSystem heatSystem;
-    [SerializeField] MoveStandard movement;
     [SerializeField] Impactable impactable;
-    [SerializeField] BrakeSystem brakeSystem;
     [SerializeField] Damageable damageable;
+
+    // MoveStandard와 RotateByInput 컴포넌트가 자동으로 이동/회전 처리
 
     [Header("amounts")]
     [SerializeField] float heatPerShot = 5;
 
     [Header("sounds")]
     [SerializeField] AudioClip failSound;
-
-    bool MoveForwardInput => InputManager.Instance.MoveForwardInput;
-    Vector2 MoveDirectionInput => InputManager.Instance.MoveDirectionInput;
 
     bool FireInput => InputManager.Instance.FireInput;    
 
@@ -47,12 +44,7 @@ public class PlayerShip : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {        
-        MoveCheck();        
-    }
-
-    private void Update()
+    void Update()
     {
         bool onCombat = GameManager.Instance.GameState == GameState.OnCombat;
         bool onTitle = GameManager.Instance.GameState == GameState.OnTitle;
@@ -60,19 +52,6 @@ public class PlayerShip : MonoBehaviour
         if (!onCombat && !onTitle) return;
 
         FireCheck();
-    }
-
-    void MoveCheck()
-    {
-        if (MoveForwardInput)
-        {
-            movement.Move();
-        }
-
-        if(MoveDirectionInput != Vector2.zero)
-        {
-            movement.Move(MoveDirectionInput);
-        }
     }
 
     void FireCheck()

@@ -199,16 +199,38 @@ enum UpgradeType {
 
 ## 다음 작업 단계
 
-### Phase 1A: 핵심 시스템 분석
-1. [ ] 물리 이동 시스템 상세 분석
-2. [ ] 경계 처리 시스템 확인
-3. [ ] UI 구조 파악
-4. [ ] 발사체 시스템 파악
+### Phase 1A: 핵심 시스템 분석 ✅ 완료
+1. [x] 물리 이동 시스템 상세 분석
+2. [x] 경계 처리 시스템 확인
+3. [x] UI 구조 파악
+4. [x] 발사체 시스템 파악
+5. [x] Architecture.md 문서화 완료
 
-### Phase 1B: 조작 시스템 구현
-1. [ ] 자동 전진 구현
-2. [ ] 회전 제어 구현
-3. [ ] 입력 시스템 수정
+**결과:** 전체 코드베이스 구조, 패턴, 시스템 분석 완료
+
+### Phase 1B: 조작 시스템 구현 ✅ 완료
+1. [x] 자동 전진 구현 (MoveStandard moveManually=false)
+2. [x] 회전 제어 구현 (RotateByInput.cs 생성)
+3. [x] 입력 시스템 수정 (이미 Phase 1에서 완료)
+
+**구현 내용:**
+- **MoveStandard.cs**: 기존 컴포넌트 재사용, moveManually=false 설정으로 자동 전진
+- **RotateByInput.cs**: 새 컴포넌트 생성, InputManager.RotateInput 사용
+  - 물리 기반(토크) 또는 직접 회전 선택 가능
+  - rotationSpeed로 회전 속도 조절
+- **PlayerShip.cs**: 이동 로직 제거, 사격만 담당
+  - movement, brakeSystem 참조 제거
+  - MoveCheck() 메서드 삭제
+  - FixedUpdate 삭제
+
+**Unity 설정 필요:**
+1. Player 게임오브젝트에 MoveStandard 컴포넌트 추가/확인
+   - moveManually = false
+   - movePower = 10 (조절 가능)
+2. Player 게임오브젝트에 RotateByInput 컴포넌트 추가
+   - rotationSpeed = 180
+   - usePhysics = false (직접 회전 추천)
+3. BrakeSystem 컴포넌트 제거 (미사용)
 
 ### Phase 1C: 게임플레이 루프
 1. [ ] 경계 즉사 구현
