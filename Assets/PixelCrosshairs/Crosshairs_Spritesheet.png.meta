@@ -1,0 +1,450 @@
+fileFormatVersion: 2
+guid: efe03089ad5e80c43a25ca4ecc1b49e1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Crosshairs_Spritesheet_0
+  - first:
+      213: 21300002
+    second: Crosshairs_Spritesheet_1
+  - first:
+      213: 21300004
+    second: Crosshairs_Spritesheet_2
+  - first:
+      213: 21300006
+    second: Crosshairs_Spritesheet_3
+  - first:
+      213: 21300008
+    second: Crosshairs_Spritesheet_4
+  - first:
+      213: 21300010
+    second: Crosshairs_Spritesheet_5
+  - first:
+      213: 21300012
+    second: Crosshairs_Spritesheet_6
+  - first:
+      213: 21300014
+    second: Crosshairs_Spritesheet_7
+  - first:
+      213: 21300016
+    second: Crosshairs_Spritesheet_8
+  - first:
+      213: 21300018
+    second: Crosshairs_Spritesheet_9
+  - first:
+      213: 21300020
+    second: Crosshairs_Spritesheet_10
+  - first:
+      213: 21300022
+    second: Crosshairs_Spritesheet_11
+  - first:
+      213: 21300024
+    second: Crosshairs_Spritesheet_12
+  - first:
+      213: 21300026
+    second: Crosshairs_Spritesheet_13
+  - first:
+      213: 21300028
+    second: Crosshairs_Spritesheet_14
+  - first:
+      213: 21300030
+    second: Crosshairs_Spritesheet_15
+  - first:
+      213: 21300032
+    second: Crosshairs_Spritesheet_16
+  - first:
+      213: 21300034
+    second: Crosshairs_Spritesheet_17
+  - first:
+      213: 21300036
+    second: Crosshairs_Spritesheet_18
+  - first:
+      213: 21300038
+    second: Crosshairs_Spritesheet_19
+  - first:
+      213: 21300040
+    second: Crosshairs_Spritesheet_20
+  - first:
+      213: 21300042
+    second: Crosshairs_Spritesheet_21
+  - first:
+      213: 21300044
+    second: Crosshairs_Spritesheet_22
+  - first:
+      213: 21300046
+    second: Crosshairs_Spritesheet_23
+  - first:
+      213: 21300048
+    second: Crosshairs_Spritesheet_24
+  - first:
+      213: 21300050
+    second: Crosshairs_Spritesheet_25
+  - first:
+      213: 21300052
+    second: Crosshairs_Spritesheet_26
+  - first:
+      213: 21300054
+    second: Crosshairs_Spritesheet_27
+  - first:
+      213: 21300056
+    second: Crosshairs_Spritesheet_28
+  - first:
+      213: 21300058
+    second: Crosshairs_Spritesheet_29
+  - first:
+      213: 21300060
+    second: Crosshairs_Spritesheet_30
+  - first:
+      213: 21300062
+    second: Crosshairs_Spritesheet_31
+  - first:
+      213: 21300064
+    second: Crosshairs_Spritesheet_32
+  - first:
+      213: 21300066
+    second: Crosshairs_Spritesheet_33
+  - first:
+      213: 21300068
+    second: Crosshairs_Spritesheet_34
+  - first:
+      213: 21300070
+    second: Crosshairs_Spritesheet_35
+  - first:
+      213: 21300072
+    second: Crosshairs_Spritesheet_36
+  - first:
+      213: 21300074
+    second: Crosshairs_Spritesheet_37
+  - first:
+      213: 21300076
+    second: Crosshairs_Spritesheet_38
+  - first:
+      213: 21300078
+    second: Crosshairs_Spritesheet_39
+  - first:
+      213: 21300080
+    second: Crosshairs_Spritesheet_40
+  - first:
+      213: 21300082
+    second: Crosshairs_Spritesheet_41
+  - first:
+      213: 21300084
+    second: Crosshairs_Spritesheet_42
+  - first:
+      213: 21300086
+    second: Crosshairs_Spritesheet_43
+  - first:
+      213: 21300088
+    second: Crosshairs_Spritesheet_44
+  - first:
+      213: 21300090
+    second: Crosshairs_Spritesheet_45
+  - first:
+      213: 21300092
+    second: Crosshairs_Spritesheet_46
+  - first:
+      213: 21300094
+    second: Crosshairs_Spritesheet_47
+  - first:
+      213: 21300096
+    second: Crosshairs_Spritesheet_48
+  - first:
+      213: 21300098
+    second: Crosshairs_Spritesheet_49
+  - first:
+      213: 21300100
+    second: Crosshairs_Spritesheet_50
+  - first:
+      213: 21300102
+    second: Crosshairs_Spritesheet_51
+  - first:
+      213: 21300104
+    second: Crosshairs_Spritesheet_52
+  - first:
+      213: 21300106
+    second: Crosshairs_Spritesheet_53
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 7
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Crosshairs_Spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 4
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e6d9b5787a2cec42ae9a0f880352492
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crosshairs_Spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 4
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3e047ff207379544a341c923105b5ee
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crosshairs_Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 1
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62c8fff1b34a9f44dbe8a5885fcebe36
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crosshairs_Spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 1
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d99a2ef270aee6418d6e8b8d805c253
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crosshairs_Spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 3
+        width: 1
+        height: 1
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f09c51fbe14317a4d942dc53562c369a
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 482e052419e1ec94cb68b17811d92d37
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Crosshairs_Spritesheet_0: 21300000
+      Crosshairs_Spritesheet_1: 21300002
+      Crosshairs_Spritesheet_10: 21300020
+      Crosshairs_Spritesheet_11: 21300022
+      Crosshairs_Spritesheet_12: 21300024
+      Crosshairs_Spritesheet_13: 21300026
+      Crosshairs_Spritesheet_14: 21300028
+      Crosshairs_Spritesheet_15: 21300030
+      Crosshairs_Spritesheet_16: 21300032
+      Crosshairs_Spritesheet_2: 21300004
+      Crosshairs_Spritesheet_3: 21300006
+      Crosshairs_Spritesheet_4: 21300008
+      Crosshairs_Spritesheet_5: 21300010
+      Crosshairs_Spritesheet_6: 21300012
+      Crosshairs_Spritesheet_7: 21300014
+      Crosshairs_Spritesheet_8: 21300016
+      Crosshairs_Spritesheet_9: 21300018
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
