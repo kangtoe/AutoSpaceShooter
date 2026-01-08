@@ -1,4 +1,4 @@
-# AutoSpaceShooter - 게임 기획 문서
+# AutoSpaceShooter - 게임 디자인 전반
 
 ## 프로젝트 개요
 
