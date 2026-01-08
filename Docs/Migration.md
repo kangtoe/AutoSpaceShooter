@@ -47,9 +47,10 @@ Assets/Scripts/
 
 **현재 상태:**
 ```csharp
-// InputManager.cs
+// InputManager.cs - 레거시 Input 시스템 사용
 public bool MoveForwardInput => false;  // 자동 전진 미사용
-public Vector2 MoveDirectionInput => WASD 입력;  // 수동 방향 입력
+public Vector2 MoveDirectionInput => Input.GetAxisRaw("Horizontal/Vertical");
+public bool FireInput => Input.GetMouseButton(0);
 ```
 
 **목표:**
@@ -57,8 +58,38 @@ public Vector2 MoveDirectionInput => WASD 입력;  // 수동 방향 입력
 - 회전 제어: 화면 좌/우 클릭으로 회전 방향 조절
 - 물리 기반 이동: Rigidbody2D.AddForce() 사용
 
-**작업 필요:**
-- [ ] InputManager 수정 - 터치/클릭 입력으로 변경
+#### 1-1. Input System 마이그레이션 (필수) ✅ 완료
+
+**현재 상황:**
+- ✅ 새 Input System 패키지 설치됨 (v1.17.0)
+- ✅ InputSystem_Actions.inputactions 파일 존재
+- ✅ 모든 스크립트가 새 Input System 사용 중
+
+**마이그레이션 이유:**
+1. 터치/모바일 지원 우수 (화면 좌/우 감지 용이)
+2. 이미 패키지 설치되어 Input Actions 파일 존재
+3. 향후 확장성 (리바인딩, 다양한 디바이스)
+
+**완료된 작업:**
+- [x] InputSystem_Actions.inputactions 수정
+  - [x] Move 액션 추가 (Vector2: WASD)
+  - [x] Rotate 액션 추가 (Axis: A/D, 화살표, 게임패드)
+  - [x] Fire 액션 유지 (마우스, 터치, 스페이스바)
+  - [x] Pause 액션 추가 (ESC, 게임패드 Start)
+  - [x] 불필요한 액션 제거 (Jump, Sprint, Crouch 등)
+- [x] InputManager.cs 수정
+  - [x] 레거시 Input → Input System 전환
+  - [x] MoveDirectionInput 프로퍼티 (Vector2)
+  - [x] RotateInput 프로퍼티 추가 (float)
+  - [x] FireInput, PauseInput, EscapeInput 프로퍼티
+- [x] 레거시 Input 사용 파일 마이그레이션
+  - [x] UiManager.cs - Mouse.current.position 사용
+  - [x] LookMouseSmooth.cs - Mouse.current.position 사용
+  - [x] MouseFollow.cs - Mouse.current.position 사용
+
+**다음 단계:**
+- [ ] Unity에서 동작 테스트
+- [ ] Player Settings를 "Input System Only"로 변경
 - [ ] MoveStandard → 새로운 자동 전진 컴포넌트 작성
 - [ ] 회전 시스템 구현
 
