@@ -30,6 +30,7 @@ public class Damageable : MonoBehaviour
     }
 
     bool isDead;
+    public bool IsDead => isDead;
 
 
     // Start is called before the first frame update
@@ -73,7 +74,7 @@ public class Damageable : MonoBehaviour
         {
             SoundManager.Instance.PlaySound(hitSound);
         }        
-    }
+    }    
 
     public void SetMaxHealth(float amount, bool adjustCurrHealth = false)
     {

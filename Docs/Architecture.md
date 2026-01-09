@@ -11,7 +11,20 @@
 - **이벤트 기반**: UnityEvent를 통한 느슨한 결합
 - **물리 기반 이동**: Rigidbody2D.AddForce() 사용
 
-### 1.2 폴더 구조
+### 1.2 컴포넌트 패턴
+
+프로젝트는 **컴포넌트 조합 방식**으로 유연하게 객체를 구성합니다.
+
+- **조합을 통한 유연성**: 기능별 독립 컴포넌트를 조합하여 다양한 타입 생성
+- **높은 재사용성**: 동일한 컴포넌트를 플레이어, 적, 발사체 등에 재사용
+- **필요 기능만 선택**: 각 객체는 필요한 컴포넌트만 부착하여 구성
+
+**예시**:
+- 플레이어: `Damageable` + `ShooterBase` + `MoveStandard` + `RotateByInput` + `BoundaryDeath` + `Impactable`
+- 일반 적: `Damageable` + `BoundaryJump` + `MoveStandard`
+- 사격하는 적: `Damageable` + `BoundaryJump` + `ShooterBase` + `FindTarget`
+
+### 1.3 폴더 구조
 
 ```
 Assets/Scripts/
