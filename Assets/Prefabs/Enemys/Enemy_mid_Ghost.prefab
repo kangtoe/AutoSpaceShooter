@@ -204,7 +204,7 @@ MonoBehaviour:
   - {fileID: 9040334029074034677}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   manualFire: 0
   firePointDelay: 0
   fireStartDelay: 2
@@ -312,7 +312,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.6875, y: 0.8125}
+  m_Size: {x: 4, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -563,7 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   searchRaduius: 20
   anglePriority: 0
   findAlways: 0

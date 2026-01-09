@@ -172,7 +172,7 @@ MonoBehaviour:
   - {fileID: 1936950088458910650}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   manualFire: 0
   firePointDelay: 0
   fireStartDelay: 0
