@@ -17,9 +17,11 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] Image expGage;
 
     [Header("upgrade ui")]
-    [SerializeField] UpgradeButtons upgradeButtons;    
+    [SerializeField] UpgradeButtons upgradeButtons;
     [SerializeField] Text upgradePointText;
     [SerializeField] Text combatUpgradePointText;
+    [SerializeField] Button combatUpgradeButton;  // 전투 중 업그레이드 화면 열기 버튼
+    [SerializeField] Text combatUpgradeButtonText;  // 전투 중 업그레이드 버튼의 텍스트
 
     public List<UpgradeButtonUI> UpgradeButtonUIList => upgradeButtons.UpgradeButtonUIList;
 
@@ -62,6 +64,14 @@ public class UiManager : MonoSingleton<UiManager>
     private void Start()
     {
         onHelp = helpText.gameObject.activeSelf;
+
+        // 업그레이드 버튼 이벤트 등록
+        if (combatUpgradeButton != null)
+        {
+            combatUpgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+            // 초기에는 비활성화
+            combatUpgradeButton.gameObject.SetActive(false);
+        }
     }
 
     public void SetScoreText(int score)
@@ -117,6 +127,15 @@ public class UiManager : MonoSingleton<UiManager>
         upgradePanel.gameObject.SetActive(active);
     }
 
+    // 업그레이드 화면 열기 버튼 콜백 (전투 중 업그레이드 포인트 클릭 시)
+    public void OnUpgradeButtonClicked()
+    {
+        if (GameManager.Instance.GameState == GameState.OnCombat)
+        {
+            GameManager.Instance.ToggleUpgradeState(true);
+        }
+    }
+
     public void ToggleSettingsUI(bool active)
     {
         settingsPanel.gameObject.SetActive(active);
@@ -142,16 +161,41 @@ public class UiManager : MonoSingleton<UiManager>
         upgradePointText.text = "point : " + point.ToString("D2");
 
         if (point > 0)
-        {            
+        {
             upgradeHelpText.enabled = true;
             combatUpgradePointText.enabled = true;
-            combatUpgradePointText.text = "+" + point;            
+            combatUpgradePointText.text = "+" + point;
+            SetCombatUpgradeButtonText(point);
+            ToggleCombatUpgradeButton(true);
         }
         else
         {
             upgradeHelpText.enabled = false;
-            combatUpgradePointText.enabled = false;            
-        }        
+            combatUpgradePointText.enabled = false;
+            ToggleCombatUpgradeButton(false);
+        }
+    }
+
+    public void SetCombatUpgradeButtonText(int point)
+    {
+        if (combatUpgradeButtonText == null)
+        {
+            Debug.LogError("combatUpgradeButtonText is null!", this);
+            return;
+        }
+
+        combatUpgradeButtonText.text = $"Left UPGRADE! +{point}";
+    }
+
+    public void ToggleCombatUpgradeButton(bool active)
+    {
+        if (combatUpgradeButton == null)
+        {
+            Debug.LogError("combatUpgradeButton is null!", this);
+            return;
+        }
+
+        combatUpgradeButton.gameObject.SetActive(active);
     }
 
     public void ToggleCustomCursor(bool active)
