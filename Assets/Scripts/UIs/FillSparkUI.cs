@@ -29,22 +29,22 @@ public class FillSparkUI : MonoBehaviour
 
     void MoveToFillPoint()
     {
-        // fillAmount¿¡ µû¸¥ ³¡ À§Ä¡ °è»ê
+        // fillAmountì— ë”°ë¥¸ ë ìœ„ì¹˜ ê³„ì‚°
         float fillAmount = fillImage.fillAmount;
         RectTransform rect = fillImage.GetComponent<RectTransform>();
 
-        // Ã¤¿öÁø ÀÌ¹ÌÁöÀÇ °¡·Î Å©±â
+        // ì±„ì›Œì§„ ì´ë¯¸ì§€ì˜ ì „ì²´ í¬ê¸°
         float imageWidth = rect.rect.width;
 
-        // Ã¤¿öÁø ³¡ À§Ä¡ (fillAmount¸¦ °öÇÏ¿© ½ÇÁ¦ ³¡ À§Ä¡ ±¸ÇÏ±â)
+        // ì±„ì›Œì§„ ë ìœ„ì¹˜ (fillAmountì— ë”°ë¼ í˜„ì¬ ë ìœ„ì¹˜ ê³„ì‚°)
         float fillEndPosition = imageWidth * fillAmount;
 
-        // ÀÌµ¿½ÃÅ³ ÀÌ¹ÌÁöÀÇ »õ·Î¿î À§Ä¡ ¼³Á¤
+        // ì´ë™ì‹œí‚¬ ì´ë¯¸ì§€ì˜ ìƒˆë¡œìš´ ìœ„ì¹˜ ì„¤ì •
         Vector3 newPosition = rect.position;
         newPosition.x += fillEndPosition;
         newPosition.x -= rect.rect.width / 2;
 
-        // ÀÌµ¿ÇÒ ÀÌ¹ÌÁöÀÇ À§Ä¡ °»½Å
+        // ì´ë™í•  ì´ë¯¸ì§€ì˜ ìœ„ì¹˜ ì ìš©
         transform.position = newPosition;
     }
 
