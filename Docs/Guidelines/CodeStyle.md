@@ -135,6 +135,78 @@ EnemyManager.Instance;
 - ScriptableObject 기반 데이터 구조 사용 권장
 - 업그레이드 효과는 모듈화하여 조합 가능하게 설계
 
+### UI 버튼 이벤트 할당
+
+**Inspector 수동 연결 대신 코드에서 동적 할당**
+
+```csharp
+// ✅ GOOD - 코드에서 동적 할당
+void Start()
+{
+    if (upgradeButton != null)
+    {
+        upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+    }
+}
+
+// ❌ BAD - Inspector에서 OnClick 이벤트 수동 연결
+```
+
+**이유:** 프로젝트 일관성, 실수 방지, Git 충돌 감소
+
+### 코루틴 사용 제한
+
+**완전 독립적인 로직이 아니면 코루틴 사용 지양**
+
+```csharp
+// ❌ BAD - 코루틴으로 타이머 관리
+Coroutine deactivateCoroutine;
+
+void OnValueChanged()
+{
+    if (deactivateCoroutine != null)
+        StopCoroutine(deactivateCoroutine);
+
+    deactivateCoroutine = StartCoroutine(DeactivateAfterDelay());
+}
+
+IEnumerator DeactivateAfterDelay()
+{
+    yield return new WaitForSeconds(0.5f);
+    uiElement.SetActive(false);
+    deactivateCoroutine = null;
+}
+
+// ✅ GOOD - Update에서 타이머 관리
+float deactivateTimer = 0f;
+
+void Update()
+{
+    if (deactivateTimer > 0f)
+    {
+        deactivateTimer -= Time.deltaTime;
+        if (deactivateTimer <= 0f)
+            uiElement.SetActive(false);
+    }
+}
+
+void OnValueChanged()
+{
+    uiElement.SetActive(true);
+    deactivateTimer = 0.5f;
+}
+```
+
+**코루틴 사용이 적절한 경우:**
+- 외부 API 호출 등 비동기 작업
+- 복잡한 애니메이션 시퀀스
+- 게임플레이 이벤트 시퀀스 (컷신 등)
+
+**이유:**
+- 코루틴은 실행 흐름 추적이 어려움
+- 중지/재시작 로직이 복잡해짐
+- Update 기반 타이머가 더 명확하고 디버깅 용이
+
 ## 중요: 디버깅 원칙
 
 ### 1. 에러를 숨기지 말고 즉시 드러내기 ⚠️
@@ -166,6 +238,38 @@ if (component == null)
 ```
 
 **이유:** 방어적 코딩은 버그를 숨기고 디버깅을 어렵게 만듭니다. 문제가 발생하면 즉시 명확한 에러를 내야 합니다.
+
+### 1-1. Early Return 패턴 사용 ⚠️
+
+**if 중첩 대신 Early Return 사용 (로그 출력 + 즉시 리턴)**
+
+```csharp
+// ❌ BAD - if 중첩
+if (data != null)
+{
+    if (data.IsValid())
+    {
+        DoSomething(data);
+    }
+}
+
+// ✅ GOOD - Early return
+if (data == null)
+{
+    Debug.LogError("Data is null!", this);
+    return;
+}
+
+if (!data.IsValid())
+{
+    Debug.LogError("Data is invalid!", this);
+    return;
+}
+
+DoSomething(data);
+```
+
+**이유:** 중첩 감소, 각 실패 케이스마다 명확한 로그
 
 ### 2. 명확한 초기화 순서 확립 ⚠️
 
