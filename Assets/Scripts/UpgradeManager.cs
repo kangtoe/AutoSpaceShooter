@@ -10,135 +10,141 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
 
     [SerializeField] Color textHighlight;
 
-    UpgradeButtonUI ShipBtn => UiManager.Instance.UpgradeButtonUIList[0];
-    UpgradeButtonUI ShooterBtn => UiManager.Instance.UpgradeButtonUIList[1];
-    UpgradeButtonUI SuperchargeBtn => UiManager.Instance.UpgradeButtonUIList[2];
+    List<UpgradeButtonUI> UpgradeButtons => UiManager.Instance.UpgradeButtonUIList;
 
-    Dictionary<UpgradeType, int> upgradeState = new()
-    {
-        { UpgradeType.Ship, 1 },
-        { UpgradeType.Shooter, 1 },
-    };    
+    // 스탯별 현재 레벨 추적 (로그라이크 방식)
+    Dictionary<UpgradeField, int> statLevels = new();
+
+    // 현재 제시된 업그레이드 옵션들
+    List<UpgradeOption> currentOptions = new List<UpgradeOption>();
 
     int upgradePoint = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        InitButtonUIs();
-        InitPlayershipSystems(true);
+        // 초기 스탯 설정 (기본값)
+        InitPlayershipStats();
         UiManager.Instance.SetUpgradePointText(upgradePoint);
 
-        ShipBtn.Button.onClick.AddListener(delegate { 
-            TryUsePoint(UpgradeType.Ship); 
-        });
-        ShooterBtn.Button.onClick.AddListener(delegate { 
-            TryUsePoint(UpgradeType.Shooter); 
-        });
-        SuperchargeBtn.Button.onClick.AddListener(delegate { 
-            TryUsePoint(UpgradeType.EmergencyProtocol); 
-        });
+        // 버튼 리스너 등록
+        for (int i = 0; i < UpgradeButtons.Count; i++)
+        {
+            int index = i; // 클로저를 위한 로컬 변수
+            UpgradeButtons[i].Button.onClick.AddListener(delegate {
+                SelectUpgrade(index);
+            });
+        }
     }
 
-    bool TryUsePoint(UpgradeType _type)
+    void InitPlayershipStats()
+    {
+        // 모든 스탯을 기본값으로 초기화
+        // PlayerShip의 SetSystem은 이제 증분 방식이므로 여기선 호출하지 않음
+    }
+
+    void SelectUpgrade(int index)
     {
         if (upgradePoint < 1)
         {
             UiManager.Instance.CreateText("No Point!", true);
             UiManager.Instance.ShakeUI();
             SoundManager.Instance.PlaySound(upgradeFailSound);
-            return false;
+            return;
         }
 
-        if (_type == UpgradeType.EmergencyProtocol)
+        if (index < 0 || index >= currentOptions.Count)
         {
-            GameManager.Instance.PlayerShip.InitShip(true);
-            GameManager.Instance.ToggleUpgradeState(false);
+            Debug.LogError($"Invalid upgrade index: {index}");
+            return;
+        }
+
+        UpgradeOption option = currentOptions[index];
+
+        // 최대 레벨 체크
+        if (option.currentLevel >= option.maxLevel)
+        {
+            UiManager.Instance.CreateText("Max Level!", true);
+            UiManager.Instance.ShakeUI();
+            SoundManager.Instance.PlaySound(upgradeFailSound);
+            return;
+        }
+
+        // 스탯 레벨 증가
+        if (!statLevels.ContainsKey(option.field))
+            statLevels[option.field] = 0;
+
+        statLevels[option.field]++;
+
+        // PlayerStats에 증분 적용
+        PlayerStats.Instance.ApplyUpgrade(option.field, option.incrementValue);
+
+        // 내구도/실드 업그레이드 시 현재 값도 함께 증가
+        if (option.field == UpgradeField.MaxDurability)
+        {
+            GameManager.Instance.PlayerShip.Damageable.ModifyDurability(option.incrementValue);
+        }
+        else if (option.field == UpgradeField.MaxShield)
+        {
+            GameManager.Instance.PlayerShip.Damageable.ModifyShield(option.incrementValue);
+        }
+
+        // 포인트 차감
+        upgradePoint--;
+        UiManager.Instance.SetUpgradePointText(upgradePoint);
+
+        SoundManager.Instance.PlaySound(upgradeSound);
+
+        // 포인트가 남아있으면 새로운 옵션 생성, 없으면 창 닫기
+        if (upgradePoint > 0)
+        {
+            GenerateRandomUpgrades();
         }
         else
         {
-            if (upgradeState[_type] >= UpgradeData.MaxLevel)
-            {
-                UiManager.Instance.CreateText("Max Level!", true);
-                UiManager.Instance.ShakeUI();
-                SoundManager.Instance.PlaySound(upgradeFailSound);
-                return false;
-            }            
-
-            // add amount
-            upgradeState[_type]++;
-
-            // apply amount
-            InitPlayershipSystems();
-            InitButtonUIs();
+            GameManager.Instance.ToggleUpgradeState(false);
         }
-
-        upgradePoint--;
-        UiManager.Instance.SetUpgradePointText(upgradePoint);
-        
-        SoundManager.Instance.PlaySound(upgradeSound);
-        return true;
     }
 
-    void InitPlayershipSystems(bool forceToggle = false)
+    void GenerateRandomUpgrades()
     {
-        var player = GameManager.Instance.PlayerShip;
-        foreach (var (upgradeType, level) in upgradeState)
+        // 3개의 랜덤 업그레이드 옵션 생성
+        currentOptions = UpgradeData.GetRandomUpgradeOptions(3, statLevels);
+
+        // UI 업데이트
+        for (int i = 0; i < UpgradeButtons.Count; i++)
         {
-            UpgradeField[] fields = UpgradeData.GetRalatedFields(upgradeType);
-            
-            foreach (UpgradeField field in fields)
-            {                
-                var info = UpgradeData.GetFieldInfo(field, level);
-                player.SetSystem(field, info.currAmount);
+            if (i < currentOptions.Count)
+            {
+                UpdateUpgradeButton(UpgradeButtons[i], currentOptions[i]);
+                UpgradeButtons[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                UpgradeButtons[i].gameObject.SetActive(false);
             }
         }
     }
 
-    void InitButtonUIs()
-    {        
-        UpdateUpgradeButton(ShipBtn, UpgradeType.Ship);
-        UpdateUpgradeButton(ShooterBtn, UpgradeType.Shooter);
-        UpdateUpgradeButton(SuperchargeBtn, UpgradeType.EmergencyProtocol);
-    }
-
-    void UpdateUpgradeButton(UpgradeButtonUI btn, UpgradeType _type)
+    void UpdateUpgradeButton(UpgradeButtonUI btn, UpgradeOption option)
     {
-        List<UpgradeFieldInfo> infos = null;
-        int level = 0;
+        // 타이틀: 한글 이름
+        btn.SetTitle(option.displayName);
 
-        if (_type != UpgradeType.EmergencyProtocol)
-        {
-            infos = GetInfos(_type);
-            level = upgradeState[_type];
-        }
-        
-        string title = UpgradeData.GetTitleString(_type, level);
-        btn.SetTitle(title);
-        
+        // 설명: 증가량 + 레벨 정보
         string colorCode = ColorUtility.ToHtmlStringRGBA(textHighlight);
-        string desc = UpgradeData.GetDescString(_type, level, infos, colorCode);
+        string desc = $"<color=#{colorCode}>{option.description}</color>";
         btn.SetDesc(desc);
-    }
-
-    List<UpgradeFieldInfo> GetInfos(UpgradeType _type)
-    {
-        List<UpgradeFieldInfo> infos = new();
-        int level = upgradeState[_type];
-
-        UpgradeField[] fields = UpgradeData.GetRalatedFields(_type);
-        foreach (UpgradeField field in fields)
-        {
-            infos.Add(UpgradeData.GetFieldInfo(field, level));
-        }
-
-        return infos;
     }
 
     public void PointUp(int amount = 1)
     {
         upgradePoint += amount;
         UiManager.Instance.SetUpgradePointText(upgradePoint);
+
+        // 랜덤 업그레이드 옵션 생성
+        GenerateRandomUpgrades();
+
         GameManager.Instance.ToggleUpgradeState(true);
     }
 }

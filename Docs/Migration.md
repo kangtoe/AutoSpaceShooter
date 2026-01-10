@@ -105,9 +105,9 @@ public bool FireInput => Input.GetMouseButton(0);
 - [ ] 현재 경계 처리 방식 확인
 - [ ] 경계 즉사 시스템 구현
 
-### 3. 업그레이드 시스템 (대폭 수정)
+### 3. 업그레이드 시스템 (대폭 수정) ✅ 완료
 
-**현재 상태:**
+**이전 상태:**
 ```csharp
 // UpgradeManager.cs
 // 3가지 고정 타입만 존재
@@ -118,15 +118,34 @@ enum UpgradeType {
 }
 ```
 
-**목표:**
-- 노바 드리프트 스타일
-- 레벨업 시 여러 업그레이드 중 선택
-- 다양한 업그레이드 옵션 (Phase 1: 3-5개)
+**현재 상태:**
+- ✅ 증분 기반 로그라이크 시스템 구현 완료
+- ✅ 레벨업 시 랜덤 3가지 옵션 제시
+- ✅ 각 업그레이드별 독립적인 레벨 추적 (예: 멀티샷 Lv.2/4)
+- ✅ PlayerStats 싱글톤 중앙화
+- ✅ 6가지 업그레이드 구현: 최대 내구도/실드, 실드 재생 속도/지연, 멀티샷, 충돌 데미지
 
-**작업 필요:**
-- [ ] UpgradeData 구조 재설계
-- [ ] 선택지 UI 구현
-- [ ] 업그레이드 풀 시스템 구현
+**구현된 시스템:**
+```csharp
+// UpgradeData.cs - 정적 데이터 클래스
+- IncrementValues: 증분값 정의
+- MaxLevels: 최대 레벨 정의
+- DisplayNames: 한글 이름 매핑
+- GetRandomUpgradeOptions(): 랜덤 3개 선택
+
+// UpgradeManager.cs - 업그레이드 관리
+- statLevels: 필드별 레벨 추적
+- SelectUpgrade(): 업그레이드 선택 처리
+- PlayerStats.ApplyUpgrade() 호출
+```
+
+**상세 문서**: [UpgradeSystem.md](Design/UpgradeSystem.md)
+
+**다음 단계 (Phase 2):**
+- [ ] 미구현 업그레이드 활성화 (연사 속도, 발사체 데미지/속도, 이동/회전 속도, 충돌 저항)
+- [ ] 특수 업그레이드 (Missile, Pulse, EmergencyProtocol)
+- [ ] 희귀도 시스템
+- [ ] 시너지 시스템
 
 ### 4. 레벨/경험치 시스템 (재사용)
 
