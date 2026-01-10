@@ -257,6 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DynamicGauge
   fillImage: {fileID: 7279966154362319986}
   rectTransform: {fileID: 6040580217769866543}
+  fillSparkUI: {fileID: 872644696452270904}
   scaleHorizontally: 1
   baseSize: {x: 0, y: 0}
 --- !u!1001 &1997782607390374821
@@ -364,6 +365,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45795256dada62b47a0c01001efc6115, type: 3}
+--- !u!114 &872644696452270904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1703993468287611037, guid: 45795256dada62b47a0c01001efc6115, type: 3}
+  m_PrefabInstance: {fileID: 1997782607390374821}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8622e3467bf4a68428e20f735a20a402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1575118729795782573 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1036530029434911752, guid: 45795256dada62b47a0c01001efc6115, type: 3}
