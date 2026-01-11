@@ -44,9 +44,7 @@ public class DynamicGauge : MonoBehaviour
     }
 
     void UpdateFillAmount(float current, float max)
-    {
-        Debug.Log("UpdateFillAmount called with current: " + current + ", max: " + max);
-
+    {        
         if (fillImage == null)
         {
             Debug.LogError($"DynamicGauge ({gameObject.name}): gaugeImage is null!", this);
@@ -76,8 +74,6 @@ public class DynamicGauge : MonoBehaviour
 
     void UpdateUiSize(float max)
     {
-        Debug.Log("UpdateSize called with max: " + max);
-
         if (rectTransform == null)
         {
             Debug.LogError($"DynamicGauge ({gameObject.name}): rectTransform is null!", this);

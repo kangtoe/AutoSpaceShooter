@@ -16,9 +16,15 @@ public class FillSparkUI : MonoBehaviour
     public float grav = 100;
     public float interval = 0.2f;
 
-    private void Start()
+    void OnEnable()
     {
-        DoSpark();
+        Debug.Log("FillSparkUI OnEnable");
+        DoSpark(sparkCount);
+    }
+    void OnDisable()
+    {        
+        Debug.Log("FillSparkUI OnDisable");
+        StopAllCoroutines();
     }
 
     // Update is called once per frame
@@ -57,7 +63,7 @@ public class FillSparkUI : MonoBehaviour
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Transform tf = Instantiate(uiPrefab, transform).transform;
+                    Transform tf = Instantiate(uiPrefab, null).transform;
 
                     float angle = Random.Range(-randomAngle, randomAngle) + rotateAngle;
                     Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
