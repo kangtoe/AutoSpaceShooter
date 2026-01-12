@@ -121,6 +121,31 @@ GameManager.Instance.Player;
 EnemyManager.Instance;
 ```
 
+## 필드 접근 제어 (OOP 은닉성)
+
+### SerializeField 사용 원칙
+
+**Inspector에서 편집 가능하게 하려면 `public` 대신 `[SerializeField]` 사용**
+
+```csharp
+// ❌ BAD - public 필드
+public Image fillImage;
+public float moveSpeed = 5f;
+
+// ✅ GOOD - SerializeField + private
+[SerializeField] Image fillImage;
+[SerializeField] float moveSpeed = 5f;
+```
+
+**이유:**
+- OOP 은닉성(Encapsulation) 원칙 준수
+- 외부에서 의도치 않은 값 변경 방지
+- Inspector 편집은 가능하면서 코드에서의 접근은 제한
+
+**public이 적절한 경우:**
+- 다른 스크립트에서 접근해야 하는 프로퍼티나 메서드
+- 이벤트나 콜백
+
 ## 프로젝트별 주의사항
 
 ### 물리 기반 이동

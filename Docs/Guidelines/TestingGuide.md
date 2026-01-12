@@ -129,7 +129,75 @@ Unity Test Framework는 **완전 자동 실행 가능**합니다:
 - 커맨드라인에서 Batch Mode 실행 가능
 - GitHub Actions, Jenkins 등과 연동 가능
 
+## 스크립트 실행 디버깅 자동화
+
+### 1. Play Mode 자동 테스트
+
+실제 게임을 Play Mode로 실행하면서 자동 검증합니다.
+
+**설정:**
+1. `Assets/Tests/PlayMode/` 폴더 생성
+2. Assembly Definition 생성 (`UnityEngine.TestRunner`, `UnityEditor.TestRunner` 참조)
+3. 테스트 스크립트 작성 (`[UnityTest]` 속성, `IEnumerator` 반환)
+4. `Window > General > Test Runner` → PlayMode 탭 → Run All
+
+**작성 팁:**
+- `yield return null` - 한 프레임 대기
+- `yield return new WaitForSeconds(1f)` - 시간 대기
+- `yield return new WaitForFixedUpdate()` - 물리 대기
+
+### 2. Editor 검증 도구
+
+**Inspector 버튼 (현재 사용 중):**
+```csharp
+[Button("테스트")]
+void TestMethod() { /* 검증 로직 */ }
+```
+
+**일괄 검증 도구:**
+```csharp
+// Assets/Scripts/Editor/ComponentValidator.cs
+[MenuItem("Tools/Validate All Components")]
+static void ValidateAll()
+{
+    // FindObjectsOfType로 모든 컴포넌트 검증
+    // null 체크, 값 검증 등
+}
+```
+
+### 3. CI/CD 자동화
+
+**GitHub Actions:**
+- `.github/workflows/unity-test.yml` 생성
+- `game-ci/unity-test-runner` 액션 사용
+- 커밋 시 자동 실행
+
+### 4. 디버깅 팁
+
+**조건부 로그:**
+```csharp
+#if UNITY_EDITOR
+    Debug.Log("Editor only log");
+#endif
+```
+
+**Gizmos 시각화:**
+```csharp
+void OnDrawGizmos()
+{
+    Gizmos.DrawWireSphere(position, radius);
+}
+```
+
+### 5. 추천 워크플로우
+
+- **개발 중:** `[Button]` + `OnDrawGizmos()` + Edit Mode 테스트
+- **커밋 전:** Test Runner 실행 + Editor 검증 도구
+- **커밋 후:** GitHub Actions 자동 테스트
+
 ## 참고 자료
 
 - [Unity Test Framework 공식 문서](https://docs.unity3d.com/Packages/com.unity.test-framework@1.6/manual/index.html)
 - [NUnit Assertions](https://docs.nunit.org/articles/nunit/writing-tests/assertions/assertion-models/constraint.html)
+- [GameCI - Unity CI/CD](https://game.ci/)
+- [NaughtyAttributes - Editor 버튼](https://github.com/dbrizov/NaughtyAttributes)
