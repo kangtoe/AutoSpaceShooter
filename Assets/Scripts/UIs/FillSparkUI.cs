@@ -1,87 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform))]
 public class FillSparkUI : MonoBehaviour
 {
-    public Image fillImage;
-    public Image uiPrefab;
+    [Header("References")]
+    [SerializeField] ParticleSystem sparkParticle;
 
-    public int sparkCount = 1;
-    public float fadeSpeed = 1;
-    public float randomAngle = 20;
-    public float rotateAngle = 0;
-    public float popPower = 100;
-    public float grav = 100;
-    public float interval = 0.2f;
+    ParticleSystem.EmissionModule emission;
+    float originalEmissionRate;
+    bool isInitialized;
+    RectTransform sparkRectTransform;  // ParticleSystem의 RectTransform
 
-    private void Start()
+    void Awake()
     {
-        DoSpark();
+        Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetEmitting(bool emitting)
     {
-        MoveToFillPoint();     
+        if (!isInitialized) return;
+
+        emission.rateOverTime = emitting ? originalEmissionRate : 0;
     }
 
-    void MoveToFillPoint()
+    public void MoveToPoint(Vector3 worldPosition)
     {
-        // fillAmount에 따른 끝 위치 계산
-        float fillAmount = fillImage.fillAmount;
-        RectTransform rect = fillImage.GetComponent<RectTransform>();
+        if (!isInitialized) return;
 
-        // 채워진 이미지의 전체 크기
-        float imageWidth = rect.rect.width;
-
-        // 채워진 끝 위치 (fillAmount에 따라 현재 끝 위치 계산)
-        float fillEndPosition = imageWidth * fillAmount;
-
-        // 이동시킬 이미지의 새로운 위치 설정
-        Vector3 newPosition = rect.position;
-        newPosition.x += fillEndPosition;
-        newPosition.x -= rect.rect.width / 2;
-
-        // 이동할 이미지의 위치 적용
-        transform.position = newPosition;
+        sparkRectTransform.position = worldPosition;
     }
 
-
-    void DoSpark(int count = 1)
+    public void SetParticleColor(Color color)
     {
-        IEnumerator Cr()
+        if (!isInitialized) return;
+
+        var main = sparkParticle.main;
+        main.startColor = color;
+    }
+
+    void Initialize()
+    {
+        if (isInitialized) return;
+
+        if (sparkParticle == null)
         {
-            while (true)
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    Transform tf = Instantiate(uiPrefab, transform).transform;
-
-                    float angle = Random.Range(-randomAngle, randomAngle) + rotateAngle;
-                    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-                    float power = popPower;
-                    Vector3 vec = rotation * Vector3.up * power;
-
-                    Rigidbody2D rbody = tf.GetComponent<Rigidbody2D>();
-                    rbody.AddForce(vec, ForceMode2D.Impulse);
-                    rbody.AddTorque(Random.Range(-90, 90));
-                    rbody.gravityScale = grav;
-
-                    Graphic gph = tf.GetComponent<Graphic>();
-                    gph.color = fillImage.color;
-
-                    FadeUI fade = tf.gameObject.AddComponent<FadeUI>();
-                    fade.fadeSpeed = fadeSpeed;
-                }
-
-                yield return new WaitForSeconds(interval);
-            }            
+            Debug.LogError($"FillSparkUI ({gameObject.name}): sparkParticle is null!", this);
+            return;
         }
 
-        StartCoroutine(Cr());
+        sparkRectTransform = sparkParticle.GetComponent<RectTransform>();
+        if (sparkRectTransform == null)
+        {
+            Debug.LogError($"FillSparkUI ({gameObject.name}): sparkParticle doesn't have RectTransform!", this);
+            return;
+        }
+
+        emission = sparkParticle.emission;
+        originalEmissionRate = emission.rateOverTime.constant;
+        isInitialized = true;
+
+        SetEmitting(false);
     }
 }
 
