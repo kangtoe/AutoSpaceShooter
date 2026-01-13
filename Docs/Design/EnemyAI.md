@@ -5,6 +5,8 @@
 AutoSpaceShooter의 적은 **컴포넌트 조합 방식**으로 다양한 AI 패턴을 구현합니다.
 각 적은 `FindTarget`, `MoveStandard`, `RotateToTarget`, `ShooterBase` 등의 컴포넌트를 조합하여 고유한 행동 패턴을 가집니다.
 
+**참고**: 적의 기본 스탯 및 목록은 [EnemyList.md](EnemyList.md)를 참고하세요. 이 문서는 AI 패턴에 집중합니다.
+
 ## AI 패턴 분류
 
 ### 1. 직진 추적형 (Tracking Pattern)
@@ -80,65 +82,19 @@ AutoSpaceShooter의 적은 **컴포넌트 조합 방식**으로 다양한 AI 패
 **해당 적**:
 - **Enemy_light_shield**: Mass 1.5, Power 0.5 - 높은 HP (120)
 
-## 적 능력별 분류
+## AI 컴포넌트 분류
 
-### 사격 능력 보유
-사격 컴포넌트(`ShooterBase`)를 가진 적:
-- **Enemy_light_kido** (60점)
-- **Enemy_mid_Ghost** (250점) - 파동 이동
-- **Enemy_mid_Hornet** (350점) - 멀티샷
-- **Enemy_mid_Spiral** (600점) - 4방향
-- **Enemy_mid_tank** (550점)
-- **Enemy_mid_sniper** (500점)
-- **Enemy_heavy_Gunship** (1000점) - 2방향
-- **Enemy_Boss** (1000점) - 3개 무기
+### 사격 컴포넌트 (ShooterBase)
+원거리 공격 능력을 제공하는 컴포넌트:
+- **단발 사격**: kido, Ghost, tank, sniper
+- **멀티샷**: Hornet (여러 발 동시 발사)
+- **다방향 사격**: Spiral (4방향), Gunship (2방향)
+- **복합 무기**: Boss (3개 무기 시스템)
 
-### 소환 능력 보유
-Factory 컴포넌트로 자식 유닛 생성:
-- **Enemy_heavy_mother** (800점) - light_child 생성
-- **Enemy_mid_master** (400점) - 드론 소환
-
-## 적 스탯 테이블
-
-| 등급 | 이름 | HP | 점수 | Mass | Power | AI 패턴 | 특수 능력 |
-|------|------|-----|------|------|-------|---------|-----------|
-| Light | child | 60 | 50 | 0.5 | 2 | 직진 추적 | - |
-| Light | kido | 40 | 60 | 0.5 | 1 | 직진 추적 | 사격 |
-| Light | shield | 120 | 100 | 1.5 | 0.5 | 단순 직진 | 고HP |
-| Light | thunder | 50 | 80 | 0.5 | 5 | 임펄스 돌격 | - |
-| Mid | Ghost | 100 | 250 | 1 | 1 | 파동 이동 | 사격 |
-| Mid | Hornet | 250 | 350 | 1.5 | 2 | 직진 추적 | 멀티샷 |
-| Mid | Knight | 300 | 450 | 8 | 10 | 임펄스 돌격 | - |
-| Mid | Spiral | 300 | 600 | 2 | 2 | 부드러운 돌격 | 4방향 사격 |
-| Mid | tank | 500 | 550 | 4 | 0.5 | 직진 추적 | 고HP + 사격 |
-| Mid | sniper | 200 | 500 | 1 | 0.5 | 직진 추적 | 원거리 사격 |
-| Mid | master | 100 | 400 | 1 | 1.5 | 부드러운 돌격 | 드론 소환 |
-| Heavy | mother | 800 | 800 | 5 | 0.5 | 직진 추적 | Child 소환 |
-| Heavy | Gunship | 500 | 1000 | 4 | 3 | 거리 유지 | 2방향 사격 |
-| Boss | Boss | 99999 | 1000 | 100 | 0.1 | 직진 추적 | 3무기 |
-| Bonus | bonus | 200 | 0 | - | - | - | 테스트용 |
-
-## 난이도 설계
-
-### Light 등급 (50-100점)
-- HP: 40-120
-- 단순한 패턴 (직진, 느린 추적)
-- 초반 웜업용
-
-### Mid 등급 (250-600점)
-- HP: 100-500
-- 다양한 패턴 (파동, 임펄스, 사격)
-- 메인 위협 요소
-
-### Heavy 등급 (800-1000점)
-- HP: 500-800
-- 복잡한 메카닉 (소환, 거리 유지)
-- 주요 장애물
-
-### Boss 등급 (1000점)
-- HP: 99999
-- 멀티 무기 시스템
-- 거의 이동하지 않음
+### 소환 컴포넌트 (ShipFactory)
+자식 유닛을 생성하는 컴포넌트:
+- **대량 소환**: mother (light_child 지속 생성)
+- **지원 소환**: master (드론 소환)
 
 ## 자동 전진 시스템과의 호환성
 
@@ -202,5 +158,7 @@ Factory 컴포넌트로 자식 유닛 생성:
 
 ## 참고
 
+- [EnemyList.md](EnemyList.md): 적 스탯 및 목록
+- [WaveSystem.md](WaveSystem.md): 웨이브 구성 가이드
 - [Architecture.md](../Architecture.md#22-게임플레이-레이어): 전체 시스템 구조
 - [GameDesignOverview.md](GameDesignOverview.md): 게임 디자인 개요
