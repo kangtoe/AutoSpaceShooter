@@ -15,7 +15,7 @@ public class DynamicGauge : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] bool scaleHorizontally = true;
-    [SerializeField] Vector2 baseSize;  // 기준 크기 (최대값 100에 해당하는 크기)
+    [SerializeField, ReadOnly] Vector2 baseSize = Vector2.zero;  // 기준 크기 (최대값 100에 해당하는 크기)
     [SerializeField] float sparkDuration = 0.3f;  // 파티클 유지 시간
 
     float lastValue = -1f;  // 이전 값 (-1은 초기화되지 않았음을 의미)
@@ -25,8 +25,7 @@ public class DynamicGauge : MonoBehaviour
     public void Initialize()
     {
         if (baseSize == Vector2.zero)
-        {
-            Debug.LogError($"DynamicGauge ({gameObject.name}): baseSize is Vector2.zero!", this);
+        {            
             baseSize = rectTransform.sizeDelta;
         }
     }
@@ -120,8 +119,7 @@ public class DynamicGauge : MonoBehaviour
 
         if (baseSize == Vector2.zero)
         {
-            Debug.LogError($"DynamicGauge ({gameObject.name}): baseSize is Vector2.zero!", this);
-            return;
+            baseSize = rectTransform.sizeDelta;
         }
 
         float sizeMultiplier = max / BASE_MAX_VALUE;

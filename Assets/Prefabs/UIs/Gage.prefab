@@ -84,7 +84,7 @@ ParticleSystemRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 32767
+  m_SortingOrder: 32766
   m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -5043,7 +5043,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 20}
+  m_SizeDelta: {x: 260, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7690089715701006435
 CanvasRenderer:
@@ -5099,7 +5099,8 @@ MonoBehaviour:
   rectTransform: {fileID: 6040580217769866543}
   fillSparkUI: {fileID: 872644696452270904}
   scaleHorizontally: 1
-  baseSize: {x: 260, y: 20}
+  baseSize: {x: 0, y: 0}
+  sparkDuration: 0.3
 --- !u!1001 &1997782607390374821
 PrefabInstance:
   m_ObjectHideFlags: 0
