@@ -40,14 +40,9 @@ public class GameManager : MonoSingleton<GameManager>
         //if (InputManager.Instance.PulseInput)
         {
             if (gameState == GameState.OnTitle)
-            {                
+            {
                 GameStart();
-            }            
-        }
-
-        if (InputManager.Instance.HelpInput)
-        {
-            UiManager.Instance.ToggleHelpUI(!UiManager.Instance.OnHelp);
+            }
         }
 
         if (InputManager.Instance.EscapeInput)

@@ -29,9 +29,8 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] Text overTimeText;
     [SerializeField] Text overScoreText;
 
-    [Header("help ui")]
-    [SerializeField] Text helpText;
-    [SerializeField] Text upgradeHelpText;
+    [Header("debug ui")]
+    [SerializeField] Text waveDebugText;
 
     [Header("Panels")]
     [SerializeField] RectTransform upgradePanel;
@@ -51,8 +50,6 @@ public class UiManager : MonoSingleton<UiManager>
     [Header("prefab")]
     [SerializeField] GameObject floatingText;
 
-    public bool OnHelp => onHelp;
-    bool onHelp;
 
     // 내구도/실드 UI 초기화 (PlayerShip에서 호출)
     public void InitializeDurabilityUI()
@@ -63,8 +60,6 @@ public class UiManager : MonoSingleton<UiManager>
 
     private void Start()
     {
-        onHelp = helpText.gameObject.activeSelf;
-
         // 업그레이드 버튼 이벤트 등록
         if (combatUpgradeButton != null)
         {
@@ -115,12 +110,6 @@ public class UiManager : MonoSingleton<UiManager>
         }        
     }
 
-    public void ToggleHelpUI(bool active)
-    {
-        helpText.gameObject.SetActive(active);
-        upgradeHelpText.gameObject.SetActive(active);
-        onHelp = active;
-    }
 
     public void ToggleUpgradeUI(bool active)
     {
@@ -162,7 +151,6 @@ public class UiManager : MonoSingleton<UiManager>
 
         if (point > 0)
         {
-            upgradeHelpText.enabled = true;
             combatUpgradePointText.enabled = true;
             combatUpgradePointText.text = "+" + point;
             SetCombatUpgradeButtonText(point);
@@ -170,9 +158,16 @@ public class UiManager : MonoSingleton<UiManager>
         }
         else
         {
-            upgradeHelpText.enabled = false;
             combatUpgradePointText.enabled = false;
             ToggleCombatUpgradeButton(false);
+        }
+    }
+
+    public void SetWaveDebugText(int waveNumber, bool isSpawning, int remainingEnemies)
+    {
+        if (waveDebugText != null)
+        {
+            waveDebugText.text = $"Wave: {waveNumber} | Spawning: {(isSpawning ? "Yes" : "No")} | Enemies: {remainingEnemies}";
         }
     }
 
