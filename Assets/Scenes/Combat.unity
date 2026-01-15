@@ -1799,6 +1799,7 @@ MonoBehaviour:
   startWaveNumber: 1
   maxWaveNumber: 30
   waveTransitionDelay: 2
+  waveStartDelay: 1.5
   enemyPrefabs:
   - {fileID: 2159223484281061927, guid: 0c480471cb4caeb47908089266ee7b9b, type: 3}
   - {fileID: 2159223484281061927, guid: ab27139085cdd7e45856d576f49b00af, type: 3}
@@ -4333,6 +4334,18 @@ PrefabInstance:
       propertyPath: shooter
       value: 
       objectReference: {fileID: 964013477203117084}
+    - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
+      propertyPath: movePower
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
+      propertyPath: moveManually
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
+      propertyPath: limitMaxSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3198147473783860532, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4383,6 +4396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6958132410236612927, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
+    - {fileID: 480949263162120028, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7475465449611048641, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
     - {fileID: 3258831923578993604, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
