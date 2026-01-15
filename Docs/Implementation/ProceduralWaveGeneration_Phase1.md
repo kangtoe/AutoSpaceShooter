@@ -177,7 +177,7 @@ public class ProceduralWaveGenerator
     // SmallSwarm: 다수의 약한 적
     private static GeneratedWaveData GenerateSmallSwarmWave(int waveNumber, int budget)
     {
-        // 조건: 예산의 70% 이상을 Light 등급에 사용, 최소 5마리
+        // 조건: 예산의 60%를 Light 등급에 사용, 최소 5마리
         // 1-2개 스폰 그룹 생성
         // SpawnInfo[] 반환 (EnemyShip.gameObject 사용)
     }
@@ -443,7 +443,7 @@ foreach (var info in wave.spawnInfos)
 
 **성공 기준**:
 - 예산 사용률 70-95%
-- Light 등급 적이 70% 이상
+- Light 등급 적이 60%
 - 최소 5마리 이상 스폰
 - 1-2개 SpawnInfo 그룹
 - 프리팹이 null 아님
@@ -606,7 +606,7 @@ Boss (3개, 별도 필드에 할당):
    - 웨이브 6-9를 각각 5회씩 생성 (게임 재시작)
    - Console 로그에서 예산 사용률 수집
    - 평균 사용률 85-95% 확인
-   - Light 등급 비율 70% 이상 확인
+   - Light 등급 비율 60% 확인
 
 3. **롤백 테스트**:
    - `useWaveSystem = false` 설정

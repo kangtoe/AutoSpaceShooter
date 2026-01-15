@@ -49,7 +49,7 @@ public class ProceduralWaveGenerator
 
     /// <summary>
     /// SmallSwarm 패턴: 다수의 약한 적
-    /// 조건: 예산의 70% 이상을 Light 등급에 사용, 최소 5마리
+    /// 조건: 예산의 60%를 Light 등급에 사용, 최소 5마리
     /// </summary>
     private static GeneratedWaveData GenerateSmallSwarmWave(int waveNumber, int budget)
     {
@@ -67,8 +67,8 @@ public class ProceduralWaveGenerator
             return new GeneratedWaveData(waveNumber, 0, budget, "SmallSwarm", new SpawnInfo[0]);
         }
 
-        // 조건: 예산의 70% 이상을 Light 등급에 사용
-        int lightBudget = Mathf.RoundToInt(budget * 0.7f);
+        // 조건: 예산의 60%를 Light 등급에 사용
+        int lightBudget = Mathf.RoundToInt(budget * 0.6f);
 
         // ========== 첫 번째 그룹: Light 적 ==========
         string selectedEnemy = lightEnemies[Random.Range(0, lightEnemies.Count)];
