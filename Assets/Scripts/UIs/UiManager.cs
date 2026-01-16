@@ -49,6 +49,7 @@ public class UiManager : MonoSingleton<UiManager>
 
     [Header("prefab")]
     [SerializeField] GameObject floatingText;
+    [SerializeField] Canvas floatTextCanvas;  // 플로팅 텍스트용 캔버스 (좌표 변환용)
 
 
     // 내구도/실드 UI 초기화 (PlayerShip에서 호출)
@@ -208,15 +209,22 @@ public class UiManager : MonoSingleton<UiManager>
     {
         Text txt = Instantiate(floatingText, floatTextRoot).GetComponent<Text>();
         txt.text = str;
-        txt.rectTransform.position = screenPos;
+
+        // 스크린 좌표를 Canvas 로컬 좌표로 변환 (Render Mode에 따라 카메라 설정)
+        Camera canvasCamera = floatTextCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : floatTextCanvas.worldCamera;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            floatTextRoot,
+            screenPos,
+            canvasCamera,
+            out Vector2 localPos
+        );
+        txt.rectTransform.anchoredPosition = localPos;
     }
 
     public void CreateText(string str, Vector3 worldPos)
     {
-        Text txt = Instantiate(floatingText, floatTextRoot).GetComponent<Text>();
-        txt.text = str;
-
-        txt.rectTransform.position = Camera.main.WorldToScreenPoint(worldPos);
+        Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        CreateText(str, screenPos);
     }
 
     public void ShakeUI(float _amount = 10f, float _duration = 0.2f)
