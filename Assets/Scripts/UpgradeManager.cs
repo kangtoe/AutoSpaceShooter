@@ -45,7 +45,8 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     {
         if (PlayerStats.Instance.upgradePoint < 1)
         {
-            UiManager.Instance.CreateText("No Point!", true);
+            Vector2 touchPos = InputManager.Instance.PointerPosition;
+            UiManager.Instance.CreateText("No Point!", touchPos);
             UiManager.Instance.ShakeUI();
             SoundManager.Instance.PlaySound(upgradeFailSound);
             return;
@@ -62,7 +63,8 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
         // 최대 레벨 체크
         if (option.currentLevel >= option.maxLevel)
         {
-            UiManager.Instance.CreateText("Max Level!", true);
+            Vector2 touchPos = InputManager.Instance.PointerPosition;
+            UiManager.Instance.CreateText("Max Level!", touchPos);
             UiManager.Instance.ShakeUI();
             SoundManager.Instance.PlaySound(upgradeFailSound);
             return;

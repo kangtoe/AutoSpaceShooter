@@ -296,6 +296,28 @@ DoSomething(data);
 
 **이유:** 중첩 감소, 각 실패 케이스마다 명확한 로그
 
+### 1-2. 중첩된 함수 호출 방지 ⚠️
+
+**복잡한 함수 내 함수 호출로 인해 코드가 길어지는 경우, 중간 변수를 사용하여 가독성 향상**
+
+```csharp
+// ❌ BAD - 중첩된 함수 호출로 길어지고 읽기 어려움
+UiManager.Instance.CreateText("No Point!", InputManager.Instance.PointerPosition);
+PlayerStats.Instance.ApplyUpgrade(option.field, UpgradeData.GetIncrementValue(option.type));
+
+// ✅ GOOD - 중간 변수 사용으로 명확한 의도 표현
+Vector2 touchPos = InputManager.Instance.PointerPosition;
+UiManager.Instance.CreateText("No Point!", touchPos);
+
+float incrementValue = UpgradeData.GetIncrementValue(option.type);
+PlayerStats.Instance.ApplyUpgrade(option.field, incrementValue);
+```
+
+**이유:**
+- 코드 가독성 향상 (한 줄에 하나의 작업)
+- 디버깅 시 중간 값 확인 가능
+- 변수 이름을 통해 값의 의미 명확히 표현
+
 ### 2. 명확한 초기화 순서 확립 ⚠️
 
 **절대 금지:**

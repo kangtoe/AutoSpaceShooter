@@ -198,15 +198,17 @@ public class UiManager : MonoSingleton<UiManager>
         Cursor.visible = !active;
     }
 
-    public void CreateText(string str, bool onMousePos = false)
+    public void CreateText(string str)
     {
         Text txt = Instantiate(floatingText, floatTextRoot).GetComponent<Text>();
         txt.text = str;
+    }
 
-        if (onMousePos && Mouse.current != null)
-        {
-            txt.rectTransform.position = Mouse.current.position.ReadValue();
-        }
+    public void CreateText(string str, Vector2 screenPos)
+    {
+        Text txt = Instantiate(floatingText, floatTextRoot).GetComponent<Text>();
+        txt.text = str;
+        txt.rectTransform.position = screenPos;
     }
 
     public void CreateText(string str, Vector3 worldPos)

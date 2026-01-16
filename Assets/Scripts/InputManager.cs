@@ -32,4 +32,24 @@ public class InputManager : MonoSingleton<InputManager>
     public bool HelpInput => Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame;
     public bool UpgradeInput => Keyboard.current != null && Keyboard.current.uKey.wasPressedThisFrame;
     public bool RInput => Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame;
+
+    // Pointer/Touch position
+    public Vector2 PointerPosition
+    {
+        get
+        {
+            // 터치스크린이 있으면 터치 위치 사용
+            if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+            {
+                return Touchscreen.current.primaryTouch.position.ReadValue();
+            }
+            // 마우스가 있으면 마우스 위치 사용 (에디터/PC 테스트용)
+            else if (Mouse.current != null)
+            {
+                return Mouse.current.position.ReadValue();
+            }
+            // 둘 다 없으면 화면 중앙 반환
+            return new Vector2(Screen.width / 2f, Screen.height / 2f);
+        }
+    }
 }
