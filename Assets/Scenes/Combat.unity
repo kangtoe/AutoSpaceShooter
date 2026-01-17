@@ -2483,7 +2483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1192076801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2500,7 +2500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 5.0000005, y: -95}
+  m_AnchoredPosition: {x: 5.0000005, y: -64}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1192076802
@@ -2525,18 +2525,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 2ba14e6bf4327df4389f6f89d446cbd3, type: 3}
-    m_FontSize: 60
+    m_FontSize: 120
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 60
+    m_MinSize: 1
+    m_MaxSize: 120
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: TIME 00:00
+  m_Text: 00:00
 --- !u!222 &1192076803
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4329,7 +4329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1377187071243355723, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: shooter
@@ -4337,7 +4337,7 @@ PrefabInstance:
       objectReference: {fileID: 964013477203117084}
     - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: movePower
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: moveManually
@@ -4430,7 +4430,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 964013477203117079}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964013477203117080}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eee08c03aa27fad40918c5cf63841293, type: 3}
   m_Name: 
