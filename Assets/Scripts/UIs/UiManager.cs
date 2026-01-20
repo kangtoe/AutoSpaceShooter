@@ -31,6 +31,8 @@ public class UiManager : MonoSingleton<UiManager>
 
     [Header("debug ui")]
     [SerializeField] Text waveDebugText;
+    [SerializeField] Text budgetDebugText;
+    [SerializeField] Text phaseDebugText;
 
     [Header("Panels")]
     [SerializeField] RectTransform upgradePanel;
@@ -169,6 +171,24 @@ public class UiManager : MonoSingleton<UiManager>
         if (waveDebugText != null)
         {
             waveDebugText.text = $"Wave: {waveNumber} | Spawning: {(isSpawning ? "Yes" : "No")} | Enemies: {remainingEnemies}";
+        }
+    }
+
+    public void SetBudgetDebugText(float currentBudget, float rate)
+    {
+        if (budgetDebugText != null)
+        {
+            budgetDebugText.text = $"Budget: {currentBudget:F0} ({rate:F1}/s)";
+        }
+    }
+
+    public void SetPhaseDebugText(int phase, float timeRemaining)
+    {
+        if (phaseDebugText != null)
+        {
+            int minutes = Mathf.FloorToInt(timeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(timeRemaining % 60f);
+            phaseDebugText.text = $"Phase {phase} | {minutes}:{seconds:00}";
         }
     }
 
