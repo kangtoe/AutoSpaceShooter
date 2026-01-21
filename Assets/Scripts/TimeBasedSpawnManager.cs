@@ -87,7 +87,17 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [SerializeField] private float poolRefreshInterval = 5f;
     private float timeSinceLastPoolRefresh = 0f;
     private List<string> currentSpawnPool = new List<string>();
-    
+
+    [Header("=== Presence Score Tracking ===")]
+    [SerializeField, ReadOnly] private float currentPresenceScore = 0f; // 현재 존재 점수
+
+    [Header("Target Presence Score (Linear Ramp)")]
+    [SerializeField, ReadOnly] private float currentTargetPresenceScore = 50f; // 현재 목표 존재 점수 (실시간 계산)
+    [SerializeField] private float minTargetPresenceScore = 50f;  // 초기 목표 존재 점수 (게임 시작)
+    [SerializeField] private float maxTargetPresenceScore = 800f; // 최종 목표 존재 점수 (최고 난이도)
+    [SerializeField] private float targetPresenceScoreRampUpTime = 840f; // 최종값 도달 시간 (초)
+
+    private HashSet<EnemyShip> trackedEnemies = new HashSet<EnemyShip>(); // 추적 중인 적들
 
     [Header("=== Debug ===")]
     [SerializeField] private bool showDebugLogs = true;
@@ -180,10 +190,13 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 2. 예산 누적
         UpdateBudget(deltaTime);
 
-        // 3. 강제 스폰 타이머 업데이트
+        // 3. 목표 존재 점수 업데이트
+        currentTargetPresenceScore = GetTargetPresenceScore();
+
+        // 4. 강제 스폰 타이머 업데이트
         timeSinceLastSpawn += deltaTime;
 
-        // 4. 스폰 풀 갱신 (주기적)
+        // 5. 스폰 풀 갱신 (주기적)
         timeSinceLastPoolRefresh += deltaTime;
         if (timeSinceLastPoolRefresh >= poolRefreshInterval)
         {
@@ -191,10 +204,10 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             timeSinceLastPoolRefresh = 0f;
         }
 
-        // 5. 스폰 체크 (주기적)
+        // 6. 스폰 체크 (주기적)
         UpdateSpawnCheck(deltaTime);
 
-        // 6. UI 업데이트
+        // 7. UI 업데이트
         UpdateUI();
     }
 
@@ -347,6 +360,16 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             prefab.gameObject,
             Edge.Random
         );
+
+        // 존재 점수 추적
+        if (enemy != null)
+        {
+            EnemyShip enemyShip = enemy.GetComponent<EnemyShip>();
+            if (enemyShip != null)
+            {
+                RegisterEnemy(enemyShip);
+            }
+        }
     }
 
     private EnemyShip LoadEnemyPrefab(string prefabName)
@@ -357,6 +380,73 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
                 return range.enemyPrefab;
         }
         return null;
+    }
+
+    #endregion
+
+    #region Presence Score Tracking
+
+    /// <summary>
+    /// 적 등록 및 존재 점수 증가
+    /// </summary>
+    private void RegisterEnemy(EnemyShip enemy)
+    {
+        if (enemy == null || trackedEnemies.Contains(enemy))
+            return;
+
+        trackedEnemies.Add(enemy);
+        currentPresenceScore += enemy.point;
+
+        // 적 파괴 시 존재 점수 감소를 위한 리스너 등록
+        Damageable damageable = enemy.GetComponent<Damageable>();
+        if (damageable != null)
+        {
+            damageable.onDead.AddListener(() => UnregisterEnemy(enemy));
+        }
+
+        if (showDebugLogs)
+            Debug.Log($"[PresenceScore] Enemy registered: {enemy.name} (+{enemy.point}) → Total: {currentPresenceScore:F0}");
+    }
+
+    /// <summary>
+    /// 적 제거 및 존재 점수 감소
+    /// </summary>
+    private void UnregisterEnemy(EnemyShip enemy)
+    {
+        if (enemy == null || !trackedEnemies.Contains(enemy))
+            return;
+
+        trackedEnemies.Remove(enemy);
+        currentPresenceScore -= enemy.point;
+
+        // 음수 방지
+        if (currentPresenceScore < 0)
+            currentPresenceScore = 0;
+
+        if (showDebugLogs)
+            Debug.Log($"[PresenceScore] Enemy destroyed: {enemy.name} (-{enemy.point}) → Total: {currentPresenceScore:F0}");
+    }
+
+    /// <summary>
+    /// 현재 시간의 목표 존재 점수 계산
+    /// </summary>
+    private float GetTargetPresenceScore()
+    {
+        float elapsed = GetElapsedTime();
+        float t = Mathf.Clamp01(elapsed / targetPresenceScoreRampUpTime); // 0~1 진행도
+
+        return Mathf.Lerp(minTargetPresenceScore, maxTargetPresenceScore, t);
+    }
+
+    /// <summary>
+    /// 목표 대비 존재 점수 차이율 계산 (±%)
+    /// </summary>
+    private float GetPresenceScoreDifference()
+    {
+        float target = GetTargetPresenceScore();
+        if (target <= 0) return 0f;
+
+        return ((currentPresenceScore - target) / target) * 100f;
     }
 
     #endregion
