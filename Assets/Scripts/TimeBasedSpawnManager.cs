@@ -59,6 +59,22 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     }
 #endif
 
+    [Header("=== Spawn Check Settings ===")]
+    [SerializeField] private float spawnCheckInterval = 1f;
+    private float timeSinceLastCheck = 0f;    
+
+    [Header("Spawn Pool Settings")]
+    [SerializeField] private float poolRefreshInterval = 1f;
+    private float timeSinceLastPoolRefresh = 0f;
+    private List<string> currentSpawnPool = new List<string>();   
+
+    [Header("Skip System")]
+    [SerializeField, Range(0f, 0.99f)] private float skipProbability = 0.3f; // 건너뛰기 확률
+    [SerializeField] private float maxSpawnSkipTime = 5f; // 강제 스폰까지의 최대 대기 시간 (초)
+    private float timeSinceLastSpawn = 0f;
+
+    private HashSet<EnemyShip> trackedEnemies = new HashSet<EnemyShip>(); // 추적 중인 적들
+
     [Header("=== Timer Settings ===")]
     [SerializeField] private float gameDuration = 840f; // 14분
     private bool isRunning = false;
@@ -67,37 +83,25 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [SerializeField] private float initialBudget = 50f;
     [SerializeField, ReadOnly] private float currentBudget;
 
-    [Header("Budget Accumulation Rate (Linear Ramp)")]
-    [SerializeField, ReadOnly] private float currentBudgetRate = 10f; // 현재 증가율 (실시간 계산)
+    [Header("Budget Accumulation Rate (Linear Ramp)")]    
     [SerializeField] private float minBudgetRate = 10f;  // 초기 예산 증가율 (게임 시작)
     [SerializeField] private float maxBudgetRate = 25f;  // 최종 예산 증가율 (최고 난이도)
-    [SerializeField] private float budgetRateRampUpTime = 840f; // 최종값 도달 시간 (초)
-    
-
-    [Header("=== Spawn Check Settings ===")]
-    [SerializeField] private float spawnCheckInterval = 1f;
-    private float timeSinceLastCheck = 0f;
-
-    [Header("Skip System")]
-    [SerializeField, Range(0f, 0.99f)] private float skipProbability = 0.3f; // 건너뛰기 확률
-    [SerializeField] private float maxSpawnSkipTime = 5f; // 강제 스폰까지의 최대 대기 시간 (초)
-    private float timeSinceLastSpawn = 0f;
-
-    [Header("=== Spawn Pool Settings ===")]
-    [SerializeField] private float poolRefreshInterval = 5f;
-    private float timeSinceLastPoolRefresh = 0f;
-    private List<string> currentSpawnPool = new List<string>();
-
-    [Header("=== Presence Score Tracking ===")]
-    [SerializeField, ReadOnly] private float currentPresenceScore = 0f; // 현재 존재 점수
+    [SerializeField] private float budgetRateMaxUpTime = 840f; // 최종값 도달 시간 (초)
+    [SerializeField, ReadOnly] private float currentBudgetRate = 10f; // 현재 증가율 (실시간 계산)     
 
     [Header("Target Presence Score (Linear Ramp)")]
-    [SerializeField, ReadOnly] private float currentTargetPresenceScore = 50f; // 현재 목표 존재 점수 (실시간 계산)
     [SerializeField] private float minTargetPresenceScore = 50f;  // 초기 목표 존재 점수 (게임 시작)
     [SerializeField] private float maxTargetPresenceScore = 800f; // 최종 목표 존재 점수 (최고 난이도)
-    [SerializeField] private float targetPresenceScoreRampUpTime = 840f; // 최종값 도달 시간 (초)
+    [SerializeField] private float targetPresenceScoreRampUpTime = 840f; // 최종값 도달 시간 (초)    
+    [SerializeField, ReadOnly] private float currentPresenceScore = 0f; // 현재 존재 점수
+    [SerializeField, ReadOnly] private float currentTargetPresenceScore = 50f; // 현재 목표 존재 점수 (실시간 계산)    
+    
+    [Header("Budget Rate Multiplier Range (Dynamic Difficulty Adjustment)")]
+    [SerializeField, Range(0.1f, 1.0f)] private float minBudgetRateMultiplier = 0.7f; // 최소 배율
+    [SerializeField, Range(1.0f, 10.0f)] private float maxBudgetRateMultiplier = 1.3f; // 최대 배율
+    private float budgetRateMultiplier = 1f; // 현재 예산 증가율 배율
 
-    private HashSet<EnemyShip> trackedEnemies = new HashSet<EnemyShip>(); // 추적 중인 적들
+    private float baseBudgetRate = 10f; // 시간 기반 기본 예산 증가율 (조정 전)
 
     [Header("=== Debug ===")]
     [SerializeField] private bool showDebugLogs = true;
@@ -112,6 +116,9 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 예산 초기화
         currentBudget = initialBudget;
         UpdateBudgetAccumulationRate();
+
+        // 동적 난이도 조정 초기값 설정
+        budgetRateMultiplier = 1f;
 
         // 적 시간 범위 데이터 초기화
         if (enemyTimeRanges != null && enemyTimeRanges.Length > 0)
@@ -146,7 +153,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 시스템 시작
         isRunning = true;
         if (showDebugLogs)
-            Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateRampUpTime}s");
+            Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateMaxUpTime}s");
     }
 
     /// <summary>
@@ -204,10 +211,13 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             timeSinceLastPoolRefresh = 0f;
         }
 
-        // 6. 스폰 체크 (주기적)
+        // 6. 동적 난이도 조정 (매 프레임)
+        PerformDifficultyAdjustment();
+
+        // 7. 스폰 체크 (주기적)
         UpdateSpawnCheck(deltaTime);
 
-        // 7. UI 업데이트
+        // 8. UI 업데이트
         UpdateUI();
     }
 
@@ -238,9 +248,13 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     private void UpdateBudgetAccumulationRate()
     {
         float elapsed = GetElapsedTime();
-        float t = Mathf.Clamp01(elapsed / budgetRateRampUpTime); // 0~1 진행도
+        float t = Mathf.Clamp01(elapsed / budgetRateMaxUpTime); // 0~1 진행도
 
-        currentBudgetRate = Mathf.Lerp(minBudgetRate, maxBudgetRate, t);
+        // 시간 기반 기본 예산 증가율 계산
+        baseBudgetRate = Mathf.Lerp(minBudgetRate, maxBudgetRate, t);
+
+        // 동적 난이도 조정 배율 적용
+        currentBudgetRate = baseBudgetRate * budgetRateMultiplier;
     }
 
     private int GetCurrentPhase()
@@ -447,6 +461,36 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         if (target <= 0) return 0f;
 
         return ((currentPresenceScore - target) / target) * 100f;
+    }
+
+    #endregion
+
+    #region Dynamic Difficulty Adjustment
+
+    /// <summary>
+    /// 연속적인 난이도 조정 계산 (매 프레임 실행)
+    /// 공식: 1 - (현재 존재 점수 - 목표 존재 점수) / 목표 존재 점수
+    /// </summary>
+    private void PerformDifficultyAdjustment()
+    {
+        float target = GetTargetPresenceScore();
+        if (target <= 0)
+        {
+            budgetRateMultiplier = 1f;
+            return;
+        }
+
+        // 연속적인 배율 계산
+        float calculatedMultiplier = 1f - (currentPresenceScore - target) / target;
+
+        // 범위 제한 (min ~ max)
+        budgetRateMultiplier = Mathf.Clamp(calculatedMultiplier, minBudgetRateMultiplier, maxBudgetRateMultiplier);
+
+        if (showDebugLogs)
+        {
+            float difference = GetPresenceScoreDifference(); // 디버그용
+            Debug.Log($"[DynamicDifficulty] Current: {currentPresenceScore:F0}, Target: {target:F0}, Diff: {difference:F1}%, Multiplier: {budgetRateMultiplier:F2}x");
+        }
     }
 
     #endregion

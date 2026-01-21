@@ -2010,6 +2010,13 @@ MonoBehaviour:
   skipProbability: 0.25
   maxSpawnSkipTime: 5
   poolRefreshInterval: 5
+  currentPresenceScore: 0
+  currentTargetPresenceScore: 50
+  minTargetPresenceScore: 800
+  maxTargetPresenceScore: 800
+  targetPresenceScoreRampUpTime: 840
+  minBudgetRateMultiplier: 0.1
+  maxBudgetRateMultiplier: 10
   showDebugLogs: 0
 --- !u!4 &882534907
 Transform:

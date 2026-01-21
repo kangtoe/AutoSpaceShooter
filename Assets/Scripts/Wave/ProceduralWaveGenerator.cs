@@ -31,7 +31,7 @@ public class ProceduralWaveGenerator
             if (prefab != null)
             {
                 enemyPrefabRegistry[prefab.name] = prefab;
-                Debug.Log($"[ProceduralWaveGenerator] Registered enemy prefab: {prefab.name}");
+                //Debug.Log($"[ProceduralWaveGenerator] Registered enemy prefab: {prefab.name}");
             }
         }
 
