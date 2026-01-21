@@ -15,6 +15,9 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [Header("=== Enemy Time Ranges ===")]
     [SerializeField] private EnemyTimeRange[] enemyTimeRanges;
 
+    [Header("=== Edge Selection ===")]
+    [SerializeField] private WeightedEdgeSelector edgeSelector = new WeightedEdgeSelector();
+
     [Button("자동으로 적 시간 범위 설정")]
     private void AutoSetupEnemyTimeRanges()
     {
@@ -119,6 +122,9 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
         // 동적 난이도 조정 초기값 설정
         budgetRateMultiplier = 1f;
+
+        // Edge 선택기 초기화
+        edgeSelector.Reset();
 
         // 적 시간 범위 데이터 초기화
         if (enemyTimeRanges != null && enemyTimeRanges.Length > 0)
@@ -355,7 +361,8 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         if (showDebugLogs)
         {
             string forceFlag = forceSpawn ? " [FORCED]" : "";
-            Debug.Log($"[Spawn] {selectedEnemy} spawned{forceFlag} (Cost: {enemyCost}, Remaining Budget: {currentBudget:F0})");
+            Edge lastEdge = edgeSelector.GetDebugInfo().lastEdge;
+            Debug.Log($"[Spawn] {selectedEnemy} spawned{forceFlag} at {lastEdge} (Cost: {enemyCost}, Remaining Budget: {currentBudget:F0})");
         }
     }
 
@@ -369,10 +376,13 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             return;
         }
 
+        // 가중치 기반 Edge 선택
+        Edge selectedEdge = edgeSelector.GetNextEdge();
+
         // ObjectSpawner를 통해 스폰
         GameObject enemy = ObjectSpawner.Instance.SpawnObject(
             prefab.gameObject,
-            Edge.Random
+            selectedEdge
         );
 
         // 존재 점수 추적
