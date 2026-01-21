@@ -198,10 +198,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   upgradePoint: 1
-  maxDurability: 200
+  maxDurability: 9999
   durabilityRegenRate: 0
   durabilityRegenDelay: 5
-  maxShield: 100
+  maxShield: 9999
   shieldRegenRate: 20
   shieldRegenDelay: 2
   multiShot: 1
@@ -210,7 +210,7 @@ MonoBehaviour:
   projectileSpeed: 10
   onImpact: 9999
   impactResist: 9999
-  moveSpeed: 5
+  moveSpeed: 0
   rotateSpeed: 180
   mass: 9999
 --- !u!4 &28509442
@@ -473,6 +473,8 @@ MonoBehaviour:
   overTimeText: {fileID: 952361357}
   overScoreText: {fileID: 381954222}
   waveDebugText: {fileID: 1198948076}
+  budgetDebugText: {fileID: 0}
+  phaseDebugText: {fileID: 0}
   upgradePanel: {fileID: 1531201550}
   settingsPanel: {fileID: 334381452}
   titlePanel: {fileID: 1616321653}
@@ -1784,7 +1786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &786064451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1931,6 +1933,92 @@ MonoBehaviour:
   ui: {fileID: 834872742}
   offInterval: 0.5
   onInterval: 1
+--- !u!1 &882534905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882534907}
+  - component: {fileID: 882534906}
+  m_Layer: 0
+  m_Name: 'TimeBasedSpawnManager '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &882534906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882534905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bedeed1cb655dd24fb79b0094d86a20c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeBasedSpawnManager
+  enemyTimeRanges:
+  - enemyPrefab: {fileID: 6078006324994066098, guid: 0eb312aac38994c459be0e2df8a36f70, type: 3}
+    timeMin: 0
+    timeMax: 180
+  - enemyPrefab: {fileID: 2159223484281061927, guid: 8f726611f885d3b4aabdb1814acd76dd, type: 3}
+    timeMin: 30
+    timeMax: 210
+  - enemyPrefab: {fileID: 6078006324994066098, guid: a95329395d2659c43816e8bd1cd0667a, type: 3}
+    timeMin: 60
+    timeMax: 240
+  - enemyPrefab: {fileID: 6078006324994066098, guid: c96afb732f9c1894c943bc5ec8756bb5, type: 3}
+    timeMin: 120
+    timeMax: 420
+  - enemyPrefab: {fileID: 2159223484281061927, guid: 447fb77f76e58be448409972773c1639, type: 3}
+    timeMin: 150
+    timeMax: 450
+  - enemyPrefab: {fileID: 4232547872248400293, guid: 65b30501e67ebe94d9b05314921d0652, type: 3}
+    timeMin: 180
+    timeMax: 480
+  - enemyPrefab: {fileID: 2159223484281061927, guid: a72143d11175ca947809a1497d408436, type: 3}
+    timeMin: 210
+    timeMax: 540
+  - enemyPrefab: {fileID: 2159223484281061927, guid: c8e508e7f002d9a4c82c6de3d98f05ae, type: 3}
+    timeMin: 240
+    timeMax: 570
+  - enemyPrefab: {fileID: 2159223484281061927, guid: d4ffbc02d81eb304fb89c31bb6493e63, type: 3}
+    timeMin: 270
+    timeMax: 600
+  - enemyPrefab: {fileID: 9150893838177995030, guid: 44f56d21a6327184aabfbf82baa55260, type: 3}
+    timeMin: 300
+    timeMax: 630
+  - enemyPrefab: {fileID: 2159223484281061927, guid: ab27139085cdd7e45856d576f49b00af, type: 3}
+    timeMin: 360
+    timeMax: 780
+  - enemyPrefab: {fileID: 2159223484281061927, guid: 0c480471cb4caeb47908089266ee7b9b, type: 3}
+    timeMin: 420
+    timeMax: 840
+  gameDuration: 840
+  initialBudget: 50
+  spawnCheckInterval: 1
+  poolRefreshInterval: 5
+  showDebugLogs: 1
+--- !u!4 &882534907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882534905}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &890903709
 GameObject:
   m_ObjectHideFlags: 0
@@ -4331,10 +4419,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1377187071243355723, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
-      propertyPath: shooter
-      value: 
-      objectReference: {fileID: 964013477203117084}
     - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: movePower
       value: 10
@@ -4424,17 +4508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6810eed9d9de16479655bb089972e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoundaryDeath
---- !u!114 &964013477203117084 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
-  m_PrefabInstance: {fileID: 964013477203117079}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964013477203117080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee08c03aa27fad40918c5cf63841293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7766856275285713332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4547,5 +4620,6 @@ SceneRoots:
   - {fileID: 1639333247}
   - {fileID: 1989466898}
   - {fileID: 1917967251}
-  - {fileID: 786064452}
   - {fileID: 28509442}
+  - {fileID: 786064452}
+  - {fileID: 882534907}

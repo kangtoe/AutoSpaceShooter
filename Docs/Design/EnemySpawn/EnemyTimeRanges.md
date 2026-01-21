@@ -6,10 +6,10 @@
 
 ## 핵심 개념
 
-- **카운트다운 방식**: 게임은 14분(840초)에서 시작하여 0초까지 감소
-- **spawnTimeMin**: 스폰 가능한 최소 시간 (작은 값, 게임 후반)
-- **spawnTimeMax**: 스폰 가능한 최대 시간 (큰 값, 게임 초반)
-- **시간 범위**: spawnTimeMin ≤ 현재 남은 시간 ≤ spawnTimeMax일 때 스폰 가능
+- **Elapsed time 방식**: 게임은 0초에서 시작하여 840초(14분)까지 증가
+- **spawnTimeMin**: 스폰 가능한 최소 시간 (작은 값, 게임 초반)
+- **spawnTimeMax**: 스폰 가능한 최대 시간 (큰 값, 게임 후반)
+- **시간 범위**: spawnTimeMin ≤ 현재 경과 시간 ≤ spawnTimeMax일 때 스폰 가능
 
 ---
 
@@ -17,19 +17,18 @@
 
 | # | 적 이름 | 등급 | 비용 | 시간 범위 | 초 단위 (min ~ max) | 스폰 기간 |
 |---|---------|------|------|----------|---------------------|----------|
-| 1 | Enemy_light_child | Light | 20 | 14:00 ~ 11:00 | 660 ~ 840 | 3분 |
-| 2 | Enemy_light_kido | Light | 20 | 13:30 ~ 10:30 | 630 ~ 810 | 3분 |
-| 3 | Enemy_light_thunder | Light | 25 | 13:00 ~ 10:00 | 600 ~ 780 | 3분 |
-| 4 | Enemy_light_shield | Light+ | 40 | 12:30 ~ 9:00 | 540 ~ 750 | 3.5분 |
-| 5 | Enemy_mid_Ghost | Mid | 80 | 12:00 ~ 7:00 | 420 ~ 720 | 5분 |
-| 6 | Enemy_mid_Hornet | Mid | 90 | 11:30 ~ 6:30 | 390 ~ 690 | 5분 |
-| 7 | Enemy_mid_master | Mid | 100 | 11:00 ~ 6:00 | 360 ~ 660 | 5분 |
-| 8 | Enemy_mid_Knight | Mid+ | 120 | 10:30 ~ 5:00 | 300 ~ 630 | 5.5분 |
-| 9 | Enemy_mid_sniper | Mid+ | 130 | 10:00 ~ 4:30 | 270 ~ 600 | 5.5분 |
-| 10 | Enemy_mid_tank | Mid+ | 140 | 9:30 ~ 4:00 | 240 ~ 570 | 5.5분 |
-| 11 | Enemy_mid_Spiral | Mid+ | 150 | 9:00 ~ 3:30 | 210 ~ 540 | 5.5분 |
-| 12 | Enemy_heavy_mother | Heavy | 350 | 8:00 ~ 1:00 | 60 ~ 480 | 7분 |
-| 13 | Enemy_heavy_Gunship | Heavy | 400 | 7:00 ~ 0:00 | 0 ~ 420 | 7분 |
+| 1 | Enemy_light_child | Light | 20 | 0:00 ~ 3:00 | 0 ~ 180 | 3분 |
+| 2 | Enemy_light_kido | Light | 20 | 0:30 ~ 3:30 | 30 ~ 210 | 3분 |
+| 3 | Enemy_light_thunder | Light | 25 | 1:00 ~ 4:00 | 60 ~ 240 | 3분 |
+| 4 | Enemy_mid_Ghost | Mid | 80 | 2:00 ~ 7:00 | 120 ~ 420 | 5분 |
+| 5 | Enemy_mid_Hornet | Mid | 90 | 2:30 ~ 7:30 | 150 ~ 450 | 5분 |
+| 6 | Enemy_mid_master | Mid | 100 | 3:00 ~ 8:00 | 180 ~ 480 | 5분 |
+| 7 | Enemy_mid_Knight | Mid+ | 120 | 3:30 ~ 9:00 | 210 ~ 540 | 5.5분 |
+| 8 | Enemy_mid_sniper | Mid+ | 130 | 4:00 ~ 9:30 | 240 ~ 570 | 5.5분 |
+| 9 | Enemy_mid_tank | Mid+ | 140 | 4:30 ~ 10:00 | 270 ~ 600 | 5.5분 |
+| 10 | Enemy_mid_Spiral | Mid+ | 150 | 5:00 ~ 10:30 | 300 ~ 630 | 5.5분 |
+| 11 | Enemy_heavy_mother | Heavy | 350 | 6:00 ~ 13:00 | 360 ~ 780 | 7분 |
+| 12 | Enemy_heavy_Gunship | Heavy | 400 | 7:00 ~ 14:00 | 420 ~ 840 | 7분 |
 
 ---
 
@@ -45,15 +44,15 @@
 - 예: Light 적이 사라지기 전에 Mid 적이 등장 시작
 
 ### 3. Phase별 분포
-**Phase 1 (14:00 ~ 10:00, 840~600초)**:
-- Light 적 4종 전체 활성
+**Phase 1 (0:00 ~ 4:00, 0~240초)**:
+- Light 적 3종 전체 활성
 - 게임 초반, 낮은 난이도
 
-**Phase 2 (10:00 ~ 6:00, 600~360초)**:
+**Phase 2 (4:00 ~ 8:00, 240~480초)**:
 - Light 적 일부 + Mid 적 전체 활성
 - 중반, 중간 난이도
 
-**Phase 3 (6:00 ~ 0:00, 360~0초)**:
+**Phase 3 (8:00 ~ 14:00, 480~840초)**:
 - Mid 적 일부 + Heavy 적 전체 활성
 - 후반, 높은 난이도
 
@@ -63,64 +62,61 @@
 
 ---
 
-## 시간대별 스폰 가능 적
+## 시간대별 스폰 가능 적 (Elapsed Time)
 
-### 14:00 (840초)
+### 0:00 (0초) - 게임 시작
 - Enemy_light_child
 
-### 13:30 (810초)
+### 0:30 (30초)
 - Enemy_light_child, Enemy_light_kido
 
-### 13:00 (780초)
+### 1:00 (60초)
 - Enemy_light_child, Enemy_light_kido, Enemy_light_thunder
 
-### 12:30 (750초)
-- Enemy_light_child, Enemy_light_kido, Enemy_light_thunder, Enemy_light_shield
+### 2:00 (120초)
+- Light 3종 + Enemy_mid_Ghost
 
-### 12:00 (720초)
-- Enemy_light_child, Enemy_light_kido, Enemy_light_thunder, Enemy_light_shield, Enemy_mid_Ghost
+### 2:30 (150초)
+- Light 3종 + Mid 2종 (Ghost, Hornet)
 
-### 11:30 (690초)
-- 위 5종 + Enemy_mid_Hornet
+### 3:00 (180초)
+- Light 3종 + Mid 3종 (Ghost, Hornet, master)
 
-### 11:00 (660초)
-- 위 6종 + Enemy_mid_master (Light 4종 + Mid 3종)
+### 3:30 (210초)
+- Light 2종 + Mid 4종 + Enemy_mid_Knight
 
-### 10:30 (630초)
-- Enemy_light_kido, Enemy_light_thunder, Enemy_light_shield + Mid 3종 + Enemy_mid_Knight
+### 4:00 (240초)
+- Light 1종 + Mid 5종 + Enemy_mid_sniper
 
-### 10:00 (600초)
-- Enemy_light_thunder, Enemy_light_shield + Mid 4종 + Enemy_mid_sniper
+### 4:30 (270초)
+- Mid 6종 + Enemy_mid_tank
 
-### 9:30 (570초)
-- Enemy_light_shield + Mid 5종 + Enemy_mid_tank
+### 5:00 (300초)
+- Mid 6종 + Enemy_mid_Spiral
 
-### 9:00 (540초)
-- Mid 6종 + Enemy_mid_Spiral (Mid 중심)
-
-### 8:00 (480초)
+### 6:00 (360초)
 - Mid 6종 + Enemy_heavy_mother
 
 ### 7:00 (420초)
-- Mid 5종 + Heavy 2종
+- Mid 5종 + Heavy 2종 (mother, Gunship)
 
-### 6:00 (360초)
+### 8:00 (480초)
 - Mid 4종 + Heavy 2종
 
-### 5:00 (300초)
-- Mid+ 3종 + Heavy 2종
+### 9:00 (540초)
+- Mid 3종 + Heavy 2종
 
-### 4:00 (240초)
+### 10:00 (600초)
 - Mid+ 2종 + Heavy 2종
 
-### 3:30 (210초)
+### 10:30 (630초)
 - Mid+ 1종 + Heavy 2종
 
-### 1:00 (60초)
+### 13:00 (780초)
 - Enemy_heavy_Gunship (최종 보스급만 남음)
 
-### 0:00 (0초)
-- Enemy_heavy_Gunship (게임 종료)
+### 14:00 (840초)
+- 게임 종료
 
 ---
 
@@ -129,9 +125,15 @@
 ### Inspector 설정 방법
 **위치**: TimeBasedSpawnManager GameObject → Inspector
 
+#### 방법 1: 자동 설정 (권장)
+1. TimeBasedSpawnManager 컴포넌트 찾기
+2. "Enemy Time Ranges" 섹션 상단의 **"자동으로 적 시간 범위 설정"** 버튼 클릭
+3. 자동으로 12개 적 프리팹과 시간 범위 설정 완료
+
+#### 방법 2: 수동 설정
 1. TimeBasedSpawnManager 컴포넌트 찾기
 2. "Enemy Time Ranges" 섹션
-3. Size: 13 (적 개수)
+3. Size: 12 (적 개수)
 4. 각 Element 설정:
    - Enemy Prefab: 프리팹 드래그 앤 드롭
    - Time Min: 최소 시간 (초)
@@ -141,13 +143,13 @@
 ```
 Element 0:
   - Enemy Prefab: Enemy_light_child
-  - Time Min: 660
-  - Time Max: 840
+  - Time Min: 0
+  - Time Max: 180
 
 Element 1:
   - Enemy Prefab: Enemy_light_kido
-  - Time Min: 630
-  - Time Max: 810
+  - Time Min: 30
+  - Time Max: 210
 ...
 ```
 
@@ -167,14 +169,15 @@ public class EnemyTimeRange
 // TimeBasedSpawnManager에서 자동 초기화
 EnemyTimeRangeData.Initialize(enemyTimeRanges);
 
-// 사용 시:
-List<string> spawnableEnemies = EnemyTimeRangeData.GetSpawnableEnemiesAtTime(720f);
-bool canSpawn = EnemyTimeRangeData.CanSpawnAtTime("Enemy_light_child", 720f);
+// 사용 시 (elapsed time 전달):
+List<string> spawnableEnemies = EnemyTimeRangeData.GetSpawnableEnemiesAtTime(120f); // 2분 경과
+bool canSpawn = EnemyTimeRangeData.CanSpawnAtTime("Enemy_light_child", 120f);
 ```
 
 ### 스폰 가능 여부 확인
 ```csharp
-bool canSpawn = timeRemaining >= min && timeRemaining <= max;
+// elapsed time 기준
+bool canSpawn = elapsedTime >= min && elapsedTime <= max;
 ```
 
 ---
@@ -187,10 +190,10 @@ bool canSpawn = timeRemaining >= min && timeRemaining <= max;
 3. **겹침 정도**: 시간대 겹침을 늘리거나 줄여서 난이도 곡선 조정
 
 ### 테스트 체크리스트
-- [ ] 게임 초반 (14:00~12:00): 적절한 난이도인지
-- [ ] 게임 중반 (10:00~6:00): 너무 쉽거나 어렵지 않은지
-- [ ] 게임 후반 (6:00~0:00): 생존 가능한 난이도인지
-- [ ] 전환 구간 (11:00, 9:00, 7:00): 자연스럽게 난이도 증가하는지
+- [ ] 게임 초반 (0:00~2:00): 적절한 난이도인지
+- [ ] 게임 중반 (4:00~8:00): 너무 쉽거나 어렵지 않은지
+- [ ] 게임 후반 (8:00~14:00): 생존 가능한 난이도인지
+- [ ] 전환 구간 (3:00, 5:00, 7:00): 자연스럽게 난이도 증가하는지
 
 ---
 

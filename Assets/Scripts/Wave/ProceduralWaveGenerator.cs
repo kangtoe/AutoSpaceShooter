@@ -7,14 +7,14 @@ using UnityEngine;
 /// </summary>
 public class ProceduralWaveGenerator
 {
-    // 적 프리팹 레지스트리 (EnemySpawner에서 초기화)
+    // 적 프리팹 레지스트리 (TimeBasedSpawnManager에서 초기화)
     private static Dictionary<string, EnemyShip> enemyPrefabRegistry = new Dictionary<string, EnemyShip>();
 
     // 성능 제한
     private const int MAX_ENEMIES_PER_WAVE = 40;
 
     /// <summary>
-    /// 적 프리팹 레지스트리 초기화 (게임 시작 시 EnemySpawner에서 호출)
+    /// 적 프리팹 레지스트리 초기화 (게임 시작 시 TimeBasedSpawnManager에서 호출)
     /// </summary>
     public static void Initialize(EnemyShip[] enemyPrefabs)
     {

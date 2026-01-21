@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 /// <summary>
 /// 시간 기반 스폰 시스템의 핵심 관리자
-/// - 14분 카운트다운 타이머 관리
+/// - 14분 elapsed 타이머 사용 (TimeRecordManager)
 /// - 예산 누적 시스템
 /// - 주기적 스폰 체크 실행
 /// - 시간 범위 기반 스폰 풀 관리
@@ -13,6 +14,50 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 {
     [Header("=== Enemy Time Ranges ===")]
     [SerializeField] private EnemyTimeRange[] enemyTimeRanges;
+
+    [Button("자동으로 적 시간 범위 설정")]
+    private void AutoSetupEnemyTimeRanges()
+    {
+#if UNITY_EDITOR
+        List<EnemyTimeRange> ranges = new List<EnemyTimeRange>();
+
+        // 12개 적의 시간 범위 정의 (elapsed time 기준: 0초부터 시작)
+        AddEnemyRange(ranges, "Enemy_light_child", 0, 180);      // 0:00 ~ 3:00
+        AddEnemyRange(ranges, "Enemy_light_kido", 30, 210);      // 0:30 ~ 3:30
+        AddEnemyRange(ranges, "Enemy_light_thunder", 60, 240);   // 1:00 ~ 4:00
+        AddEnemyRange(ranges, "Enemy_mid_Ghost", 120, 420);      // 2:00 ~ 7:00
+        AddEnemyRange(ranges, "Enemy_mid_Hornet", 150, 450);     // 2:30 ~ 7:30
+        AddEnemyRange(ranges, "Enemy_mid_master", 180, 480);     // 3:00 ~ 8:00
+        AddEnemyRange(ranges, "Enemy_mid_Knight", 210, 540);     // 3:30 ~ 9:00
+        AddEnemyRange(ranges, "Enemy_mid_sniper", 240, 570);     // 4:00 ~ 9:30
+        AddEnemyRange(ranges, "Enemy_mid_tank", 270, 600);       // 4:30 ~ 10:00
+        AddEnemyRange(ranges, "Enemy_mid_Spiral", 300, 630);     // 5:00 ~ 10:30
+        AddEnemyRange(ranges, "Enemy_heavy_mother", 360, 780);   // 6:00 ~ 13:00
+        AddEnemyRange(ranges, "Enemy_heavy_Gunship", 420, 840);  // 7:00 ~ 14:00
+
+        enemyTimeRanges = ranges.ToArray();
+        UnityEditor.EditorUtility.SetDirty(this);
+        Debug.Log($"[TimeBasedSpawnManager] 자동 설정 완료: {enemyTimeRanges.Length}개 적 (elapsed time 기준)");
+#endif
+    }
+
+#if UNITY_EDITOR
+    private void AddEnemyRange(List<EnemyTimeRange> ranges, string enemyName, float timeMin, float timeMax)
+    {
+        string path = $"Assets/Prefabs/Enemys/{enemyName}.prefab";
+        EnemyShip prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<EnemyShip>(path);
+
+        if (prefab != null)
+        {
+            ranges.Add(new EnemyTimeRange(prefab, timeMin, timeMax));
+            Debug.Log($"✓ {enemyName}: {timeMin}~{timeMax}초");
+        }
+        else
+        {
+            Debug.LogWarning($"✗ {enemyName} 프리팹을 찾을 수 없습니다: {path}");
+        }
+    }
+#endif
 
     [Header("=== Timer Settings ===")]
     [SerializeField] private float gameDuration = 840f; // 14분
@@ -99,13 +144,12 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     }
 
     /// <summary>
-    /// TimeRecordManager의 count-up 시간을 기반으로 남은 시간 계산
+    /// 현재 경과 시간 가져오기 (TimeRecordManager의 count-up 시간)
     /// </summary>
-    private float GetGameTimeRemaining()
+    private float GetElapsedTime()
     {
-        if (TimeRecordManager.Instance == null) return gameDuration;
-        float elapsed = TimeRecordManager.Instance.TimeRecord;
-        return Mathf.Max(0f, gameDuration - elapsed);
+        if (TimeRecordManager.Instance == null) return 0f;
+        return TimeRecordManager.Instance.TimeRecord;
     }
 
     private void Update()
@@ -115,7 +159,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         float deltaTime = Time.deltaTime;
 
         // 1. 게임 종료 확인
-        if (GetGameTimeRemaining() <= 0f)
+        if (GetElapsedTime() >= gameDuration)
         {
             OnGameTimeEnd();
             return;
@@ -185,10 +229,10 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
     private int GetCurrentPhase()
     {
-        float timeRemaining = GetGameTimeRemaining();
-        if (timeRemaining > 600f) return 1; // Phase 1: 840~600초
-        if (timeRemaining > 360f) return 2; // Phase 2: 600~360초
-        return 3; // Phase 3: 360~0초
+        float elapsed = GetElapsedTime();
+        if (elapsed < 240f) return 1; // Phase 1: 0~240초 (0:00~4:00)
+        if (elapsed < 480f) return 2; // Phase 2: 240~480초 (4:00~8:00)
+        return 3; // Phase 3: 480~840초 (8:00~14:00)
     }
 
     #endregion
@@ -197,14 +241,14 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
     private void RefreshSpawnPool()
     {
-        float timeRemaining = GetGameTimeRemaining();
-        List<string> newPool = EnemyTimeRangeData.GetSpawnableEnemiesAtTime(timeRemaining);
+        float elapsed = GetElapsedTime();
+        List<string> newPool = EnemyTimeRangeData.GetSpawnableEnemiesAtTime(elapsed);
 
         if (newPool.Count != currentSpawnPool.Count)
         {
             currentSpawnPool = newPool;
             if (showDebugLogs)
-                Debug.Log($"[SpawnPool] Refreshed at {FormatTime(timeRemaining)} - {currentSpawnPool.Count} enemies available");
+                Debug.Log($"[SpawnPool] Refreshed at {FormatTime(elapsed)} - {currentSpawnPool.Count} enemies available");
         }
         else
         {
@@ -232,7 +276,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         if (currentSpawnPool.Count == 0)
         {
             if (showDebugLogs)
-                Debug.LogWarning($"[Spawn] No enemies available in spawn pool at {FormatTime(GetGameTimeRemaining())}");
+                Debug.LogWarning($"[Spawn] No enemies available in spawn pool at {FormatTime(GetElapsedTime())}");
             return;
         }
 
@@ -306,7 +350,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             // 시간 표시는 TimeRecordManager가 담당
             // 예산 및 Phase 디버그 텍스트만 업데이트
             UiManager.Instance.SetBudgetDebugText(currentBudget, budgetAccumulationRate);
-            UiManager.Instance.SetPhaseDebugText(GetCurrentPhase(), GetGameTimeRemaining());
+            UiManager.Instance.SetPhaseDebugText(GetCurrentPhase(), GetElapsedTime());
         }
     }
 
@@ -336,9 +380,9 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     /// <summary>
     /// 현재 상태 정보 조회 (디버그용)
     /// </summary>
-    public (float timeRemaining, float budget, int phase, int poolSize) GetStatus()
+    public (float elapsedTime, float budget, int phase, int poolSize) GetStatus()
     {
-        return (GetGameTimeRemaining(), currentBudget, GetCurrentPhase(), currentSpawnPool.Count);
+        return (GetElapsedTime(), currentBudget, GetCurrentPhase(), currentSpawnPool.Count);
     }
 
     #endregion
