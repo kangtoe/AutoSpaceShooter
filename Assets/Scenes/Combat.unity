@@ -2001,6 +2001,11 @@ MonoBehaviour:
     timeMax: 840
   gameDuration: 840
   initialBudget: 50
+  currentBudget: 0
+  currentBudgetRate: 10
+  minBudgetRate: 10
+  maxBudgetRate: 25
+  budgetRateRampUpTime: 840
   spawnCheckInterval: 1
   poolRefreshInterval: 5
   showDebugLogs: 1

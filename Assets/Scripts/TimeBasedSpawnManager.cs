@@ -65,8 +65,14 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
     [Header("=== Budget Settings ===")]
     [SerializeField] private float initialBudget = 50f;
-    private float currentBudget;
-    private float budgetAccumulationRate = 10f; // 초당 증가량
+    [SerializeField, ReadOnly] private float currentBudget;
+
+    [Header("Budget Accumulation Rate (Linear Ramp)")]
+    [SerializeField, ReadOnly] private float currentBudgetRate = 10f; // 현재 증가율 (실시간 계산)
+    [SerializeField] private float minBudgetRate = 10f;  // 초기 예산 증가율 (게임 시작)
+    [SerializeField] private float maxBudgetRate = 25f;  // 최종 예산 증가율 (최고 난이도)
+    [SerializeField] private float budgetRateRampUpTime = 840f; // 최종값 도달 시간 (초)
+    
 
     [Header("=== Spawn Check Settings ===")]
     [SerializeField] private float spawnCheckInterval = 1f;
@@ -124,7 +130,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 시스템 시작
         isRunning = true;
         if (showDebugLogs)
-            Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}");
+            Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateRampUpTime}s");
     }
 
     /// <summary>
@@ -200,31 +206,19 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
     private void UpdateBudget(float deltaTime)
     {
-        // Phase별 예산 증가율 조정
+        // 시간 비례 예산 증가율 조정
         UpdateBudgetAccumulationRate();
 
         // 예산 누적
-        currentBudget += budgetAccumulationRate * deltaTime;
+        currentBudget += currentBudgetRate * deltaTime;
     }
 
     private void UpdateBudgetAccumulationRate()
     {
-        int phase = GetCurrentPhase();
-        float newRate = 0f;
+        float elapsed = GetElapsedTime();
+        float t = Mathf.Clamp01(elapsed / budgetRateRampUpTime); // 0~1 진행도
 
-        switch (phase)
-        {
-            case 1: newRate = 10f; break; // Phase 1: 14:00~10:00
-            case 2: newRate = 17f; break; // Phase 2: 10:00~6:00
-            case 3: newRate = 25f; break; // Phase 3: 6:00~0:00
-        }
-
-        if (budgetAccumulationRate != newRate)
-        {
-            budgetAccumulationRate = newRate;
-            if (showDebugLogs)
-                Debug.Log($"[TimeBasedSpawn] Phase {phase} started - Budget rate: {budgetAccumulationRate}/s");
-        }
+        currentBudgetRate = Mathf.Lerp(minBudgetRate, maxBudgetRate, t);
     }
 
     private int GetCurrentPhase()
@@ -349,7 +343,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         {
             // 시간 표시는 TimeRecordManager가 담당
             // 예산 및 Phase 디버그 텍스트만 업데이트
-            UiManager.Instance.SetBudgetDebugText(currentBudget, budgetAccumulationRate);
+            UiManager.Instance.SetBudgetDebugText(currentBudget, currentBudgetRate);
             UiManager.Instance.SetPhaseDebugText(GetCurrentPhase(), GetElapsedTime());
         }
     }
