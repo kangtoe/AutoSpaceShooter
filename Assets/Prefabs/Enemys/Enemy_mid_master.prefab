@@ -345,9 +345,29 @@ MonoBehaviour:
   onDamaged:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 100
+  onDurabilityChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldDepleted:
+    m_PersistentCalls:
+      m_Calls: []
+  maxDurability: 100
+  currDurability: 0
+  durabilityRegenRate: 0
+  durabilityRegenDelay: 5
+  maxShield: 100
+  currShield: 0
+  shieldRegenRate: 20
+  shieldRegenDelay: 2
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
+  shieldHitSound: {fileID: 0}
 --- !u!114 &3482678465680484411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,9 +547,29 @@ MonoBehaviour:
   onDamaged:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 100
+  onDurabilityChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onShieldDepleted:
+    m_PersistentCalls:
+      m_Calls: []
+  maxDurability: 100
+  currDurability: 0
+  durabilityRegenRate: 0
+  durabilityRegenDelay: 5
+  maxShield: 100
+  currShield: 0
+  shieldRegenRate: 20
+  shieldRegenDelay: 2
   deathSound: {fileID: 0}
   hitSound: {fileID: 0}
+  shieldHitSound: {fileID: 0}
 --- !u!114 &522048079010527267
 MonoBehaviour:
   m_ObjectHideFlags: 0

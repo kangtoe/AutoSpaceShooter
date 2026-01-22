@@ -1770,74 +1770,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 1
---- !u!1 &786064450
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 786064452}
-  - component: {fileID: 786064451}
-  m_Layer: 0
-  m_Name: EnemySpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &786064451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 786064450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a777a304474c7946920a639c6c826fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startWaveNumber: 1
-  maxWaveNumber: 30
-  waveTransitionDelay: 2
-  waveStartDelay: 1.5
-  enemyPrefabs:
-  - {fileID: 2159223484281061927, guid: 0c480471cb4caeb47908089266ee7b9b, type: 3}
-  - {fileID: 2159223484281061927, guid: ab27139085cdd7e45856d576f49b00af, type: 3}
-  - {fileID: 6078006324994066098, guid: 0eb312aac38994c459be0e2df8a36f70, type: 3}
-  - {fileID: 2159223484281061927, guid: 8f726611f885d3b4aabdb1814acd76dd, type: 3}
-  - {fileID: 6078006324994066098, guid: dc55ddee9f640f947be0b11beec51e17, type: 3}
-  - {fileID: 6078006324994066098, guid: a95329395d2659c43816e8bd1cd0667a, type: 3}
-  - {fileID: 6078006324994066098, guid: c96afb732f9c1894c943bc5ec8756bb5, type: 3}
-  - {fileID: 2159223484281061927, guid: 447fb77f76e58be448409972773c1639, type: 3}
-  - {fileID: 2159223484281061927, guid: a72143d11175ca947809a1497d408436, type: 3}
-  - {fileID: 4232547872248400293, guid: 65b30501e67ebe94d9b05314921d0652, type: 3}
-  - {fileID: 2159223484281061927, guid: c8e508e7f002d9a4c82c6de3d98f05ae, type: 3}
-  - {fileID: 9150893838177995030, guid: 44f56d21a6327184aabfbf82baa55260, type: 3}
-  - {fileID: 2159223484281061927, guid: d4ffbc02d81eb304fb89c31bb6493e63, type: 3}
-  boss10Prefab: {fileID: 6078006324994066098, guid: 83b513a659d9bdb4cb891d2a3a34fdab, type: 3}
-  boss20Prefab: {fileID: 6078006324994066098, guid: 83b513a659d9bdb4cb891d2a3a34fdab, type: 3}
-  boss30Prefab: {fileID: 6078006324994066098, guid: 83b513a659d9bdb4cb891d2a3a34fdab, type: 3}
-  currentWaveNumber: 0
-  isWaveActive: 0
-  currentWaveEnemyCount: 0
---- !u!4 &786064452
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 786064450}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834872740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,24 +1931,29 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 2159223484281061927, guid: 0c480471cb4caeb47908089266ee7b9b, type: 3}
     timeMin: 420
     timeMax: 840
-  gameDuration: 840
-  initialBudget: 50
-  currentBudget: 0
-  currentBudgetRate: 10
-  minBudgetRate: 10
-  maxBudgetRate: 25
-  budgetRateRampUpTime: 840
-  spawnCheckInterval: 1
-  skipProbability: 0.25
-  maxSpawnSkipTime: 5
+  edgeSelector:
+    baseWeight: 1
+    oppositeWeight: 3
+  spawnCheckInterval: 0.2
   poolRefreshInterval: 5
+  currentSpawnPool: []
+  skipProbability: 0.5
+  maxSpawnSkipTime: 5
+  gameDuration: 840
+  initialBudget: 0
+  currentBudget: 0
+  minBudgetRate: 50
+  maxBudgetRate: 50
+  budgetRateMaxUpTime: 840
+  currentBudgetRate: 10
+  minTargetPresenceScore: 0
+  maxTargetPresenceScore: 1000
+  targetPresenceScoreRampUpTime: 840
   currentPresenceScore: 0
   currentTargetPresenceScore: 50
-  minTargetPresenceScore: 800
-  maxTargetPresenceScore: 800
-  targetPresenceScoreRampUpTime: 840
   minBudgetRateMultiplier: 0.1
   maxBudgetRateMultiplier: 10
+  budgetRateMultiplier: 1
   showDebugLogs: 0
 --- !u!4 &882534907
 Transform:
@@ -4635,5 +4572,4 @@ SceneRoots:
   - {fileID: 1989466898}
   - {fileID: 1917967251}
   - {fileID: 28509442}
-  - {fileID: 786064452}
   - {fileID: 882534907}

@@ -132,15 +132,6 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             EnemyTimeRangeData.Initialize(enemyTimeRanges);
             if (showDebugLogs)
                 Debug.Log($"[TimeBasedSpawn] Initialized {enemyTimeRanges.Length} enemy time ranges");
-
-            // 적 프리팹 레지스트리 초기화 (enemyTimeRanges에서 추출)
-            EnemyShip[] enemyPrefabs = ExtractEnemyPrefabs(enemyTimeRanges);
-            if (enemyPrefabs.Length > 0)
-            {
-                ProceduralWaveGenerator.Initialize(enemyPrefabs);
-                if (showDebugLogs)
-                    Debug.Log($"[TimeBasedSpawn] Initialized with {enemyPrefabs.Length} enemy prefabs");
-            }
         }
         else
         {
@@ -160,22 +151,6 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         isRunning = true;
         if (showDebugLogs)
             Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateMaxUpTime}s");
-    }
-
-    /// <summary>
-    /// EnemyTimeRange 배열에서 EnemyShip 프리팹 배열 추출
-    /// </summary>
-    private EnemyShip[] ExtractEnemyPrefabs(EnemyTimeRange[] ranges)
-    {
-        List<EnemyShip> prefabs = new List<EnemyShip>();
-        foreach (var range in ranges)
-        {
-            if (range.enemyPrefab != null)
-            {
-                prefabs.Add(range.enemyPrefab);
-            }
-        }
-        return prefabs.ToArray();
     }
 
     /// <summary>
@@ -320,8 +295,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         List<EnemyShip> affordableEnemies = new List<EnemyShip>();
         foreach (EnemyShip enemyPrefab in currentSpawnPool)
         {
-            int cost = EnemyCostData.GetCost(enemyPrefab.gameObject);
-            if (cost <= currentBudget)
+            if (enemyPrefab.point <= currentBudget)
             {
                 affordableEnemies.Add(enemyPrefab);
             }
@@ -347,7 +321,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
         // 랜덤 선택
         EnemyShip selectedEnemy = affordableEnemies[Random.Range(0, affordableEnemies.Count)];
-        int enemyCost = EnemyCostData.GetCost(selectedEnemy.gameObject);
+        int enemyCost = selectedEnemy.point;
 
         // 스폰 실행
         SpawnEnemy(selectedEnemy);
