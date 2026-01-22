@@ -6,15 +6,78 @@
 
 ## 문서 구조
 
+### 계층 구조
+
+프로젝트 문서는 3단계 계층으로 구성됩니다:
+
 ```
-Docs/
-├── Roadmap.md               # 개발 로드맵
-├── Design/                  # 게임 디자인
-│   └── GameDesignOverview.md
-└── Guidelines/              # 개발 가이드라인
-    ├── CodeStyle.md
-    ├── CommitGuide.md
-    └── DocumentationGuide.md    # 이 문서
+README.md → Roadmap.md → Design/, Guidelines/, References/
+(게임 개요)  (작업 목록)     (상세 설계 및 구현 가이드)
+```
+
+**1단계 - 진입점 (README.md)**
+- 게임 핵심 컨셉, 플레이 방식, 기술 스택
+- 새 팀원이 처음 읽는 문서
+
+**2단계 - 개발 계획 (Roadmap.md)**
+- 우선순위별 작업 목록 (P0 ~ P3)
+- 다음에 무엇을 구현할지 확인
+- 로드맵에서 세부 문서로 링크 제공 (예정)
+
+**3단계 - 세부 문서**
+- `Design/` - 게임 디자인 (스폰, 업그레이드, 적 등)
+- `Guidelines/` - 개발 규칙 (코드 스타일, 커밋 등)
+- `References/` - 외부 참고 자료
+
+### 문서 탐색 방법
+
+**새 프로젝트 멤버:**
+1. [README.md](../../README.md) - 게임 이해
+2. [Roadmap.md](../Roadmap.md) - 현재 상황 파악
+3. 필요한 세부 문서 참고
+
+**작업 시작 시:**
+1. [Roadmap.md](../Roadmap.md)에서 작업 항목 확인
+2. 관련 세부 문서 읽기 (예: 스폰 시스템 구현 시 `Design/EnemySpawn/` 참고)
+3. 구현 완료 후 문서 업데이트
+
+**복잡한 시스템 이해 시:**
+- 여러 문서로 분산된 시스템(예: `EnemySpawn/`)은 해당 폴더의 `README.md`부터 읽기
+- README에서 문서 읽는 순서와 각 문서의 역할을 확인
+
+### 폴더 분산 원칙
+
+**분리 기준:**
+- 하나의 시스템이 **4개 이상의 문서**로 나뉠 때
+- 각 문서가 **독립적인 주제**를 다룰 때
+
+**분리 절차:**
+1. 폴더 생성 (예: `EnemySpawn/`)
+2. 통합 인덱스 `README.md` 작성
+   - 각 문서의 역할 및 주요 내용
+   - 문서 읽는 순서 (1️⃣, 2️⃣, 3️⃣)
+   - 언제 참고해야 하는지
+3. 상위 문서에서 폴더 README로 링크
+
+**예시:**
+```markdown
+# EnemySpawn/README.md
+## 📚 문서 읽는 순서
+
+1️⃣ TimeBasedBudgetSpawnSystem.md
+   시스템 설계 및 핵심 개념 (먼저 읽기)
+
+2️⃣ EnemyTimeRanges.md
+   적별 스폰 시간 범위 정의
+   → 특정 시간대 적 확인 시
+
+3️⃣ EnemySpawnScaling.md
+   시간에 따른 적 스탯 증가
+   → 밸런싱 조정 시
+
+4️⃣ SpawnSystem.md
+   구현 로드맵 (Phase 1~5)
+   → 다음 구현 기능 확인 시
 ```
 
 ## 문서 작성 원칙
