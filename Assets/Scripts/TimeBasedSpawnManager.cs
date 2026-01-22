@@ -15,6 +15,10 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [Header("=== Enemy Time Ranges ===")]
     [SerializeField] private EnemyTimeRange[] enemyTimeRanges;
 
+    [Header("=== Spawn Events ===")]
+    [SerializeField] private SpawnEventData[] spawnEvents;
+    private bool isEventActive = false; // 이벤트 진행 중 플래그
+
     [Header("=== Edge Selection ===")]
     [SerializeField] private WeightedEdgeSelector edgeSelector = new WeightedEdgeSelector();
 
@@ -195,10 +199,16 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 6. 동적 난이도 조정 (매 프레임)
         PerformDifficultyAdjustment();
 
-        // 7. 스폰 체크 (주기적)
-        UpdateSpawnCheck(deltaTime);
+        // 7. 이벤트 트리거 체크
+        CheckSpawnEvents();
 
-        // 8. UI 업데이트
+        // 8. 스폰 체크 (주기적, 이벤트 중이 아닐 때만)
+        if (!isEventActive)
+        {
+            UpdateSpawnCheck(deltaTime);
+        }
+
+        // 9. UI 업데이트
         UpdateUI();
     }
 
@@ -510,6 +520,128 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     public (float elapsedTime, float budget, int phase, int poolSize) GetStatus()
     {
         return (GetElapsedTime(), currentBudget, GetCurrentPhase(), currentSpawnPool.Count);
+    }
+
+    #endregion
+
+    #region Spawn Events
+
+    /// <summary>
+    /// 스폰 이벤트 트리거 체크
+    /// </summary>
+    private void CheckSpawnEvents()
+    {
+        if (spawnEvents == null || spawnEvents.Length == 0)
+            return;
+
+        float elapsed = GetElapsedTime();
+
+        foreach (SpawnEventData eventData in spawnEvents)
+        {
+            // 이미 트리거된 이벤트는 건너뛰기
+            if (eventData.hasTriggered)
+                continue;
+
+            // 이벤트 발동 시간 도달 확인
+            if (elapsed >= eventData.triggerTime)
+            {
+                StartCoroutine(StartSpawnEvent(eventData));
+                eventData.hasTriggered = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 스폰 이벤트 실행 코루틴
+    /// </summary>
+    private IEnumerator StartSpawnEvent(SpawnEventData eventData)
+    {
+        if (showDebugLogs)
+            Debug.Log($"[SpawnEvent] Event started at {FormatTime(GetElapsedTime())} - Edge: {eventData.spawnEdge}");
+
+        // 일반 스폰 일시 중지 (옵션)
+        if (eventData.pauseNormalSpawn)
+        {
+            isEventActive = true;
+        }
+
+        // 적 구성 순서대로 스폰
+        foreach (EnemyComposition composition in eventData.enemyComposition)
+        {
+            if (composition.enemyPrefab == null)
+            {
+                Debug.LogWarning("[SpawnEvent] Enemy prefab is null, skipping");
+                continue;
+            }
+
+            // 지정된 수량만큼 스폰
+            for (int i = 0; i < composition.spawnCount; i++)
+            {
+                // Edge 결정 (Random일 경우 매번 랜덤 선택)
+                Edge spawnEdge = GetEdgeFromType(eventData.spawnEdge);
+
+                // 스폰 실행
+                SpawnEnemy(composition.enemyPrefab, spawnEdge);
+
+                // 스폰 간격 대기
+                yield return new WaitForSeconds(eventData.spawnInterval);
+            }
+        }
+
+        // 이벤트 종료
+        if (eventData.pauseNormalSpawn)
+        {
+            isEventActive = false;
+        }
+
+        if (showDebugLogs)
+            Debug.Log($"[SpawnEvent] Event ended at {FormatTime(GetElapsedTime())}");
+    }
+
+    /// <summary>
+    /// EdgeType을 Edge로 변환 (Random 처리 포함)
+    /// </summary>
+    private Edge GetEdgeFromType(EdgeType edgeType)
+    {
+        switch (edgeType)
+        {
+            case EdgeType.Top: return Edge.Top;
+            case EdgeType.Bottom: return Edge.Bottom;
+            case EdgeType.Left: return Edge.Left;
+            case EdgeType.Right: return Edge.Right;
+            case EdgeType.Random:
+                Edge[] edges = { Edge.Top, Edge.Bottom, Edge.Left, Edge.Right };
+                return edges[Random.Range(0, edges.Length)];
+            default: return Edge.Top;
+        }
+    }
+
+    /// <summary>
+    /// 특정 Edge에서 적 스폰 (이벤트용 오버로드)
+    /// </summary>
+    private void SpawnEnemy(EnemyShip prefab, Edge spawnEdge)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("[Spawn] Enemy prefab is null");
+            return;
+        }
+
+        // ObjectSpawner를 통해 스폰
+        GameObject enemy = ObjectSpawner.Instance.SpawnObject(
+            prefab.gameObject,
+            spawnEdge
+        );
+
+        // 존재 점수 추적
+        if (enemy != null)
+        {
+            EnemyShip enemyShip = enemy.GetComponent<EnemyShip>();
+            if (enemyShip != null)
+            {
+                RegisterEnemy(enemyShip);
+            }
+        }
     }
 
     #endregion
