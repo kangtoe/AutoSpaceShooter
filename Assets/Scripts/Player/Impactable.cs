@@ -86,8 +86,20 @@ public class Impactable : MonoBehaviour
         Collider2D otherColl = coll.otherCollider;        
         Bounds mBounds = mColl.bounds;
         Bounds otherBounds = otherColl.bounds;
-        Transform mTf = mColl.attachedRigidbody.transform;
-        Transform otherTf = otherColl.attachedRigidbody.transform;
+        Transform mTf = mColl.attachedRigidbody?.transform;
+        Transform otherTf = otherColl.attachedRigidbody?.transform;
+
+        if (mTf == null)
+        {
+            Debug.LogWarning("StuckAdjust: Rigidbody2D missing on one of the colliders. - mTf");
+            return;
+        }
+
+        if(otherTf == null)
+        {
+            Debug.LogWarning("StuckAdjust: Rigidbody2D missing on one of the colliders. - otherTf");
+            return;
+        }
 
         // overlap check
         if (mBounds.Contains(otherBounds.min) && mBounds.Contains(otherBounds.max))
