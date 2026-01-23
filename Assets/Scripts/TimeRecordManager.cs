@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TimeRecordManager : MonoSingleton<TimeRecordManager>
 {
+    [Header("Debug Settings")]
+    [SerializeField] private float startTime = 0f; // 게임 시작 시 초기 시간 (디버깅용)
+
     float timeRecord;
     public float TimeRecord => timeRecord;
 
@@ -12,7 +15,19 @@ public class TimeRecordManager : MonoSingleton<TimeRecordManager>
     // Start is called before the first frame update
     void Start()
     {
-        
+        // 초기 시간 설정 (디버깅용)
+        timeRecord = startTime;
+
+        if (startTime > 0)
+        {
+            Debug.Log($"[TimeRecordManager] Starting at {startTime} seconds for debugging");
+        }
+
+        // UI 초기화
+        if (UiManager.Instance != null)
+        {
+            UiManager.Instance.SetTimeRecordText((int)timeRecord);
+        }
     }
 
     // Update is called once per frame

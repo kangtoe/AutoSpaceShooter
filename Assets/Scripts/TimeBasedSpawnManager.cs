@@ -19,8 +19,19 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [SerializeField] private SpawnEventData[] spawnEvents;
     private bool isEventActive = false; // 이벤트 진행 중 플래그
 
+    [Header("=== Boss Settings ===")]
+    [SerializeField] private EnemyShip bossPrefab; // 보스 프리팹
+    [SerializeField] private float bossSpawnTime = 600f; // 10분
+    [SerializeField] private Edge bossSpawnEdge = Edge.Up; // 보스 스폰 방향
+    [SerializeField, Min(1)] private int bossSpawnCount = 1; // 보스 스폰 수량
+    private SpawnEventData bossEvent; // 동적으로 생성된 보스 이벤트 참조
+
     [Header("=== Edge Selection ===")]
     [SerializeField] private WeightedEdgeSelector edgeSelector = new WeightedEdgeSelector();
+
+    [Header("=== Spawn Warning Settings ===")]
+    [SerializeField] private bool enableSpawnWarning = true; // 스폰 경고 활성화 (이벤트/보스 스폰만)
+    [SerializeField] private float warningDelay = 1f; // 경고 후 실제 스폰까지의 지연 시간
 
     [Button("자동으로 적 시간 범위 설정")]
     private void AutoSetupEnemyTimeRanges()
@@ -82,8 +93,6 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
     private HashSet<EnemyShip> trackedEnemies = new HashSet<EnemyShip>(); // 추적 중인 적들
 
-    [Header("=== Timer Settings ===")]
-    [SerializeField] private float gameDuration = 840f; // 14분
     private bool isRunning = false;
 
     [Header("=== Budget Settings ===")]
@@ -142,6 +151,42 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             Debug.LogError("[TimeBasedSpawn] Enemy time ranges not assigned!");
         }
 
+        // 보스 이벤트 생성 및 추가
+        if (bossPrefab != null)
+        {
+            bossEvent = new SpawnEventData();
+            // Reflection을 사용하여 private 필드 설정
+            var triggerTimeField = typeof(SpawnEventData).GetField("triggerTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var spawnEdgeField = typeof(SpawnEventData).GetField("spawnEdge", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var enemyPrefabField = typeof(SpawnEventData).GetField("enemyPrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var spawnCountField = typeof(SpawnEventData).GetField("spawnCount", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var spawnIntervalField = typeof(SpawnEventData).GetField("spawnInterval", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var pauseNormalSpawnField = typeof(SpawnEventData).GetField("pauseNormalSpawn", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            triggerTimeField?.SetValue(bossEvent, bossSpawnTime);
+            spawnEdgeField?.SetValue(bossEvent, bossSpawnEdge);
+            enemyPrefabField?.SetValue(bossEvent, bossPrefab);
+            spawnCountField?.SetValue(bossEvent, bossSpawnCount);
+            spawnIntervalField?.SetValue(bossEvent, 0.2f);
+            pauseNormalSpawnField?.SetValue(bossEvent, true);
+
+            // 기존 스폰 이벤트 배열에 보스 이벤트 추가
+            List<SpawnEventData> eventList = new List<SpawnEventData>();
+            if (spawnEvents != null)
+            {
+                eventList.AddRange(spawnEvents);
+            }
+            eventList.Add(bossEvent);
+            spawnEvents = eventList.ToArray();
+
+            if (showDebugLogs)
+                Debug.Log($"[Boss] Boss event created at {bossSpawnTime}s on {bossSpawnEdge}");
+        }
+        else
+        {
+            Debug.LogWarning("[Boss] Boss prefab not assigned!");
+        }
+
         // TimeRecordManager 시작
         if (TimeRecordManager.Instance != null)
         {
@@ -154,7 +199,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 시스템 시작
         isRunning = true;
         if (showDebugLogs)
-            Debug.Log($"[TimeBasedSpawn] System started - Duration: {gameDuration}s, Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateMaxUpTime}s");
+            Debug.Log($"[TimeBasedSpawn] System started - Initial Budget: {initialBudget}, Budget Rate: {minBudgetRate}→{maxBudgetRate}/s over {budgetRateMaxUpTime}s");
     }
 
     /// <summary>
@@ -172,10 +217,12 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
         float deltaTime = Time.deltaTime;
 
-        // 1. 게임 종료 확인
-        if (GetElapsedTime() >= gameDuration)
+        // 1. 모든 스폰 이벤트 완료 확인 (일반 스폰 중단)
+        if (AreAllEventsCompleted())
         {
-            OnGameTimeEnd();
+            isRunning = false;
+            if (showDebugLogs)
+                Debug.Log("[TimeBasedSpawn] All spawn events completed, normal spawning stopped");
             return;
         }
 
@@ -199,7 +246,7 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // 6. 동적 난이도 조정 (매 프레임)
         PerformDifficultyAdjustment();
 
-        // 7. 이벤트 트리거 체크
+        // 7. 이벤트 트리거 체크 (보스 포함)
         CheckSpawnEvents();
 
         // 8. 스폰 체크 (주기적, 이벤트 중이 아닐 때만)
@@ -212,15 +259,23 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         UpdateUI();
     }
 
-    #region Timer Management
+    #region Event Management
 
-    private void OnGameTimeEnd()
+    /// <summary>
+    /// 모든 스폰 이벤트가 완료되었는지 확인
+    /// </summary>
+    private bool AreAllEventsCompleted()
     {
-        isRunning = false;
-        if (showDebugLogs)
-            Debug.Log("[TimeBasedSpawn] Game time ended!");
+        if (spawnEvents == null || spawnEvents.Length == 0)
+            return false;
 
-        // TODO: 게임 종료 처리
+        foreach (SpawnEventData eventData in spawnEvents)
+        {
+            if (!eventData.hasTriggered)
+                return false;
+        }
+
+        return true;
     }
 
     #endregion
@@ -356,11 +411,14 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     /// <param name="prefab">스폰할 적 프리팹</param>
     /// <param name="spawnEdge">스폰 방향 (Undefined면 가중치 기반 자동 선택)</param>
     /// <param name="lengthRatio">Edge 내 위치 비율 (0~1), null이면 랜덤</param>
-    private void SpawnEnemy(EnemyShip prefab, Edge spawnEdge = Edge.Undefined, float? lengthRatio = null)
+    /// <param name="showWarning">경고 표시 여부 (true: 이벤트/보스 스폰, false: 일반 스폰)</param>
+    /// <param name="onSpawned">스폰 완료 시 호출될 콜백 (즉시 또는 지연 후 호출)</param>
+    private void SpawnEnemy(EnemyShip prefab, Edge spawnEdge = Edge.Undefined, float? lengthRatio = null, bool showWarning = false, System.Action<EnemyShip> onSpawned = null)
     {
         if (prefab == null)
         {
             Debug.LogError("[Spawn] Enemy prefab is null");
+            onSpawned?.Invoke(null);
             return;
         }
 
@@ -374,6 +432,40 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             lookCenter = true;
         }
 
+        // 경고 시스템 활성화 시, 경고 표시 후 지연 스폰 (이벤트/보스 스폰만)
+        if (showWarning && enableSpawnWarning && EnemySpawnWarningManager.Instance != null)
+        {
+            // lengthRatio가 null이면 미리 결정 (경고 위치와 실제 스폰 위치 일치)
+            if (lengthRatio == null)
+            {
+                lengthRatio = Random.Range(0f, 1f);
+            }
+
+            // 경고 표시 (경고 시스템에서 위치 계산 및 조정)
+            EnemySpawnWarningManager.Instance.ShowWarning(
+                prefab.gameObject,
+                spawnEdge,
+                lengthRatio.Value,
+                warningDelay
+            );
+
+            // 지연 스폰 실행 (콜백 전달)
+            StartCoroutine(SpawnEnemyDelayed(prefab, spawnEdge, lengthRatio, lookCenter, warningDelay, onSpawned));
+        }
+        else
+        {
+            // 경고 없이 즉시 스폰 (일반 스폰)
+            EnemyShip enemy = SpawnEnemyImmediate(prefab, spawnEdge, lookCenter, lengthRatio);
+            onSpawned?.Invoke(enemy);
+        }
+    }
+
+    /// <summary>
+    /// 적 즉시 스폰 (내부용)
+    /// </summary>
+    /// <returns>스폰된 EnemyShip 컴포넌트</returns>
+    private EnemyShip SpawnEnemyImmediate(EnemyShip prefab, Edge spawnEdge, bool lookCenter, float? lengthRatio)
+    {
         // ObjectSpawner를 통해 스폰
         GameObject enemy = ObjectSpawner.Instance.SpawnObject(
             prefab.gameObject,
@@ -389,8 +481,22 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             if (enemyShip != null)
             {
                 RegisterEnemy(enemyShip);
+                return enemyShip;
             }
         }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 지연 스폰 코루틴
+    /// </summary>
+    private IEnumerator SpawnEnemyDelayed(EnemyShip prefab, Edge spawnEdge, float? lengthRatio, bool lookCenter, float delay, System.Action<EnemyShip> onSpawned)
+    {
+        yield return new WaitForSeconds(delay);
+
+        EnemyShip spawnedEnemy = SpawnEnemyImmediate(prefab, spawnEdge, lookCenter, lengthRatio);
+        onSpawned?.Invoke(spawnedEnemy);
     }
 
     #endregion
@@ -565,7 +671,6 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             }
         }
     }
-
     /// <summary>
     /// 스폰 이벤트 실행 코루틴
     /// </summary>
@@ -591,6 +696,9 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 
         int spawnCount = eventData.SpawnCount;
 
+        // 보스 이벤트 여부 확인 (참조 비교)
+        bool isBossEvent = (eventData == bossEvent);
+
         // 지정된 수량만큼 스폰
         for (int i = 0; i < spawnCount; i++)
         {
@@ -600,8 +708,36 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
             // 균등 배치 계산 (0~1 범위에서 균등하게 분산)
             float lengthRatio = (i + 0.5f) / spawnCount;
 
-            // 스폰 실행
-            SpawnEnemy(eventData.EnemyPrefab, spawnEdge, lengthRatio);
+            // 보스 이벤트이고 첫 번째 스폰인 경우 게임 클리어 콜백 등록
+            if (isBossEvent && i == 0)
+            {
+                SpawnEnemy(eventData.EnemyPrefab, spawnEdge, lengthRatio, showWarning: true, onSpawned: (enemy) =>
+                {
+                    if (enemy != null)
+                    {
+                        Damageable damageable = enemy.GetComponent<Damageable>();
+                        if (damageable != null)
+                        {
+                            damageable.onDead.AddListener(() =>
+                            {
+                                Debug.Log("[Boss] Boss defeated! Game Clear!");
+                                if (GameManager.Instance != null)
+                                {
+                                    GameManager.Instance.OnBossDefeated();
+                                }
+                            });
+
+                            if (showDebugLogs)
+                                Debug.Log($"[Boss] Boss spawned at {FormatTime(GetElapsedTime())} - OnDead callback registered");
+                        }
+                    }
+                });
+            }
+            else
+            {
+                // 스폰 실행 (이벤트 스폰이므로 경고 표시)
+                SpawnEnemy(eventData.EnemyPrefab, spawnEdge, lengthRatio, showWarning: true);
+            }
 
             // 스폰 간격 대기
             yield return new WaitForSeconds(eventData.SpawnInterval);

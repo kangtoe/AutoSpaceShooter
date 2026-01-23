@@ -1438,6 +1438,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599205184}
   m_CullTransparentMesh: 1
+--- !u!1 &637880934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637880936}
+  - component: {fileID: 637880935}
+  m_Layer: 0
+  m_Name: 'EnemySpawnWarningManager '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &637880935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637880934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256671ddf6c83084a8a3c6c20432cafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnWarningManager
+  warningMarkerPrefab: {fileID: 9150437164627306590, guid: 8457959eb767c304f9d8999063e8913b, type: 3}
+  warningDuration: 1
+  edgeOffset: 0.6
+  initialPoolSize: 10
+--- !u!4 &637880936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637880934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &641342463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,6 +1818,51 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 1
+--- !u!1 &829675184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 829675186}
+  - component: {fileID: 829675185}
+  m_Layer: 0
+  m_Name: TimeRecordManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &829675185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829675184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a97fb72c027554ea95f2ec47697343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeRecordManager
+  startTime: 0
+--- !u!4 &829675186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829675184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834872740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,19 +2024,31 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 2159223484281061927, guid: 0c480471cb4caeb47908089266ee7b9b, type: 3}
     timeMin: 420
     timeMax: 840
+  spawnEvents:
+  - triggerTime: 5
+    spawnEdge: 1
+    enemyPrefab: {fileID: 6078006324994066098, guid: dc55ddee9f640f947be0b11beec51e17, type: 3}
+    spawnCount: 20
+    spawnInterval: 0.1
+    pauseNormalSpawn: 1
+  bossPrefab: {fileID: 6078006324994066098, guid: 83b513a659d9bdb4cb891d2a3a34fdab, type: 3}
+  bossSpawnTime: 600
+  bossSpawnEdge: 1
+  bossSpawnCount: 1
   edgeSelector:
     baseWeight: 1
     oppositeWeight: 3
+  enableSpawnWarning: 1
+  warningDelay: 1
   spawnCheckInterval: 0.2
   poolRefreshInterval: 5
   currentSpawnPool: []
   skipProbability: 0.5
   maxSpawnSkipTime: 5
-  gameDuration: 840
   initialBudget: 0
   currentBudget: 0
-  minBudgetRate: 50
-  maxBudgetRate: 50
+  minBudgetRate: 500
+  maxBudgetRate: 500
   budgetRateMaxUpTime: 840
   currentBudgetRate: 10
   minTargetPresenceScore: 0
@@ -3888,7 +3993,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100.70001}
+  m_AnchoredPosition: {x: 0, y: 154}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1896848423
@@ -4573,3 +4678,5 @@ SceneRoots:
   - {fileID: 1917967251}
   - {fileID: 28509442}
   - {fileID: 882534907}
+  - {fileID: 637880936}
+  - {fileID: 829675186}

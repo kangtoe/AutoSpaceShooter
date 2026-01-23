@@ -12,6 +12,9 @@ public class Damageable : MonoBehaviour
     public UnityEvent onDead = new UnityEvent();
 
     [HideInInspector]
+    public UnityEvent onKilled = new UnityEvent(); // 보상 지급용 이벤트
+
+    [HideInInspector]
     public UnityEvent onDamaged = new UnityEvent();
 
     [HideInInspector]
@@ -143,9 +146,28 @@ public class Damageable : MonoBehaviour
         // 사망 체크
         if (currDurability == 0)
         {
-            isDead = true;
-            onDead.Invoke();
+            Die(giveReward: true);
         }
+    }
+
+    /// <summary>
+    /// 적을 죽임 (보상 지급 여부 선택 가능)
+    /// </summary>
+    /// <param name="giveReward">true: 보상 지급, false: 보상 없음</param>
+    public void Die(bool giveReward = true)
+    {
+        if (isDead) return;
+
+        isDead = true;
+
+        // 보상 지급 여부에 따라 onKilled 이벤트 발생
+        if (giveReward)
+        {
+            onKilled.Invoke();
+        }
+
+        // 항상 onDead 발생 (기술적 정리 - 이펙트, UnregisterEnemy 등)
+        onDead.Invoke();
     }
 
     virtual public void GetDamaged(float damage, GameObject attacker = null)

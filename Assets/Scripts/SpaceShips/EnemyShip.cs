@@ -14,13 +14,14 @@ public class EnemyShip : MonoBehaviour
     private void Start()
     {
         Damageable damageable = GetComponent<Damageable>();
-        damageable.onDead.AddListener(delegate
+        // 보상 지급은 onKilled에 등록
+        damageable.onKilled.AddListener(delegate
         {
             UiManager.Instance.CreateText("+" + point, transform.position);
             ScoreManager.Instance.AddScore(point);
             LevelManager.Instance.GetExp(point);
             if(upgradePoint > 0) UpgradeManager.Instance.PointUp(upgradePoint);
-        });        
+        });
     }
 
 }

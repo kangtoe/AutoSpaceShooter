@@ -146,7 +146,34 @@ public class GameManager : MonoSingleton<GameManager>
 
         if(gameState == GameState.GameOver) return;
         StartCoroutine(SlowMotion(slowDuration));
-        StartCoroutine(GameOverCr(delay));        
+        StartCoroutine(GameOverCr(delay));
+    }
+
+    public void OnBossDefeated(float delay = 0.1f)
+    {
+        IEnumerator GameClearCr(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            // 남은 모든 적을 보상 없이 제거
+            EnemyShip[] enemies = FindObjectsOfType<EnemyShip>();
+            foreach (var enemy in enemies)
+            {
+                Damageable damageable = enemy.GetComponent<Damageable>();
+                if (damageable != null && !damageable.IsDead)
+                {
+                    damageable.Die(giveReward: false);
+                }
+            }
+
+            gameState = GameState.GameClear;
+            UiManager.Instance.SetCanvas(GameState.GameClear);
+            SoundManager.Instance.PlaySound(clearSound);
+            TimeRecordManager.Instance.SetActiveCount(false);
+        }
+
+        if (gameState == GameState.GameClear || gameState == GameState.GameOver) return;
+        StartCoroutine(GameClearCr(delay));
     }
 
 }

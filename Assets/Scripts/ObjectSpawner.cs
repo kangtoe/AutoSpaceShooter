@@ -46,6 +46,24 @@ public class ObjectSpawner : MonoSingleton<ObjectSpawner>
         return go;
     }
 
+    /// <summary>
+    /// 스폰 위치 미리 계산 (경고 시스템용)
+    /// </summary>
+    /// <param name="objectPrefab">스폰할 프리팹</param>
+    /// <param name="spawnSide">스폰할 Edge</param>
+    /// <param name="lengthRatio">Edge 내 위치 비율 (0~1), null이면 랜덤</param>
+    public Vector2 CalculateSpawnPosition(GameObject objectPrefab, Edge spawnSide, float? lengthRatio = null)
+    {
+        if (objectPrefab == null)
+        {
+            Debug.LogWarning("objectPrefab is null");
+            return Vector2.zero;
+        }
+
+        var (pos, _) = GetSpawnPointAndRotation(objectPrefab, spawnSide, lengthRatio, true);
+        return pos;
+    }
+
     #endregion
 
     #region Position & Rotation
