@@ -1,0 +1,14 @@
+Name,HP,Damage,Score,SpawnTime,Notes
+light_child,?,?,?,0,Check prefab
+light_kido,?,?,?,20,Check prefab
+light_thunder,?,?,?,40,Check prefab
+mid_Ghost,?,?,?,80,Check prefab
+mid_Hornet,?,?,?,100,Check prefab
+mid_master,?,?,?,120,Check prefab
+mid_Knight,?,?,?,140,Check prefab
+mid_sniper,?,?,?,160,Check prefab
+mid_tank,?,?,?,180,Check prefab
+mid_Spiral,?,?,?,200,Check prefab
+heavy_mother,?,?,?,240,Check prefab
+heavy_Gunship,?,?,?,300,Check prefab
+Boss,?,?,?,600,Check prefab

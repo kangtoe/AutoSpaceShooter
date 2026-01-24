@@ -1,0 +1,14 @@
+Name,SpawnTime,DespawnTime,Duration,Type,Notes
+light_child,0,120,120,light,Early basic enemy
+light_kido,20,140,120,light,Early
+light_thunder,40,160,120,light,Early
+mid_Ghost,80,300,220,mid,Mid-game
+mid_Hornet,100,320,220,mid,Mid-game
+mid_master,120,340,220,mid,Mid-game
+mid_Knight,140,360,220,mid,Mid-game
+mid_sniper,160,380,220,mid,Mid-game
+mid_tank,180,400,220,mid,Mid-game
+mid_Spiral,200,420,220,mid,Mid-game
+heavy_mother,240,540,300,heavy,Late-game large
+heavy_Gunship,300,600,300,heavy,Late-game strong
+Boss,600,-1,-1,boss,Final boss

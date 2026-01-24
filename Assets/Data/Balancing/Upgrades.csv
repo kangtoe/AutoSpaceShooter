@@ -1,0 +1,13 @@
+Upgrade,Increment,MaxLevel,FinalValue,Multiplier,Category
+MaxDurability,+50,10,600,6x,Survival
+MaxShield,+50,10,600,6x,Survival
+ShieldRegenRate,+5/s,8,60/s,3x,Survival
+ShieldRegenDelay,-0.2s,5,1s,50%↓,Survival
+MultiShot,+1,4,5,5x,Shooting
+FireRate,+0.2,5,2.0,2x,Shooting
+ProjectileDamage,+5,10,60,6x,Shooting
+ProjectileSpeed,+2,5,20,2x,Shooting
+OnImpact,+5,10,60,6x,Impact
+ImpactResist,+5,10,50,-,Impact
+MoveSpeed,+1,5,10,2x,Mobility
+RotateSpeed,+30,5,330,1.8x,Mobility
