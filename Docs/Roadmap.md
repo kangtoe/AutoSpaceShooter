@@ -189,4 +189,5 @@
 ## 📝 참고 문서
 - [TechnicalDebt.md](TechnicalDebt.md) - 기술 부채 상세
 - [Architecture.md](Architecture.md) - 아키텍처 설계
+- [BalancingGuide.md](BalancingGuide.md) - 게임 벨런싱 가이드
 - [Design/](Design/) - 게임 디자인 문서
