@@ -6,6 +6,31 @@
 
 레벨업 시 랜덤으로 제시된 **3가지 업그레이드 중 하나를 선택**합니다. 각 업그레이드는 최대 레벨까지 반복 선택 가능하며, PlayerStats를 통해 중앙 관리됩니다.
 
+---
+
+## 관련 문서
+
+### 이 폴더의 문서
+- **[BuildCombinations.md](BuildCombinations.md)** - 빌드 조합 가이드
+  - Nova Drift 방식의 암묵적 시너지
+  - 4가지 빌드 아키타입 상세 설명
+  - 효과적인 업그레이드 조합 추천
+  - Gear 시스템 확장 가능성 (TODO)
+
+### 레퍼런스
+- [../../References/NovaDrift_BuildSystem.md](../../References/NovaDrift_BuildSystem.md) - Nova Drift 빌드 시스템 분석
+
+### 플레이어 시스템
+- [../PlayerStats.md](../PlayerStats.md) - 플레이어 스탯 시스템
+- [../PlayerLevelSystem.md](../PlayerLevelSystem.md) - 레벨 시스템
+
+### 구현 파일
+- `Assets/Scripts/UpgradeData.cs` - 업그레이드 데이터 정의
+- `Assets/Scripts/UpgradeManager.cs` - 업그레이드 선택 로직
+- `Assets/Scripts/Player/PlayerStats.cs` - 스탯 중앙 관리
+
+---
+
 ## 구현된 업그레이드
 
 | No. | 필드 | 한글 이름 | 증가량 | 최대 레벨 | 초기값 → 최대값 |
@@ -114,6 +139,47 @@
 
 ## 구현 파일
 
-- [UpgradeData.cs](../../Assets/Scripts/UpgradeData.cs) - 증분값, 최대 레벨, 한글 이름 정의
-- [UpgradeManager.cs](../../Assets/Scripts/UpgradeManager.cs) - 업그레이드 선택 로직
-- [PlayerStats.cs](../../Assets/Scripts/Player/PlayerStats.cs) - 스탯 중앙 관리
+- `Assets/Scripts/UpgradeData.cs` - 증분값, 최대 레벨, 한글 이름 정의
+- `Assets/Scripts/UpgradeManager.cs` - 업그레이드 선택 로직
+- `Assets/Scripts/Player/PlayerStats.cs` - 스탯 중앙 관리
+
+---
+
+## 구현 로드맵
+
+### Phase 1: 기본 업그레이드 확장
+**목표**: 빌드 다양성 확보 (우선순위 1 업그레이드)
+
+- [ ] 연사 속도 (FireRate)
+- [ ] 발사체 피해 (ProjectileDamage)
+- [ ] 발사체 속도 (ProjectileSpeed)
+- [ ] 이동 속도 (MoveSpeed)
+- [ ] 회전 속도 (RotateSpeed)
+- [ ] 충돌 저항 (ImpactResist)
+
+### Phase 2: 암묵적 시너지 설계
+**목표**: Nova Drift 방식의 자연스러운 조합 효과 - 자세한 내용은 [BuildCombinations.md](BuildCombinations.md) 참조
+
+- [ ] 곱연산 효과 밸런싱 (멀티샷 × 연사 속도 × 발사체 피해)
+- [ ] 빌드별 효과적인 조합 검증 (탱커/사격/충돌/기동)
+- [ ] 약점 보완 메커니즘 (예: 탱커의 낮은 화력)
+- [ ] 하이브리드 빌드 가능성 테스트
+
+### Phase 3: 고급 업그레이드
+**목표**: 빌드 완성도 (우선순위 2 업그레이드)
+
+- [ ] 관통 (Penetration)
+- [ ] 발사체 크기 (ProjectileSize)
+- [ ] 넉백 강도 (KnockbackPower)
+- [ ] 경험치 보너스 (ExpBonus)
+- [ ] 내구도 재생 (DurabilityRegen)
+- [ ] 질량 (Mass)
+
+### Phase 4: 특수 업그레이드 (선택적)
+**목표**: 유니크한 플레이 경험 (우선순위 3 업그레이드)
+
+- [ ] 치명타 시스템 (CriticalChance, CriticalDamage)
+- [ ] 생명력 흡수 (LifeSteal)
+- [ ] 드론 시스템 (Drone)
+- [ ] 실드 과충전 (ShieldOvercharge)
+- [ ] 애프터버너 (Afterburner)
