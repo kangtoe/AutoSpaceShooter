@@ -121,18 +121,20 @@ public class GameManager : MonoSingleton<GameManager>
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
+    IEnumerator SlowMotion(float duration)
+    {
+        float leftDuraton = duration;
+        while (leftDuraton > 0)
+        {
+            leftDuraton -= Time.deltaTime;
+            Time.timeScale = Mathf.Lerp(1, 0.25f, leftDuraton);
+            yield return null;
+        }
+    }
+
     public void GameOver(float delay = 0.1f, float slowDuration = 1.5f)
     {
-        IEnumerator SlowMotion(float duration)
-        {
-            float leftDuraton = duration;
-            while (leftDuraton > 0)
-            {
-                leftDuraton -= Time.deltaTime;
-                Time.timeScale = Mathf.Lerp(1, 0.25f, leftDuraton);
-                yield return null;
-            }
-        }
+
 
         IEnumerator GameOverCr(float delay)
         {
@@ -149,11 +151,11 @@ public class GameManager : MonoSingleton<GameManager>
         StartCoroutine(GameOverCr(delay));
     }
 
-    public void OnBossDefeated(float delay = 0.1f)
+    public void OnBossDefeated(float delay = 0.1f, float slowDuration = 1.5f)
     {
         IEnumerator GameClearCr(float delay)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSecondsRealtime(delay);
 
             // 남은 모든 적을 보상 없이 제거
             EnemyShip[] enemies = FindObjectsOfType<EnemyShip>();
@@ -173,6 +175,7 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         if (gameState == GameState.GameClear || gameState == GameState.GameOver) return;
+        StartCoroutine(SlowMotion(slowDuration));
         StartCoroutine(GameClearCr(delay));
     }
 

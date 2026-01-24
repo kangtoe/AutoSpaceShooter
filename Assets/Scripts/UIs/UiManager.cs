@@ -29,6 +29,10 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] Text overTimeText;
     [SerializeField] Text overScoreText;
 
+    [Header("game clear ui")]
+    [SerializeField] Text clearTimeText;
+    [SerializeField] Text clearScoreText;
+
     [Header("debug ui")]
     [SerializeField] Text waveDebugText;
     [SerializeField] Text budgetDebugText;
@@ -40,6 +44,7 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] RectTransform titlePanel;
     [SerializeField] RectTransform combatPanel;
     [SerializeField] RectTransform gameOverPanel;
+    [SerializeField] RectTransform gameClearPanel;
     [SerializeField] RectTransform floatTextRoot;
 
 
@@ -74,9 +79,10 @@ public class UiManager : MonoSingleton<UiManager>
 
     public void SetScoreText(int score)
     {
-        string str = score.ToString("000,000"); // "SCORE : " + 
+        string str = score.ToString("000,000"); // "SCORE : " +
         scoreText.text = str;
         overScoreText.text = str;
+        clearScoreText.text = str;
     }
 
     public void SetTimeRecordText(int score)
@@ -85,6 +91,7 @@ public class UiManager : MonoSingleton<UiManager>
 
         timeRecordText.text = str;
         overTimeText.text = str;
+        clearTimeText.text = str;
     }
 
     public void SetDurabilityAndShieldUI(float currDurability, float maxDurability, float currShield, float maxShield)
@@ -98,6 +105,7 @@ public class UiManager : MonoSingleton<UiManager>
         titlePanel.gameObject.SetActive(false);
         combatPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
+        gameClearPanel.gameObject.SetActive(false);
 
         switch (state)
         {
@@ -110,7 +118,10 @@ public class UiManager : MonoSingleton<UiManager>
             case GameState.GameOver:
                 gameOverPanel.gameObject.SetActive(true);
                 break;
-        }        
+            case GameState.GameClear:
+                gameClearPanel.gameObject.SetActive(true);
+                break;
+        }
     }
 
 
@@ -136,6 +147,11 @@ public class UiManager : MonoSingleton<UiManager>
     public void ToggleGameOverUI(bool active)
     {
         gameOverPanel.gameObject.SetActive(active);
+    }
+
+    public void ToggleGameClearUI(bool active)
+    {
+        gameClearPanel.gameObject.SetActive(active);
     }
 
     public void SetLevelText(int level)
