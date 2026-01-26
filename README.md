@@ -16,6 +16,22 @@ Asteroids 조작 + Vampire Survivors 업그레이드 시스템을 결합한 10�
 - **간단한 조작**: 회전만으로 조종하는 원터치 플레이
 - **모바일 최적화**: 짧은 세션, 명확한 목표
 
+## 게임 레퍼런스
+
+- **Vampire Survivors**: 시간 기반 스폰, 레벨업/업그레이드 시스템
+- **Nova Drift**: 빌드 시너지, 업그레이드 깊이
+- **Asteroids**: 회전 + 전진 메커닉
+
+## 개발 환경
+
+- **Unity**: 6000.3.1f1
+- **IDE**: VSCode
+  - [C# v2.110.4](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+  - [C# Dev Kit v1.90.2](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
+  - [Unity](https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc)
+  - [CSV](https://marketplace.visualstudio.com/items?itemName=ReprEng.csv) - 밸런싱 CSV 편집용
+
+
 ## 게임 플레이 루프
 
 ```
@@ -65,16 +81,10 @@ Asteroids 조작 + Vampire Survivors 업그레이드 시스템을 결합한 10�
 
 ## 기술 스택
 
-- **엔진**: Unity 2D
+- **엔진**: Unity 6 (6000.3.1f1)
 - **입력**: Unity New Input System (키보드/마우스/게임패드/모바일)
 - **물리**: Rigidbody2D (AddForce 기반)
 - **패턴**: Singleton Manager, Object Pooling (구현 예정)
-
-## 게임 레퍼런스
-
-- **Vampire Survivors**: 시간 기반 스폰, 레벨업/업그레이드 시스템
-- **Nova Drift**: 빌드 시너지, 업그레이드 깊이
-- **Asteroids**: 회전 + 전진 메커닉
 
 ## 문서
 
