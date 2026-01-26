@@ -13,7 +13,10 @@ using NaughtyAttributes;
 public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
 {
     [Header("=== Enemy Time Ranges ===")]
-    [SerializeField] private EnemyTimeRange[] enemyTimeRanges;
+    [Tooltip("CSV 파일 (필수)")]
+    [SerializeField] private TextAsset enemySpawnTimesCsv;
+    [Tooltip("CSV에서 로드된 데이터 (자동 설정됨)")]
+    [SerializeField,ReadOnly] private EnemyTimeRange[] enemyTimeRanges;
 
     [Header("=== Spawn Events ===")]
     [SerializeField] private SpawnEventData[] spawnEvents;
@@ -32,50 +35,6 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
     [Header("=== Spawn Warning Settings ===")]
     [SerializeField] private bool enableSpawnWarning = true; // 스폰 경고 활성화 (이벤트/보스 스폰만)
     [SerializeField] private float warningDelay = 1f; // 경고 후 실제 스폰까지의 지연 시간
-
-    [Button("자동으로 적 시간 범위 설정")]
-    private void AutoSetupEnemyTimeRanges()
-    {
-#if UNITY_EDITOR
-        List<EnemyTimeRange> ranges = new List<EnemyTimeRange>();
-
-        // 12개 적의 시간 범위 정의 (elapsed time 기준: 0초부터 시작, 10분 목표)
-        AddEnemyRange(ranges, "Enemy_light_child", 0, 120);      // 0:00 ~ 2:00
-        AddEnemyRange(ranges, "Enemy_light_kido", 20, 140);      // 0:20 ~ 2:20
-        AddEnemyRange(ranges, "Enemy_light_thunder", 40, 160);   // 0:40 ~ 2:40
-        AddEnemyRange(ranges, "Enemy_mid_Ghost", 80, 300);       // 1:20 ~ 5:00
-        AddEnemyRange(ranges, "Enemy_mid_Hornet", 100, 320);     // 1:40 ~ 5:20
-        AddEnemyRange(ranges, "Enemy_mid_master", 120, 340);     // 2:00 ~ 5:40
-        AddEnemyRange(ranges, "Enemy_mid_Knight", 140, 360);     // 2:20 ~ 6:00
-        AddEnemyRange(ranges, "Enemy_mid_sniper", 160, 380);     // 2:40 ~ 6:20
-        AddEnemyRange(ranges, "Enemy_mid_tank", 180, 400);       // 3:00 ~ 6:40
-        AddEnemyRange(ranges, "Enemy_mid_Spiral", 200, 420);     // 3:20 ~ 7:00
-        AddEnemyRange(ranges, "Enemy_heavy_mother", 240, 540);   // 4:00 ~ 9:00
-        AddEnemyRange(ranges, "Enemy_heavy_Gunship", 300, 600);  // 5:00 ~ 10:00
-
-        enemyTimeRanges = ranges.ToArray();
-        UnityEditor.EditorUtility.SetDirty(this);
-        Debug.Log($"[TimeBasedSpawnManager] 자동 설정 완료: {enemyTimeRanges.Length}개 적 (elapsed time 기준)");
-#endif
-    }
-
-#if UNITY_EDITOR
-    private void AddEnemyRange(List<EnemyTimeRange> ranges, string enemyName, float timeMin, float timeMax)
-    {
-        string path = $"Assets/Prefabs/Enemys/{enemyName}.prefab";
-        EnemyShip prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<EnemyShip>(path);
-
-        if (prefab != null)
-        {
-            ranges.Add(new EnemyTimeRange(prefab, timeMin, timeMax));
-            Debug.Log($"✓ {enemyName}: {timeMin}~{timeMax}초");
-        }
-        else
-        {
-            Debug.LogWarning($"✗ {enemyName} 프리팹을 찾을 수 없습니다: {path}");
-        }
-    }
-#endif
 
     [Header("=== Spawn Check Settings ===")]
     [SerializeField] private float spawnCheckInterval = 1f;
@@ -139,17 +98,25 @@ public class TimeBasedSpawnManager : MonoSingleton<TimeBasedSpawnManager>
         // Edge 선택기 초기화
         edgeSelector.Reset();
 
-        // 적 시간 범위 데이터 초기화
-        if (enemyTimeRanges != null && enemyTimeRanges.Length > 0)
+        // 적 시간 범위 데이터 초기화 (CSV 필수)
+        if (enemySpawnTimesCsv == null)
         {
-            EnemyTimeRangeData.Initialize(enemyTimeRanges);
-            if (showDebugLogs)
-                Debug.Log($"[TimeBasedSpawn] Initialized {enemyTimeRanges.Length} enemy time ranges");
+            Debug.LogError("[TimeBasedSpawn] EnemySpawnTimes CSV가 할당되지 않았습니다!");
+            return;
         }
-        else
+
+        // CSV에서 런타임 로드
+        enemyTimeRanges = EnemySpawnTimesLoader.LoadFromCsv(enemySpawnTimesCsv);
+
+        if (enemyTimeRanges == null || enemyTimeRanges.Length == 0)
         {
-            Debug.LogError("[TimeBasedSpawn] Enemy time ranges not assigned!");
+            Debug.LogError("[TimeBasedSpawn] CSV 로드 실패 또는 데이터 없음!");
+            return;
         }
+
+        EnemyTimeRangeData.Initialize(enemyTimeRanges);
+        if (showDebugLogs)
+            Debug.Log($"[TimeBasedSpawn] Loaded & Initialized {enemyTimeRanges.Length} enemy time ranges from CSV");
 
         // 보스 이벤트 생성 및 추가
         if (bossPrefab != null)
