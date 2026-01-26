@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class UpgradeManager : MonoSingleton<UpgradeManager>
 {
+    [Header("=== Upgrade Data ===")]
+    [Tooltip("Upgrades CSV 파일 (필수)")]
+    [SerializeField] private TextAsset upgradesCsv;
+
+    [Header("=== Audio ===")]
     [SerializeField] AudioClip upgradeSound;
     [SerializeField] AudioClip upgradeFailSound;
 
+    [Header("=== UI ===")]
     [SerializeField] Color textHighlight;
 
     List<UpgradeButtonUI> UpgradeButtons => UiManager.Instance.UpgradeButtonUIList;
@@ -21,6 +27,15 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     // Start is called before the first frame update
     void Start()
     {
+        // CSV에서 업그레이드 데이터 로드
+        if (upgradesCsv == null)
+        {
+            Debug.LogError("[UpgradeManager] Upgrades CSV가 할당되지 않았습니다!");
+            return;
+        }
+
+        UpgradeData.Initialize(upgradesCsv);
+
         // 초기 스탯 설정 (기본값)
         InitPlayershipStats();
         UiManager.Instance.SetUpgradePointText(PlayerStats.Instance.upgradePoint);

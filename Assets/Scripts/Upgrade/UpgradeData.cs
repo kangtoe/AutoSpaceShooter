@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class UpgradeOption
 {
@@ -24,62 +24,37 @@ public class UpgradeOption
 
 public static class UpgradeData
 {
-    // 각 스탯의 1회 증가량
-    static Dictionary<UpgradeField, float> IncrementValues = new()
+    // 각 스탯의 1회 증가량 (CSV에서 로드됨)
+    static Dictionary<UpgradeField, float> IncrementValues = new();
+
+    // 각 스탯의 최대 레벨 (CSV에서 로드됨)
+    static Dictionary<UpgradeField, int> MaxLevels = new();
+
+    // 표시 이름 (CSV에서 로드됨)
+    static Dictionary<UpgradeField, string> DisplayNames = new();
+
+    /// <summary>
+    /// CSV 파일에서 업그레이드 데이터 초기화 (게임 시작 시 호출)
+    /// </summary>
+    public static void Initialize(TextAsset upgradesCsv)
     {
-        // 생존
-        { UpgradeField.MaxDurability, 50 },      // +50
-        { UpgradeField.MaxShield, 50 },          // +50
-        { UpgradeField.ShieldRegenRate, 5 },     // +5/초
-        { UpgradeField.ShieldRegenDelay, -0.2f }, // -0.2초
+        if (upgradesCsv == null)
+        {
+            Debug.LogError("[UpgradeData] Upgrades CSV가 할당되지 않았습니다!");
+            return;
+        }
 
-        // 사격
-        { UpgradeField.MultiShot, 1 },           // +1발
-        // TODO: 추가 구현 필요
-        // { UpgradeField.FireRate, -0.02f },       // -0.02초 (연사 속도 증가)
-        // { UpgradeField.ProjectileDamage, 2 },   // +2
-        // { UpgradeField.ProjectileSpeed, 1 },    // +1
+        // CSV 로드
+        UpgradesLoader.LoadFromCsv(upgradesCsv, out IncrementValues, out MaxLevels, out DisplayNames);
 
-        // 충돌
-        { UpgradeField.OnImpact, 5 },            // +5
-        // { UpgradeField.ImpactResist, 0.05f },   // +5%
+        if (IncrementValues.Count == 0 || MaxLevels.Count == 0 || DisplayNames.Count == 0)
+        {
+            Debug.LogError("[UpgradeData] CSV 로드 실패!");
+            return;
+        }
 
-        // 이동
-        // { UpgradeField.MoveSpeed, 1 },          // +1
-        // { UpgradeField.RotateSpeed, 20 },       // +20 deg/s
-    };
-
-    // 각 스탯의 최대 레벨 (선택 가능 횟수)
-    static Dictionary<UpgradeField, int> MaxLevels = new()
-    {
-        // 생존
-        { UpgradeField.MaxDurability, 10 },      // 최대 10회 → 100 + 500 = 600
-        { UpgradeField.MaxShield, 10 },          // 최대 10회 → 100 + 500 = 600
-        { UpgradeField.ShieldRegenRate, 8 },     // 최대 8회 → 20 + 40 = 60/초
-        { UpgradeField.ShieldRegenDelay, 5 },    // 최대 5회 → 2 - 1 = 1초
-
-        // 사격
-        { UpgradeField.MultiShot, 4 },           // 최대 4회 → 1 + 4 = 5발
-
-        // 충돌
-        { UpgradeField.OnImpact, 10 },           // 최대 10회 → 10 + 50 = 60
-    };
-
-    // 한글 표시 이름
-    static Dictionary<UpgradeField, string> DisplayNames = new()
-    {
-        // 생존
-        { UpgradeField.MaxDurability, "최대 내구도" },
-        { UpgradeField.MaxShield, "최대 실드" },
-        { UpgradeField.ShieldRegenRate, "실드 재생 속도" },
-        { UpgradeField.ShieldRegenDelay, "실드 재생 지연" },
-
-        // 사격
-        { UpgradeField.MultiShot, "멀티샷" },
-
-        // 충돌
-        { UpgradeField.OnImpact, "충돌 피해" },
-    };
+        Debug.Log($"[UpgradeData] Initialized with {IncrementValues.Count} upgrades from CSV");
+    }
 
     public static float GetIncrement(UpgradeField field)
     {
@@ -117,7 +92,7 @@ public static class UpgradeData
         availableFields = availableFields.OrderBy(x => rng.Next()).ToList();
 
         // count만큼 선택
-        int actualCount = UnityEngine.Mathf.Min(count, availableFields.Count);
+        int actualCount = Mathf.Min(count, availableFields.Count);
         List<UpgradeOption> options = new List<UpgradeOption>();
 
         for (int i = 0; i < actualCount; i++)
