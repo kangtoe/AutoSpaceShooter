@@ -17,7 +17,7 @@ public class Impactable : MonoBehaviour
     public float impactPowerSelf = 10;
 
     // 런타임 스탯 프로퍼티 (PlayerStats 또는 로컬 필드에서 가져옴)
-    float ImpactDamageOther => usePlayerStats ? PlayerStats.Instance.onImpact : impactDamageOther;
+    float ImpactDamageOther => usePlayerStats ? PlayerStatsManager.Instance.onImpact : impactDamageOther;
 
     Damageable m_damageable;
     Rigidbody2D m_rbody;

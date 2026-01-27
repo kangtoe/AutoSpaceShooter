@@ -7,7 +7,7 @@ using UnityEngine;
 public static class UpgradesLoader
 {
     private const string LOADER_NAME = "UpgradesLoader";
-    private static readonly string[] REQUIRED_COLUMNS = { "Upgrade", "DisplayName", "Increment", "MaxLevel" };
+    private static readonly string[] REQUIRED_COLUMNS = { "Field", "DisplayName", "Increment", "MaxLevel" };
 
     /// <summary>
     /// CSV 파일에서 업그레이드 데이터 로드
@@ -40,12 +40,12 @@ public static class UpgradesLoader
                 continue;
             }
 
-            string upgradeName = row["Upgrade"];
+            string fieldName = row["Field"];
 
             // UpgradeField enum 파싱
-            if (!System.Enum.TryParse<UpgradeField>(upgradeName, out UpgradeField field))
+            if (!System.Enum.TryParse<UpgradeField>(fieldName, out UpgradeField field))
             {
-                Debug.LogWarning($"[{LOADER_NAME}] Invalid UpgradeField: {upgradeName}");
+                Debug.LogWarning($"[{LOADER_NAME}] Invalid UpgradeField: {fieldName}");
                 continue;
             }
 
@@ -67,7 +67,7 @@ public static class UpgradesLoader
             maxLevels[field] = maxLevel;
             displayNames[field] = displayName;
 
-            Debug.Log($"[{LOADER_NAME}] Loaded {upgradeName} ({displayName}): Increment={increment}, MaxLevel={maxLevel}");
+            Debug.Log($"[{LOADER_NAME}] Loaded {fieldName} ({displayName}): Increment={increment}, MaxLevel={maxLevel}");
         }
 
         CsvReader.LogLoadComplete(incrementValues.Count, "upgrade entries", LOADER_NAME);

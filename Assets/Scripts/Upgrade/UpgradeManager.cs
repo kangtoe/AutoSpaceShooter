@@ -6,7 +6,7 @@ using UnityEngine;
 public class UpgradeManager : MonoSingleton<UpgradeManager>
 {
     [Header("=== Upgrade Data ===")]
-    [Tooltip("Upgrades CSV 파일 (필수)")]
+    [Tooltip("Upgrades CSV 파일 (필수) - 업그레이드 정보")]
     [SerializeField] private TextAsset upgradesCsv;
 
     [Header("=== Audio ===")]
@@ -27,18 +27,22 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     // Start is called before the first frame update
     void Start()
     {
-        // CSV에서 업그레이드 데이터 로드
+        // CSV 파일 검증
         if (upgradesCsv == null)
         {
             Debug.LogError("[UpgradeManager] Upgrades CSV가 할당되지 않았습니다!");
             return;
         }
 
+        // 1. PlayerStatsManager 초기화 (PlayerStats.csv 로드)
+        // MonoSingleton.Instance getter에서 자동으로 Initialize() 호출됨
+        var _ = PlayerStatsManager.Instance;
+
+        // 2. UpgradeData 초기화 (Upgrades.csv 로드 + DisplayName 병합)
         UpgradeData.Initialize(upgradesCsv);
 
-        // 초기 스탯 설정 (기본값)
-        InitPlayershipStats();
-        UiManager.Instance.SetUpgradePointText(PlayerStats.Instance.upgradePoint);
+        // 3. UI 업데이트
+        UiManager.Instance.SetUpgradePointText(PlayerStatsManager.Instance.upgradePoint);
 
         // 버튼 리스너 등록
         for (int i = 0; i < UpgradeButtons.Count; i++)
@@ -50,15 +54,10 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
         }
     }
 
-    void InitPlayershipStats()
-    {
-        // 모든 스탯을 기본값으로 초기화
-        // PlayerShip의 SetSystem은 이제 증분 방식이므로 여기선 호출하지 않음
-    }
 
     void SelectUpgrade(int index)
     {
-        if (PlayerStats.Instance.upgradePoint < 1)
+        if (PlayerStatsManager.Instance.upgradePoint < 1)
         {
             Vector2 touchPos = InputManager.Instance.PointerPosition;
             UiManager.Instance.CreateText("No Point!", touchPos);
@@ -92,21 +91,21 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
         statLevels[option.field]++;
 
         // PlayerStats에 증분 적용
-        PlayerStats.Instance.ApplyUpgrade(option.field, option.incrementValue);
+        PlayerStatsManager.Instance.ApplyUpgrade(option.field, option.incrementValue);
 
         // PlayerShip의 컴포넌트에 업데이트된 스텟 반영
         // (SetMaxDurability/SetMaxShield의 adjustCurrent 매개변수가 현재 값 조정을 처리)
         GameManager.Instance.PlayerShip.ApplyStatFromPlayerStats(option.field);
 
         // 포인트 차감
-        PlayerStats.Instance.upgradePoint--;
-        UiManager.Instance.SetUpgradePointText(PlayerStats.Instance.upgradePoint);
+        PlayerStatsManager.Instance.upgradePoint--;
+        UiManager.Instance.SetUpgradePointText(PlayerStatsManager.Instance.upgradePoint);
 
         SoundManager.Instance.PlaySound(upgradeSound);
         UiManager.Instance.ShakeUI();
 
         // 포인트가 남아있으면 새로운 옵션 생성, 없으면 창 닫기
-        if (PlayerStats.Instance.upgradePoint > 0)
+        if (PlayerStatsManager.Instance.upgradePoint > 0)
         {
             GenerateRandomUpgrades();
         }
@@ -149,8 +148,8 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
 
     public void PointUp(int amount = 1)
     {
-        PlayerStats.Instance.upgradePoint += amount;
-        UiManager.Instance.SetUpgradePointText(PlayerStats.Instance.upgradePoint);
+        PlayerStatsManager.Instance.upgradePoint += amount;
+        UiManager.Instance.SetUpgradePointText(PlayerStatsManager.Instance.upgradePoint);
 
         // 이미 업그레이드 화면이 열려있으면 옵션만 갱신
         if (GameManager.Instance.GameState == GameState.OnUpgrade)

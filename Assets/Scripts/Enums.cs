@@ -37,10 +37,12 @@ public enum UpgradeType
 public enum UpgradeField
 {
     // 생존
-    MaxDurability,    // 최대 내구도
-    MaxShield,        // 최대 실드
-    ShieldRegenRate,  // 실드 재생 속도
-    ShieldRegenDelay, // 실드 재생 지연 (감소)
+    MaxDurability,       // 최대 내구도
+    MaxShield,           // 최대 실드
+    ShieldRegenRate,     // 실드 재생 속도
+    ShieldRegenDelay,    // 실드 재생 지연 (감소)
+    DurabilityRegenRate, // 내구도 재생 속도
+    DurabilityRegenDelay,// 내구도 재생 지연
 
     // 사격
     FireRate,         // 연사 속도 (fireDelay 감소)

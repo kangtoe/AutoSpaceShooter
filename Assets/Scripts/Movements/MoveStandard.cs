@@ -27,7 +27,7 @@ public class MoveStandard : MonoBehaviour
     // 현재 사용할 질량 값 반환 (PlayerShip이면 PlayerStats 참조, 아니면 Rigidbody2D 사용)
     float GetMass()
     {
-        return isPlayerShip ? PlayerStats.Instance.mass : rbody.mass;
+        return isPlayerShip ? PlayerStatsManager.Instance.mass : rbody.mass;
     }
 
     // PlayerShip에서 이동 속도를 설정할 수 있도록 public setter 제공

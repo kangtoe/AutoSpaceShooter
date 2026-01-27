@@ -49,15 +49,15 @@ public class Damageable : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip shieldHitSound;
 
-    public float MaxDurability => usePlayerStats ? PlayerStats.Instance.maxDurability : maxDurability;
+    public float MaxDurability => usePlayerStats ? PlayerStatsManager.Instance.maxDurability : maxDurability;
     public float CurrDurability => currDurability;
-    float DurabilityRegenRate => usePlayerStats ? PlayerStats.Instance.durabilityRegenRate : durabilityRegenRate;
-    float DurabilityRegenDelay => usePlayerStats ? PlayerStats.Instance.durabilityRegenDelay : durabilityRegenDelay;
+    float DurabilityRegenRate => usePlayerStats ? PlayerStatsManager.Instance.durabilityRegenRate : durabilityRegenRate;
+    float DurabilityRegenDelay => usePlayerStats ? PlayerStatsManager.Instance.durabilityRegenDelay : durabilityRegenDelay;
 
-    public float MaxShield => usePlayerStats ? PlayerStats.Instance.maxShield : maxShield;
+    public float MaxShield => usePlayerStats ? PlayerStatsManager.Instance.maxShield : maxShield;
     public float CurrShield => currShield;
-    float ShieldRegenRate => usePlayerStats ? PlayerStats.Instance.shieldRegenRate : shieldRegenRate;
-    float ShieldRegenDelay => usePlayerStats ? PlayerStats.Instance.shieldRegenDelay : shieldRegenDelay;
+    float ShieldRegenRate => usePlayerStats ? PlayerStatsManager.Instance.shieldRegenRate : shieldRegenRate;
+    float ShieldRegenDelay => usePlayerStats ? PlayerStatsManager.Instance.shieldRegenDelay : shieldRegenDelay;
 
     bool isDead;
     public bool IsDead => isDead;

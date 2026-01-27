@@ -35,7 +35,9 @@ public static class UpgradeData
 
     /// <summary>
     /// CSV 파일에서 업그레이드 데이터 초기화 (게임 시작 시 호출)
+    /// UpgradeManager가 호출
     /// </summary>
+    /// <param name="upgradesCsv">Upgrades.csv (업그레이드 정보)</param>
     public static void Initialize(TextAsset upgradesCsv)
     {
         if (upgradesCsv == null)
@@ -44,7 +46,7 @@ public static class UpgradeData
             return;
         }
 
-        // CSV 로드
+        // Upgrades.csv 로드
         UpgradesLoader.LoadFromCsv(upgradesCsv, out IncrementValues, out MaxLevels, out DisplayNames);
 
         if (IncrementValues.Count == 0 || MaxLevels.Count == 0 || DisplayNames.Count == 0)
@@ -52,6 +54,9 @@ public static class UpgradeData
             Debug.LogError("[UpgradeData] CSV 로드 실패!");
             return;
         }
+
+        // StatMetadataRegistry에 DisplayName 병합
+        StatMetadataRegistry.MergeDisplayNames(DisplayNames);
 
         Debug.Log($"[UpgradeData] Initialized with {IncrementValues.Count} upgrades from CSV");
     }
@@ -132,63 +137,23 @@ public static class UpgradeData
         // 현재 값 → 다음 값 표시
         string currentStr = FormatValue(currentValue, field);
         string nextStr = FormatValue(nextValue, field);
-        string changeStr = $"({currentStr}{unit} → {nextStr}{unit})";
+        string changeStr = $"{currentStr}{unit} → {nextStr}{unit}";
 
         return $"{sign}{incrementStr}{unit}\n{changeStr}\nLv.{currentLevel}/{maxLevel}";
     }
 
     static float GetCurrentValue(UpgradeField field)
     {
-        var stats = PlayerStats.Instance;
-        if (stats == null) return 0;
-
-        switch (field)
-        {
-            case UpgradeField.MaxDurability: return stats.maxDurability;
-            case UpgradeField.MaxShield: return stats.maxShield;
-            case UpgradeField.ShieldRegenRate: return stats.shieldRegenRate;
-            case UpgradeField.ShieldRegenDelay: return stats.shieldRegenDelay;
-            case UpgradeField.MultiShot: return stats.multiShot;
-            case UpgradeField.FireRate: return stats.fireRate;
-            case UpgradeField.ProjectileDamage: return stats.projectileDamage;
-            case UpgradeField.ProjectileSpeed: return stats.projectileSpeed;
-            case UpgradeField.OnImpact: return stats.onImpact;
-            case UpgradeField.ImpactResist: return stats.impactResist;
-            case UpgradeField.MoveSpeed: return stats.moveSpeed;
-            case UpgradeField.RotateSpeed: return stats.rotateSpeed;
-            default: return 0;
-        }
+        return PlayerStatsManager.Instance?.GetStat(field) ?? 0f;
     }
 
     static string GetUnit(UpgradeField field)
     {
-        switch (field)
-        {
-            case UpgradeField.ShieldRegenRate: return "/초";
-            case UpgradeField.ShieldRegenDelay: return "초";
-            case UpgradeField.FireRate: return "초";
-            case UpgradeField.MultiShot: return "발";
-            case UpgradeField.ImpactResist: return "%";
-            case UpgradeField.RotateSpeed: return "°/s";
-            default: return "";
-        }
+        return StatMetadataRegistry.Get(field)?.unit ?? "";
     }
 
     static string FormatValue(float value, UpgradeField field)
     {
-        // 정수형 필드
-        if (field == UpgradeField.MultiShot ||
-            field == UpgradeField.ProjectileDamage ||
-            field == UpgradeField.MaxDurability ||
-            field == UpgradeField.MaxShield)
-        {
-            return ((int)value).ToString();
-        }
-
-        // 소수점이 있는 경우
-        if (value % 1 != 0)
-            return value.ToString("F1");
-
-        return ((int)value).ToString();
+        return StatMetadataRegistry.Get(field)?.FormatValue(value) ?? value.ToString();
     }
 }

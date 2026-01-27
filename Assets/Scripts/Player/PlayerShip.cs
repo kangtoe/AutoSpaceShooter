@@ -74,7 +74,7 @@ public class PlayerShip : MonoBehaviour
         }
         else
         {
-            float expectedMass = PlayerStats.Instance.mass;
+            float expectedMass = PlayerStatsManager.Instance.mass;
             if (Mathf.Abs(rb.mass - expectedMass) > 0.001f)
             {
                 Debug.LogWarning($"[PlayerShip] Rigidbody2D.mass를 직접 수정하지 마세요! PlayerStats.mass({expectedMass})로 복원합니다.");
@@ -83,8 +83,8 @@ public class PlayerShip : MonoBehaviour
         }
 
         // 5. 이동/회전 속도를 PlayerStats 값으로 설정
-        moveStandard.SetMovePower(PlayerStats.Instance.moveSpeed);
-        rotateByInput.SetRotationSpeed(PlayerStats.Instance.rotateSpeed);
+        moveStandard.SetMovePower(PlayerStatsManager.Instance.moveSpeed);
+        rotateByInput.SetRotationSpeed(PlayerStatsManager.Instance.rotateSpeed);
     }
 
 
@@ -113,30 +113,36 @@ public class PlayerShip : MonoBehaviour
         switch (field)
         {
             case UpgradeField.MaxDurability:
-                damageable.SetMaxDurability(PlayerStats.Instance.maxDurability, true);
+                damageable.SetMaxDurability(PlayerStatsManager.Instance.maxDurability, true);
                 UpdateDurabilityUI();
                 break;
             case UpgradeField.MaxShield:
-                damageable.SetMaxShield(PlayerStats.Instance.maxShield, true);
+                damageable.SetMaxShield(PlayerStatsManager.Instance.maxShield, true);
                 UpdateDurabilityUI();
                 break;
             case UpgradeField.ShieldRegenRate:
-                damageable.SetShieldRegenRate(PlayerStats.Instance.shieldRegenRate);
+                damageable.SetShieldRegenRate(PlayerStatsManager.Instance.shieldRegenRate);
                 break;
             case UpgradeField.ShieldRegenDelay:
-                damageable.SetShieldRegenDelay(PlayerStats.Instance.shieldRegenDelay);
+                damageable.SetShieldRegenDelay(PlayerStatsManager.Instance.shieldRegenDelay);
+                break;
+            case UpgradeField.DurabilityRegenRate:
+                damageable.SetDurabilityRegenRate(PlayerStatsManager.Instance.durabilityRegenRate);
+                break;
+            case UpgradeField.DurabilityRegenDelay:
+                damageable.SetDurabilityRegenDelay(PlayerStatsManager.Instance.durabilityRegenDelay);
                 break;
             case UpgradeField.OnImpact:
-                impactable.SetDamageAmount(PlayerStats.Instance.onImpact);
+                impactable.SetDamageAmount(PlayerStatsManager.Instance.onImpact);
                 break;
             case UpgradeField.MultiShot:
-                shooter.SetMultiShot(PlayerStats.Instance.multiShot);
+                shooter.SetMultiShot(PlayerStatsManager.Instance.multiShot);
                 break;
             case UpgradeField.MoveSpeed:
-                moveStandard.SetMovePower(PlayerStats.Instance.moveSpeed);
+                moveStandard.SetMovePower(PlayerStatsManager.Instance.moveSpeed);
                 break;
             case UpgradeField.RotateSpeed:
-                rotateByInput.SetRotationSpeed(PlayerStats.Instance.rotateSpeed);
+                rotateByInput.SetRotationSpeed(PlayerStatsManager.Instance.rotateSpeed);
                 break;
         }
     }

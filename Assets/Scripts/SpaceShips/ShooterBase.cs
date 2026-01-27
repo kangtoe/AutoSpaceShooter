@@ -38,10 +38,10 @@ public class ShooterBase : MonoBehaviour
     public AudioClip shootSound;
     public AudioClip onHitSound;
 
-    // 런타임 스탯 프로퍼티 (PlayerStats 또는 로컬 필드에서 가져옴)
-    int ShotCount => usePlayerStats ? PlayerStats.Instance.multiShot : shotCountPerFirepoint;
-    int Damage => usePlayerStats ? PlayerStats.Instance.projectileDamage : damage;
-    float ProjectileSpeed => usePlayerStats ? PlayerStats.Instance.projectileSpeed : projectileMovePower;
+    // 런타임 스탯 프로퍼티 (PlayerStatsManager 또는 로컬 필드에서 가져옴)
+    int ShotCount => usePlayerStats ? PlayerStatsManager.Instance.multiShot : shotCountPerFirepoint;
+    int Damage => usePlayerStats ? PlayerStatsManager.Instance.projectileDamage : damage;
+    float ProjectileSpeed => usePlayerStats ? PlayerStatsManager.Instance.projectileSpeed : projectileMovePower;
 
     public bool Available => Time.time >= lastFireTime + fireDelay;
 
