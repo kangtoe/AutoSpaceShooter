@@ -29,6 +29,9 @@
 # VSCode directory
 .vscode/
 
+# Claude AI directory
+.claude/
+
 # Gradle cache directory
 .gradle/
 
