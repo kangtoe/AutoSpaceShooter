@@ -59,15 +59,10 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] Canvas floatTextCanvas;  // 플로팅 텍스트용 캔버스 (좌표 변환용)
 
 
-    // 내구도/실드 UI 초기화 (PlayerShip에서 호출)
-    public void InitializeDurabilityUI()
-    {                        
-        durabilityGauge.Initialize();        
-        shieldGauge.Initialize();
-    }
-
-    private void Start()
+    public override bool Initialize()
     {
+        if (!base.Initialize()) return false;
+
         // 업그레이드 버튼 이벤트 등록
         if (combatUpgradeButton != null)
         {
@@ -75,6 +70,15 @@ public class UiManager : MonoSingleton<UiManager>
             // 초기에는 비활성화
             combatUpgradeButton.gameObject.SetActive(false);
         }
+
+        return true;
+    }
+
+    // 내구도/실드 UI 초기화 (PlayerShip에서 호출)
+    public void InitializeDurabilityUI()
+    {
+        durabilityGauge.Initialize();
+        shieldGauge.Initialize();
     }
 
     public void SetScoreText(int score)

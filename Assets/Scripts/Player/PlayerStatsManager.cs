@@ -138,22 +138,19 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
     // === 초기화 ===
 
     /// <summary>
-    /// 매니저 초기화 (UpgradeManager.Start()에서 호출됨)
+    /// 매니저 초기화 (첫 Instance 접근 시 자동 호출)
     /// PlayerStats.csv를 로드하고 StatMetadataRegistry 초기화
     /// </summary>
-    public override void Initialize()
+    /// <returns>true: 성공적으로 초기화됨, false: 이미 초기화되어 있음</returns>
+    public override bool Initialize()
     {
-        if (IsInitialized)
-        {
-            Debug.LogWarning("[PlayerStatsManager] Already initialized!");
-            return;
-        }
+        if (!base.Initialize()) return false;
 
         // CSV 파일 검증
         if (playerStatsCsv == null)
         {
             Debug.LogError("[PlayerStatsManager] PlayerStats CSV가 할당되지 않았습니다!");
-            return;
+            return false;
         }
 
         stats.Clear();
@@ -172,8 +169,8 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
             }
         }
 
-        IsInitialized = true;
         Debug.Log($"[PlayerStatsManager] Initialized {stats.Count} stats with default values");
+        return true;
     }
 
     // === 업그레이드 적용 (switch 문 제거!) ===
@@ -200,7 +197,11 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
 
         // 재초기화
         IsInitialized = false;
-        Initialize();
+        if (!Initialize())
+        {
+            Debug.LogWarning("[PlayerStatsManager] Failed to reset stats");
+            return;
+        }
 
         Debug.Log("[PlayerStatsManager] All stats have been reset to default values");
     }

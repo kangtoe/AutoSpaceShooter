@@ -8,9 +8,13 @@ public class ScoreManager : MonoSingleton<ScoreManager>
     int currScore = 0;
     public int CurrScore => currScore;
 
-    private void Start()
+    public override bool Initialize()
     {
+        if (!base.Initialize()) return false;
+
         UpdateScoreUI();
+
+        return true;
     }
 
     public void AddScore(int score)

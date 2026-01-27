@@ -14,9 +14,13 @@ public class LevelManager : MonoSingleton<LevelManager>
 
     [HideInInspector] public UnityEvent onLevelUp;
 
-    private void Start()
+    public override bool Initialize()
     {
+        if (!base.Initialize()) return false;
+
         UpdateExpUI();
+
+        return true;
     }
 
     public void GetExp(int Amount)

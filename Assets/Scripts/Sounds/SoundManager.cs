@@ -31,10 +31,25 @@ public class SoundManager : MonoSingleton<SoundManager>
     [SerializeField]
     AudioMixerGroup bgmOutput;
 
-    // Start is called before the first frame update
-    void Start()
-    {  
-        PlaySound(bgm, SoundType.Bgm);
+    public override bool Initialize()
+    {
+        if (!base.Initialize()) return false;
+
+        // BGM은 GameManager에서 명시적으로 재생하도록 변경
+        // PlaySound(bgm, SoundType.Bgm);  // 자동 재생 제거
+
+        return true;
+    }
+
+    /// <summary>
+    /// BGM 재생 (GameManager.Awake에서 호출)
+    /// </summary>
+    public void PlayBGM()
+    {
+        if (bgm != null)
+        {
+            PlaySound(bgm, SoundType.Bgm);
+        }
     }
 
     // 사운드 재생 : 문자열

@@ -25,13 +25,16 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
-        //playerShip.enabled = false;        
+        //playerShip.enabled = false;
 
         gameState = GameState.OnTitle;
         UiManager.Instance.SetCanvas(GameState.OnTitle);
         Time.timeScale = 1;
 
         UiManager.Instance.ToggleCustomCursor(true);
+
+        // BGM 재생
+        SoundManager.Instance.PlayBGM();
     }
 
     // Update is called once per frame

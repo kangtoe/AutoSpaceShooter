@@ -12,9 +12,10 @@ public class TimeRecordManager : MonoSingleton<TimeRecordManager>
 
     bool canCount = false;
 
-    // Start is called before the first frame update
-    void Start()
+    public override bool Initialize()
     {
+        if (!base.Initialize()) return false;
+
         // 초기 시간 설정 (디버깅용)
         timeRecord = startTime;
 
@@ -24,10 +25,9 @@ public class TimeRecordManager : MonoSingleton<TimeRecordManager>
         }
 
         // UI 초기화
-        if (UiManager.Instance != null)
-        {
-            UiManager.Instance.SetTimeRecordText((int)timeRecord);
-        }
+        UiManager.Instance.SetTimeRecordText((int)timeRecord);
+
+        return true;
     }
 
     // Update is called once per frame
