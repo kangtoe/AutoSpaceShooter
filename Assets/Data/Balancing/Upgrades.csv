@@ -1,13 +1,16 @@
-Upgrade,DisplayName,Increment,MaxLevel,FinalValue,Multiplier,Category
-MaxDurability,최대 내구도,+50,10,600,6x,Survival
-MaxShield,최대 실드,+50,10,600,6x,Survival
-ShieldRegenRate,실드 재생 속도,+5/s,8,60/s,3x,Survival
-ShieldRegenDelay,실드 재생 지연,-0.2s,5,1s,50%↓,Survival
-MultiShot,멀티샷,+1,4,5,5x,Shooting
-FireRate,연사 속도,+0.2,5,2.0,2x,Shooting
-ProjectileDamage,발사체 피해,+5,10,60,6x,Shooting
-ProjectileSpeed,발사체 속도,+2,5,20,2x,Shooting
-OnImpact,충돌 피해,+5,10,60,6x,Impact
-ImpactResist,충돌 저항,+5,10,50,-,Impact
-MoveSpeed,이동 속도,+1,5,10,2x,Mobility
-RotateSpeed,회전 속도,+30,5,330,1.8x,Mobility
+Field,DisplayName,Increment,MaxLevel
+MaxDurability,Max Durability,+50,10
+MaxShield,Max Shield,+50,10
+ShieldRegenRate,Shield Regen Rate,+5,8
+ShieldRegenDelay,Shield Regen Delay,-0.2,5
+DurabilityRegenRate,Durability Regen Rate,+2,8
+DurabilityRegenDelay,Durability Regen Delay,-0.2,5
+MultiShot,Multi Shot,+1,4
+FireRate,Fire Rate,+0.2,5
+ProjectileDamage,Projectile Damage,+5,10
+ProjectileSpeed,Projectile Speed,+2,5
+OnImpact,On Impact,+5,10
+ImpactResist,Impact Resist,+5,10
+MoveSpeed,Move Speed,+1,5
+RotateSpeed,Rotate Speed,+30,5
+Mass,Mass,+0.5,5
