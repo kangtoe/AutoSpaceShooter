@@ -177,42 +177,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 28509442}
-  - component: {fileID: 28509441}
+  - component: {fileID: 28509443}
   m_Layer: 0
-  m_Name: PlayerStats
+  m_Name: PlayerStatsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &28509441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 28509440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc2e0a1b6b6e4a643a9a1b1ab23b5614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  upgradePoint: 1
-  maxDurability: 9999
-  durabilityRegenRate: 0
-  durabilityRegenDelay: 5
-  maxShield: 9999
-  shieldRegenRate: 20
-  shieldRegenDelay: 2
-  multiShot: 1
-  fireRate: 1
-  projectileDamage: 10
-  projectileSpeed: 10
-  onImpact: 9999
-  impactResist: 9999
-  moveSpeed: 0
-  rotateSpeed: 180
-  mass: 9999
 --- !u!4 &28509442
 Transform:
   m_ObjectHideFlags: 0
@@ -228,6 +200,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &28509443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28509440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a603d9dbec6c1446a5b7372eb079b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
+  playerStatsCsv: {fileID: 0}
+  upgradePoint: 1
 --- !u!224 &76294939 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5265527620162307941, guid: 1bb5682a8bdcc9240970e7536c1b31dd, type: 3}
