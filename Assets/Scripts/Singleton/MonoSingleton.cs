@@ -38,12 +38,17 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     }
 
     /// <summary>
-    /// 매니저 초기화 (GameManager에서 명시적으로 호출)
+    /// 매니저 초기화 (첫 Instance 접근 시 자동 호출)
     /// 하위 클래스에서 override하여 구현
     /// </summary>
-    public virtual void Initialize()
+    /// <returns>true: 성공적으로 초기화됨, false: 이미 초기화되어 있음</returns>
+    public virtual bool Initialize()
     {
-        // 기본 구현 없음 - 하위 클래스에서 필요 시 override
+        // 기본 구현: 중복 초기화 방지
+        if (IsInitialized) return false;
+
+        IsInitialized = true;
+        return true;
     }
 
     /// <summary>
