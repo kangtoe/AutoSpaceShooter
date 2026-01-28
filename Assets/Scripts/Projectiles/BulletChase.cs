@@ -19,25 +19,12 @@ public class BulletChase : BulletBase
 
     Transform Target => FindTarget.Target;
 
-    Pulse pulse;
-    Pulse Pulse {
-        get
-        {
-            if (!pulse) pulse = hitEffect.GetComponent<Pulse>();
-            return pulse;
-        }
-    }                
+    // Note: 조기 폭발 로직 제거됨. 충돌 판정은 BulletBase의 일반 로직 사용
+    // hitEffectRadius가 설정되어 있으면 충돌 시 범위 데미지 발생
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Pulse)
-        {
-            float checkRange = Pulse.ExpansionRadius / 2;
-            bool check = Physics2D.OverlapCircle(transform.position, checkRange, targetLayer);      
-            if (check) OnHitDestory();
-        }
-
         float powerMult = 1;
         if (Target) powerMult -= (GetAngleToTarget(Target) / 180);
         RBody.AddForce(transform.up * movePower * powerMult);
