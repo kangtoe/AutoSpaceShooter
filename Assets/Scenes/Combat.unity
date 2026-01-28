@@ -4903,7 +4903,7 @@ PrefabInstance:
     - target: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: projectilePrefab
       value: 
-      objectReference: {fileID: 1283337894081986906, guid: 3324c653044478b4c9af61bfb7c8731a, type: 3}
+      objectReference: {fileID: 17675907770100100, guid: a1f4e9ae50460bd4caaa7401328bc9de, type: 3}
     - target: {fileID: 3108423768624995501, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: movePower
       value: 10

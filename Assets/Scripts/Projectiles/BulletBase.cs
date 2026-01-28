@@ -46,10 +46,18 @@ public class BulletBase : MonoBehaviour
     [SerializeField] float damageMultiplierEnd = 1f;          // 끝 데미지 배율 (1.0=변화없음, 0.5=50%로 감소)
 
     [Space]
+    [SerializeField] float speedMultiplierStart = 1f;         // 시작 속도 배율
+    [SerializeField] float speedMultiplierEnd = 1f;           // 끝 속도 배율 (1.0=변화없음, 0.1=10%로 감소)
+
+    [Space]
     [SerializeField] float colliderDisableThreshold = 1f;     // 충돌 판정 비활성화 임계값 (1.0=비활성화 안 함, 0.8=80%에서 비활성화)
 
     [Space]
     [SerializeField] bool destroyOnComplete = true;           // 완료 시 파괴 여부
+
+    [Space]
+    [SerializeField] float rotationSpeedStart = 0f;           // 시작 회전 속도 (도/초)
+    [SerializeField] float rotationSpeedEnd = 0f;             // 끝 회전 속도 (도/초)
 
     int initialDamage;      // 초기 데미지 (변형 계산용)
     Vector3 initialScale;   // 초기 스케일 (변형 계산용)
@@ -119,6 +127,21 @@ public class BulletBase : MonoBehaviour
         {
             float currentDamageMultiplier = Mathf.Lerp(1f, damageMultiplierEnd, progress);
             damage = Mathf.RoundToInt(initialDamage * currentDamageMultiplier);
+        }
+
+        // 속도 변화 (speedMultiplierStart → speedMultiplierEnd)
+        if (speedMultiplierEnd != speedMultiplierStart && RBody)
+        {
+            float currentSpeedMultiplier = Mathf.Lerp(speedMultiplierStart, speedMultiplierEnd, progress);
+            Vector2 currentDirection = RBody.linearVelocity.normalized;
+            RBody.linearVelocity = currentDirection * (movePower * currentSpeedMultiplier);
+        }
+
+        // 회전 (rotationSpeedStart → rotationSpeedEnd)
+        if (rotationSpeedEnd != rotationSpeedStart)
+        {
+            float currentRotationSpeed = Mathf.Lerp(rotationSpeedStart, rotationSpeedEnd, progress);
+            transform.Rotate(0, 0, currentRotationSpeed * Time.deltaTime);
         }
 
         // 투명도 변화 (alphaStart → alphaEnd)

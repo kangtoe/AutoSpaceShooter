@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 2616766260278359982}
   - component: {fileID: 3226616336597749516}
   - component: {fileID: 286053368525053147}
-  - component: {fileID: 3409316992749757210}
-  - component: {fileID: 4072562020889111935}
+  - component: {fileID: -8107365603962853060}
   m_Layer: 0
   m_Name: BulletRemain
   m_TagString: Untagged
@@ -38,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2616766260278359982
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +53,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,9 +79,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -1493754449, guid: a74d4d718087d7444a441fc45e0fe053, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,11 +93,10 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &3226616336597749516
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -101,8 +107,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -123,6 +129,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17675907770100100}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -146,11 +153,12 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.6, y: 0.6}
   m_Direction: 0
---- !u!114 &3409316992749757210
+--- !u!114 &-8107365603962853060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,31 +167,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 17675907770100100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f10730578e7dd044cbef99e2e4eefc7e, type: 3}
+  m_Script: {fileID: 11500000, guid: b97f8a26746045241a5f43bfda4960c5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletBase
   onHitSound: {fileID: 0}
   destoryOnHit: 1
   removeOtherBullet: 0
-  hitEffect: {fileID: 2132495355240508640, guid: d322f38691a1c0e4ba9a403551aacfaa, type: 3}
+  hitEffect: {fileID: 0}
+  hitEffectRadius: 0
   targetLayer:
     serializedVersion: 2
     m_Bits: 0
   damage: 0
   impact: 0
-  movePower: 2
-  liveTime: 99
-  remainVelocity: 0.2
---- !u!114 &4072562020889111935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17675907770100100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25bfbabd9522e0940ab28ecd00c9661e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotateMult: 5
+  movePower: 0
+  transformStartTime: 0
+  transformDuration: 1
+  scaleMultiplierStart: 1
+  scaleMultiplierEnd: 1
+  alphaStart: 1
+  alphaEnd: 1
+  alphaFadeStartRatio: 0
+  damageMultiplierEnd: 1
+  speedMultiplierStart: 1
+  speedMultiplierEnd: 0
+  colliderDisableThreshold: 1
+  destroyOnComplete: 1
+  rotationSpeedStart: 720
+  rotationSpeedEnd: 0
