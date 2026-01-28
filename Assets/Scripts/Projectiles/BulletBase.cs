@@ -59,9 +59,17 @@ public class BulletBase : MonoBehaviour
     [SerializeField] float rotationSpeedStart = 0f;           // 시작 회전 속도 (도/초)
     [SerializeField] float rotationSpeedEnd = 0f;             // 끝 회전 속도 (도/초)
 
+    [Header("Homing System (Tracking Target)")]
+    [SerializeField] float homingTurnSpeed = 0f;              // 회전 속도 (0 = 추적 안함, 높을수록 빠르게 방향 전환)
+    [SerializeField] float homingStartTime = 0f;              // 추적 시작 시간 (발사 후 몇 초 뒤부터 추적)
+    [SerializeField] float homingMaxDuration = -1f;           // 최대 추적 시간 (-1 = 무제한)
+
     int initialDamage;      // 초기 데미지 (변형 계산용)
     Vector3 initialScale;   // 초기 스케일 (변형 계산용)
     Color initialColor;     // 초기 색상 (투명도 변형 계산용)
+
+    FindTarget findTarget;  // 타겟 탐색 컴포넌트
+    float homingElapsedTime = 0f;  // 추적 경과 시간
 
     Rigidbody2D rBody;
     protected Rigidbody2D RBody
@@ -106,6 +114,67 @@ public class BulletBase : MonoBehaviour
         {
             OnHitDestory(null, playSound: false, playEffect: false);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        // 추적 시스템 처리 (homingTurnSpeed > 0일 때만)
+        if (homingTurnSpeed > 0f && RBody)
+        {
+            UpdateHoming();
+        }
+    }
+
+    void UpdateHoming()
+    {
+        // 추적 시작 시간 이전이면 무시
+        if (spwanedTime < homingStartTime)
+            return;
+
+        // 추적 경과 시간 업데이트
+        homingElapsedTime += Time.fixedDeltaTime;
+
+        // 최대 추적 시간 초과 시 직진
+        if (homingMaxDuration > 0f && homingElapsedTime > homingMaxDuration)
+        {
+            RBody.linearVelocity = transform.up * movePower;
+            return;
+        }
+
+        // FindTarget 컴포넌트 가져오기 (lazy initialization)
+        if (!findTarget)
+        {
+            findTarget = GetComponent<FindTarget>();
+            if (findTarget)
+            {
+                findTarget.targetLayer = targetLayer;
+            }
+        }
+
+        // 타겟이 없으면 직진
+        Transform target = findTarget ? findTarget.Target : null;
+        if (!target)
+        {
+            RBody.linearVelocity = transform.up * movePower;
+            return;
+        }
+
+        // 타겟 방향 계산 (position을 한 번만 접근)
+        Vector2 toTarget = (Vector2)target.position - (Vector2)transform.position;
+        Vector2 targetDirection = toTarget.normalized;
+
+        // 현재 속도 방향 (이미 정규화된 방향 사용)
+        Vector2 currentVelocity = RBody.linearVelocity;
+        float currentSpeed = currentVelocity.magnitude;
+        Vector2 currentDirection = currentSpeed > 0.01f ? currentVelocity / currentSpeed : transform.up;
+
+        // 부드러운 방향 전환 (Lerp)
+        Vector2 newDirection = Vector2.Lerp(currentDirection, targetDirection, homingTurnSpeed * Time.fixedDeltaTime);
+        RBody.linearVelocity = newDirection * movePower;
+
+        // 스프라이트 회전 (속도 방향으로)
+        float angle = Mathf.Atan2(newDirection.y, newDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
     }
 
     void UpdateTransformation()

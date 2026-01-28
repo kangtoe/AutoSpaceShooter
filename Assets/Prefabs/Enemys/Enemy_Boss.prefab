@@ -98,7 +98,6 @@ MonoBehaviour:
   damage: 0
   impactPower: 0
   projectileMovePower: 5
-  projectileLiveTime: 3
   createBulletAsChild: 0
   shootSound: {fileID: 0}
   onHitSound: {fileID: 0}
@@ -169,7 +168,6 @@ MonoBehaviour:
   damage: 0
   impactPower: 0
   projectileMovePower: 5
-  projectileLiveTime: 3
   createBulletAsChild: 0
   shootSound: {fileID: 0}
   onHitSound: {fileID: 0}
@@ -295,11 +293,10 @@ MonoBehaviour:
   intervalX: 0.2
   intervalY: 0.2
   outsideSlower: 0
-  projectilePrefab: {fileID: 17675907770100100, guid: 05dc1c21e5654ef49840ca0c7c576e58, type: 3}
+  projectilePrefab: {fileID: 6023640423919325906, guid: 36c93ebeacbdefc41b66bc2b25bfce38, type: 3}
   damage: 25
   impactPower: 5
   projectileMovePower: 5
-  projectileLiveTime: 6
   createBulletAsChild: 0
   shootSound: {fileID: 0}
   onHitSound: {fileID: 0}
@@ -587,7 +584,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  searchRaduius: 20
+  searchRadius: 20
   anglePriority: 0
   findAlways: 0
   target: {fileID: 0}
@@ -910,7 +907,6 @@ MonoBehaviour:
   damage: 0
   impactPower: 5
   projectileMovePower: 2
-  projectileLiveTime: 3
   createBulletAsChild: 0
   shootSound: {fileID: 0}
   onHitSound: {fileID: 0}
