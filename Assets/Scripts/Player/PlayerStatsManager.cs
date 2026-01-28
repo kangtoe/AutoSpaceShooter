@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
 {
     [Header("=== Player Stats Data ===")]
-    [Tooltip("PlayerStats CSV 파일 (필수) - 스탯 메타데이터")]
-    [SerializeField] private TextAsset playerStatsCsv;
+    [Tooltip("StatConfigDatabase SO (필수) - 모든 스탯 설정")]
+    [SerializeField] private StatConfigDatabase statDatabase;
 
     [Header("업그레이드")]
     public int upgradePoint = 0;
@@ -121,8 +121,8 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
             return stats[field];
 
         // 없으면 기본값 반환
-        var meta = StatMetadataRegistry.Get(field);
-        float defaultValue = meta?.defaultValue ?? 0f;
+        var config = statDatabase?.GetConfig(field);
+        float defaultValue = config?.defaultValue ?? 0f;
         stats[field] = defaultValue;
         return defaultValue;
     }
@@ -139,37 +139,40 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
 
     /// <summary>
     /// 매니저 초기화 (첫 Instance 접근 시 자동 호출)
-    /// PlayerStats.csv를 로드하고 StatMetadataRegistry 초기화
+    /// StatConfigDatabase를 로드하고 StatMetadataRegistry 초기화
     /// </summary>
     /// <returns>true: 성공적으로 초기화됨, false: 이미 초기화되어 있음</returns>
     public override bool Initialize()
     {
         if (!base.Initialize()) return false;
 
-        // CSV 파일 검증
-        if (playerStatsCsv == null)
+        // StatConfigDatabase 검증
+        if (statDatabase == null)
         {
-            Debug.LogError("[PlayerStatsManager] PlayerStats CSV가 할당되지 않았습니다!");
+            Debug.LogError("[PlayerStatsManager] StatConfigDatabase가 할당되지 않았습니다!");
             return false;
         }
 
         stats.Clear();
 
-        // 1. PlayerStats.csv 로드 및 StatMetadataRegistry 초기화
-        var metadata = PlayerStatsLoader.LoadFromCsv(playerStatsCsv);
+        // 1. StatConfigDatabase 초기화
+        statDatabase.Initialize();
+
+        // 2. StatMetadataRegistry 초기화 (기존 코드 호환성)
+        var metadata = new Dictionary<UpgradeField, StatMetadata>();
+        foreach (var config in statDatabase.allStats)
+        {
+            metadata[config.field] = config.ToMetadata();
+        }
         StatMetadataRegistry.InitializeFromPlayerStats(metadata);
 
-        // 2. 모든 UpgradeField를 기본값으로 초기화
-        foreach (UpgradeField field in System.Enum.GetValues(typeof(UpgradeField)))
+        // 3. 모든 UpgradeField를 기본값으로 초기화
+        foreach (var config in statDatabase.allStats)
         {
-            var meta = StatMetadataRegistry.Get(field);
-            if (meta != null)
-            {
-                stats[field] = meta.defaultValue;
-            }
+            stats[config.field] = config.defaultValue;
         }
 
-        Debug.Log($"[PlayerStatsManager] Initialized {stats.Count} stats with default values");
+        Debug.Log($"[PlayerStatsManager] Initialized {stats.Count} stats from StatConfigDatabase");
         return true;
     }
 

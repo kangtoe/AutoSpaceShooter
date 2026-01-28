@@ -6,8 +6,8 @@ using UnityEngine;
 public class UpgradeManager : MonoSingleton<UpgradeManager>
 {
     [Header("=== Upgrade Data ===")]
-    [Tooltip("Upgrades CSV 파일 (필수) - 업그레이드 정보")]
-    [SerializeField] private TextAsset upgradesCsv;
+    [Tooltip("StatConfigDatabase SO (필수) - 업그레이드 정보")]
+    [SerializeField] private StatConfigDatabase statDatabase;
 
     [Header("=== Audio ===")]
     [SerializeField] AudioClip upgradeSound;
@@ -27,19 +27,19 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     // Start is called before the first frame update
     void Start()
     {
-        // CSV 파일 검증
-        if (upgradesCsv == null)
+        // StatConfigDatabase 검증
+        if (statDatabase == null)
         {
-            Debug.LogError("[UpgradeManager] Upgrades CSV가 할당되지 않았습니다!");
+            Debug.LogError("[UpgradeManager] StatConfigDatabase가 할당되지 않았습니다!");
             return;
         }
 
-        // 1. PlayerStatsManager 초기화 (PlayerStats.csv 로드)
+        // 1. PlayerStatsManager 초기화 (StatConfigDatabase 로드)
         // MonoSingleton.Instance getter에서 자동으로 Initialize() 호출됨
         var _ = PlayerStatsManager.Instance;
 
-        // 2. UpgradeData 초기화 (Upgrades.csv 로드 + DisplayName 병합)
-        UpgradeData.Initialize(upgradesCsv);
+        // 2. UpgradeData 초기화 (StatConfigDatabase 로드 + DisplayName 병합)
+        UpgradeData.Initialize(statDatabase);
 
         // 3. UI 업데이트
         UiManager.Instance.SetUpgradePointText(PlayerStatsManager.Instance.upgradePoint);

@@ -24,41 +24,56 @@ public class UpgradeOption
 
 public static class UpgradeData
 {
-    // 각 스탯의 1회 증가량 (CSV에서 로드됨)
+    // StatConfigDatabase 참조
+    private static StatConfigDatabase database;
+
+    // 각 스탯의 1회 증가량 (StatConfigDatabase에서 로드됨)
     static Dictionary<UpgradeField, float> IncrementValues = new();
 
-    // 각 스탯의 최대 레벨 (CSV에서 로드됨)
+    // 각 스탯의 최대 레벨 (StatConfigDatabase에서 로드됨)
     static Dictionary<UpgradeField, int> MaxLevels = new();
 
-    // 표시 이름 (CSV에서 로드됨)
+    // 표시 이름 (StatConfigDatabase에서 로드됨)
     static Dictionary<UpgradeField, string> DisplayNames = new();
 
     /// <summary>
-    /// CSV 파일에서 업그레이드 데이터 초기화 (게임 시작 시 호출)
+    /// StatConfigDatabase에서 업그레이드 데이터 초기화 (게임 시작 시 호출)
     /// UpgradeManager가 호출
     /// </summary>
-    /// <param name="upgradesCsv">Upgrades.csv (업그레이드 정보)</param>
-    public static void Initialize(TextAsset upgradesCsv)
+    /// <param name="statDatabase">StatConfigDatabase SO</param>
+    public static void Initialize(StatConfigDatabase statDatabase)
     {
-        if (upgradesCsv == null)
+        if (statDatabase == null)
         {
-            Debug.LogError("[UpgradeData] Upgrades CSV가 할당되지 않았습니다!");
+            Debug.LogError("[UpgradeData] StatConfigDatabase가 할당되지 않았습니다!");
             return;
         }
 
-        // Upgrades.csv 로드
-        UpgradesLoader.LoadFromCsv(upgradesCsv, out IncrementValues, out MaxLevels, out DisplayNames);
+        database = statDatabase;
+        database.Initialize();
+
+        // StatConfigDatabase에서 데이터 추출
+        IncrementValues.Clear();
+        MaxLevels.Clear();
+        DisplayNames.Clear();
+
+        foreach (var config in database.allStats)
+        {
+            IncrementValues[config.field] = config.incrementPerLevel;
+            MaxLevels[config.field] = config.maxLevel;
+            DisplayNames[config.field] = config.displayName;
+        }
 
         if (IncrementValues.Count == 0 || MaxLevels.Count == 0 || DisplayNames.Count == 0)
         {
-            Debug.LogError("[UpgradeData] CSV 로드 실패!");
+            Debug.LogError("[UpgradeData] StatConfigDatabase 로드 실패!");
             return;
         }
 
         // StatMetadataRegistry에 DisplayName 병합
         StatMetadataRegistry.MergeDisplayNames(DisplayNames);
 
-        Debug.Log($"[UpgradeData] Initialized with {IncrementValues.Count} upgrades from CSV");
+        Debug.Log($"[UpgradeData] Initialized with {IncrementValues.Count} upgrades from StatConfigDatabase");
     }
 
     public static float GetIncrement(UpgradeField field)
