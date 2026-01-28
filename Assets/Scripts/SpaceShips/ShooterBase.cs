@@ -31,7 +31,6 @@ public class ShooterBase : MonoBehaviour
     public int damage = 0;
     public int impactPower = 0;
     public int projectileMovePower = 10;
-    public float projectileLiveTime = 3f;
     public bool createBulletAsChild = false;
 
     [Header("Sounds")]
@@ -164,7 +163,7 @@ public class ShooterBase : MonoBehaviour
             float speed = (nomalRatio * baseSpeed) + (slowRatio * baseSpeed * (1 - Mathf.Abs(f)));
 
             // 발사체 초기화
-            go.GetComponent<BulletBase>().Init(gameObject.layer, targetLayer, Damage, impactPower, speed, projectileLiveTime, onHitSound);
+            go.GetComponent<BulletBase>().Init(gameObject.layer, targetLayer, Damage, impactPower, speed, onHitSound);
         }
 
         SoundManager.Instance.PlaySound(shootSound);
