@@ -78,6 +78,30 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
         set => SetStat(UpgradeField.ProjectileSpeed, value);
     }
 
+    public float projectileSize
+    {
+        get => GetStat(UpgradeField.ProjectileSize);
+        set => SetStat(UpgradeField.ProjectileSize, value);
+    }
+
+    public float spread
+    {
+        get => GetStat(UpgradeField.Spread);
+        set => SetStat(UpgradeField.Spread, value);
+    }
+
+    public float homingPower
+    {
+        get => GetStat(UpgradeField.HomingPower);
+        set => SetStat(UpgradeField.HomingPower, value);
+    }
+
+    public float explosionDamageRatio
+    {
+        get => GetStat(UpgradeField.ExplosionDamageRatio);
+        set => SetStat(UpgradeField.ExplosionDamageRatio, value);
+    }
+
     [Header("충돌 스탯")]
     public float onImpact
     {

@@ -58,7 +58,6 @@ public class StatConfigDatabaseEditor : Editor
 
         int totalStats = database.allStats.Count;
         int totalEnumFields = System.Enum.GetValues(typeof(UpgradeField)).Length;
-        int upgradeableStats = database.allStats.Count(s => s != null && s.maxLevel > 0);
 
         // 중복 체크
         var duplicates = database.allStats
@@ -76,7 +75,6 @@ public class StatConfigDatabaseEditor : Editor
         var missingFields = allFields.Where(f => !existingFields.Contains(f)).ToList();
 
         EditorGUILayout.LabelField($"총 스탯 개수: {totalStats} / {totalEnumFields}");
-        EditorGUILayout.LabelField($"업그레이드 가능: {upgradeableStats}개");
 
         if (duplicates.Count > 0)
         {
@@ -242,11 +240,6 @@ public class StatConfigDatabaseEditor : Editor
             EditorGUILayout.PropertyField(statProperty.FindPropertyRelative("isInteger"));
 
             EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField("업그레이드 설정", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(statProperty.FindPropertyRelative("incrementPerLevel"));
-            EditorGUILayout.PropertyField(statProperty.FindPropertyRelative("maxLevel"));
-
-            EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("추가 정보", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(statProperty.FindPropertyRelative("description"));
             EditorGUILayout.PropertyField(statProperty.FindPropertyRelative("icon"));
@@ -278,11 +271,9 @@ public class StatConfigDatabaseEditor : Editor
                     field = field,
                     displayName = GetDefaultDisplayName(field),
                     category = GetDefaultCategory(field),
-                    defaultValue = 0,
-                    unit = "",
-                    isInteger = false,
-                    incrementPerLevel = 1,
-                    maxLevel = 10,
+                    defaultValue = GetDefaultValue(field),
+                    unit = GetDefaultUnit(field),
+                    isInteger = GetDefaultIsInteger(field),
                     description = ""
                 };
 
@@ -365,8 +356,6 @@ public class StatConfigDatabaseEditor : Editor
             defaultValue = 0,
             unit = "",
             isInteger = false,
-            incrementPerLevel = 1,
-            maxLevel = 10,
             description = ""
         };
 
@@ -387,7 +376,11 @@ public class StatConfigDatabaseEditor : Editor
             case UpgradeField.FireRate: return "연사 속도";
             case UpgradeField.ProjectileDamage: return "발사체 피해";
             case UpgradeField.ProjectileSpeed: return "발사체 속도";
+            case UpgradeField.ProjectileSize: return "발사체 크기";
             case UpgradeField.MultiShot: return "멀티샷";
+            case UpgradeField.Spread: return "분산도";
+            case UpgradeField.HomingPower: return "유도 성능";
+            case UpgradeField.ExplosionDamageRatio: return "폭발 피해 비율";
             case UpgradeField.OnImpact: return "충돌 피해";
             case UpgradeField.ImpactResist: return "충돌 저항";
             case UpgradeField.MoveSpeed: return "이동 속도";
@@ -401,11 +394,41 @@ public class StatConfigDatabaseEditor : Editor
     {
         if (field <= UpgradeField.DurabilityRegenDelay)
             return "Survival";
-        else if (field <= UpgradeField.MultiShot)
+        else if (field <= UpgradeField.ExplosionDamageRatio)
             return "Shooting";
         else if (field <= UpgradeField.ImpactResist)
             return "Impact";
         else
             return "Mobility";
+    }
+
+    private float GetDefaultValue(UpgradeField field)
+    {
+        switch (field)
+        {
+            case UpgradeField.ProjectileSize: return 1.0f;
+            case UpgradeField.Spread: return 0f;
+            case UpgradeField.HomingPower: return 0f;
+            case UpgradeField.ExplosionDamageRatio: return 0f;
+            default: return 0f;
+        }
+    }
+
+    private string GetDefaultUnit(UpgradeField field)
+    {
+        switch (field)
+        {
+            case UpgradeField.ProjectileSize: return "배";
+            case UpgradeField.Spread: return "°";
+            case UpgradeField.HomingPower: return "°/s";
+            case UpgradeField.ExplosionDamageRatio: return "%";
+            default: return "";
+        }
+    }
+
+    private bool GetDefaultIsInteger(UpgradeField field)
+    {
+        // 대부분의 새 필드는 float
+        return false;
     }
 }

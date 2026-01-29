@@ -47,6 +47,31 @@ public static class StatMetadataRegistry
     }
 
     /// <summary>
+    /// StatConfigDatabase에서 메타데이터 초기화
+    /// UpgradeManager가 호출
+    /// </summary>
+    public static void InitializeFromStatDatabase(StatConfigDatabase database)
+    {
+        if (database == null)
+        {
+            Debug.LogError("[StatMetadataRegistry] StatConfigDatabase is null!");
+            return;
+        }
+
+        registry = new Dictionary<UpgradeField, StatMetadata>();
+
+        foreach (var config in database.allStats)
+        {
+            if (config != null)
+            {
+                registry[config.field] = config.ToMetadata();
+            }
+        }
+
+        Debug.Log($"[StatMetadataRegistry] Initialized {registry.Count} stat metadata from StatConfigDatabase");
+    }
+
+    /// <summary>
     /// Upgrades.csv에서 DisplayName 병합
     /// UpgradeManager가 호출
     /// </summary>

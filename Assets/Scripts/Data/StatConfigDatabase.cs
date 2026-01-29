@@ -84,28 +84,6 @@ public class StatConfigDatabase : ScriptableObject
         return result;
     }
 
-    /// <summary>
-    /// 모든 업그레이드 가능한 스탯 조회 (maxLevel > 0)
-    /// </summary>
-    public List<StatConfig> GetUpgradeableStats()
-    {
-        if (lookup == null || lookup.Count == 0)
-        {
-            Initialize();
-        }
-
-        List<StatConfig> result = new List<StatConfig>();
-        foreach (var stat in allStats)
-        {
-            if (stat != null && stat.maxLevel > 0)
-            {
-                result.Add(stat);
-            }
-        }
-
-        return result;
-    }
-
 #if UNITY_EDITOR
     /// <summary>
     /// 에디터에서 UpgradeField enum 순서로 정렬

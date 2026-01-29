@@ -811,7 +811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -39.99974}
+  m_AnchoredPosition: {x: 0, y: -39.999756}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &271611616
@@ -4602,6 +4602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statDatabase: {fileID: 11400000, guid: 94f9e86bbf0218c44b80b70715d726d4, type: 2}
+  upgradeDatabase: {fileID: 0}
   upgradeSound: {fileID: 8300000, guid: 66d8309498b3a20459f0c959cfd73586, type: 3}
   upgradeFailSound: {fileID: 8300000, guid: eb8b85795fa4cfd4882479bbe3adb6df, type: 3}
   textHighlight: {r: 0, g: 1, b: 0, a: 1}

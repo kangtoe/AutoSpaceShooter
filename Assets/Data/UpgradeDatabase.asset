@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a89478fa60caad41873c55cef6fd81e, type: 3}
+  m_Name: UpgradeDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeDatabase
+  allUpgrades:
+  - upgradeId: suppressive_fire
+    displayName: "\uC81C\uC555\uC0AC\uACA9"
+    description: "\uBD84\uC0B0\uB3C4 \uC99D\uAC00, \uBC1C\uC0AC \uC704\uB825 \uAC10\uC18C,
+      \uC5F0\uC0AC\uC18D\uB3C4 \uD06C\uAC8C \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 11
+      valuePerLevel: 15
+    - field: 7
+      valuePerLevel: -5
+    - field: 6
+      valuePerLevel: 1.5
+  - upgradeId: siege_cannon
+    displayName: "\uACF5\uC131\uD3EC"
+    description: "\uBC1C\uC0AC\uCCB4 \uC18D\uB3C4/\uC704\uB825/\uD06C\uAE30 \uC99D\uAC00,
+      \uC5F0\uC0AC\uC18D\uB3C4 \uAC10\uC18C"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 8
+      valuePerLevel: 50
+    - field: 7
+      valuePerLevel: 15
+    - field: 9
+      valuePerLevel: 0.5
+    - field: 6
+      valuePerLevel: -0.5
+  - upgradeId: volley_fire
+    displayName: "\uC77C\uC81C\uD3EC\uD654"
+    description: "\uC704\uB825/\uC5F0\uC0AC\uC18D\uB3C4 \uAC10\uC18C, \uBD84\uC0B0\uB3C4
+      \uC99D\uAC00, \uBC1C\uC0AC\uCCB4 \uCD94\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 7
+      valuePerLevel: -5
+    - field: 6
+      valuePerLevel: -0.3
+    - field: 11
+      valuePerLevel: 10
+    - field: 10
+      valuePerLevel: 2
+  - upgradeId: smart_bullet
+    displayName: "\uC2A4\uB9C8\uD2B8 \uD0C4\uD658"
+    description: "\uD0C4\uD658 \uC18D\uB3C4/\uC5F0\uC0AC\uC18D\uB3C4 \uAC10\uC18C,
+      \uC720\uB3C4 \uC131\uB2A5 \uCD94\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 8
+      valuePerLevel: -30
+    - field: 6
+      valuePerLevel: -0.2
+    - field: 12
+      valuePerLevel: 90
+  - upgradeId: explosive_round
+    displayName: "\uACE0\uD3ED\uD0C4"
+    description: "\uD3ED\uBC1C \uD6A8\uACFC \uCD94\uAC00, \uD53C\uD574\uC758 20%\uB97C
+      \uD3ED\uBC1C\uD53C\uD574\uB85C \uC804\uD658"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 13
+      valuePerLevel: 0.2
+  - upgradeId: experimental_shield
+    displayName: "\uC2E4\uD5D8\uD615 \uC2E4\uB4DC"
+    description: "\uC2E4\uB4DC \uC6A9\uB7C9 \uAC10\uC18C, \uC2E4\uB4DC \uC7AC\uC0DD
+      \uC2DC\uAC04 \uB2E8\uCD95"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 1
+      valuePerLevel: -30
+    - field: 3
+      valuePerLevel: -2
+  - upgradeId: reinforced_shield
+    displayName: "\uAC15\uD654 \uC2E4\uB4DC"
+    description: "\uC2E4\uB4DC \uC6A9\uB7C9 \uC99D\uAC00, \uCCB4\uB825 \uAC10\uC18C"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 1
+      valuePerLevel: 50
+    - field: 0
+      valuePerLevel: -30
+  - upgradeId: assault_frame
+    displayName: "\uAC15\uC2B5 \uAE30\uCCB4"
+    description: "\uCD94\uC9C4\uB825/\uD68C\uC804 \uC18D\uB3C4/\uCDA9\uB3CC \uD53C\uD574
+      \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 16
+      valuePerLevel: 2
+    - field: 17
+      valuePerLevel: 50
+    - field: 14
+      valuePerLevel: 10
+  - upgradeId: battleship
+    displayName: "\uC804\uD568"
+    description: "\uBC1B\uB294 \uCDA9\uB3CC \uD53C\uD574 \uACBD\uAC10, \uB0B4\uAD6C\uB3C4/\uC911\uB7C9
+      \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 15
+      valuePerLevel: 5
+    - field: 0
+      valuePerLevel: 50
+    - field: 18
+      valuePerLevel: 2
+  - upgradeId: repair_module
+    displayName: "\uC218\uB9AC \uBAA8\uB4C8"
+    description: "\uAE30\uCCB4 \uD68C\uBCF5 \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 1
+    maxLevel: 1
+    statModifiers:
+    - field: 4
+      valuePerLevel: 2
+  - upgradeId: large_caliber
+    displayName: "\uB300\uAD6C\uACBD"
+    description: "\uACF5\uACA9\uB825 \uBC0F \uBC1C\uC0AC\uCCB4 \uD06C\uAE30 \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 0
+    maxLevel: 5
+    statModifiers:
+    - field: 7
+      valuePerLevel: 3
+    - field: 9
+      valuePerLevel: 0.1
+  - upgradeId: cooling_system
+    displayName: "\uB0C9\uAC01 \uC2DC\uC2A4\uD15C"
+    description: "\uC5F0\uC0AC\uC18D\uB3C4 \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 1
+    isUnique: 0
+    maxLevel: 5
+    statModifiers:
+    - field: 6
+      valuePerLevel: 0.2
+  - upgradeId: engine_optimization
+    displayName: "\uC5D4\uC9C4 \uCD5C\uC801\uD654"
+    description: "\uC774\uB3D9\uC18D\uB3C4 \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 0
+    maxLevel: 5
+    statModifiers:
+    - field: 16
+      valuePerLevel: 0.5
+  - upgradeId: additional_armor
+    displayName: "\uCD94\uAC00 \uC7A5\uAC11"
+    description: "\uB0B4\uAD6C\uB3C4 \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 0
+    maxLevel: 5
+    statModifiers:
+    - field: 0
+      valuePerLevel: 10
+  - upgradeId: shield_enhancement
+    displayName: "\uC2E4\uB4DC \uD5A5\uC0C1"
+    description: "\uC2E4\uB4DC \uC99D\uAC00"
+    icon: {fileID: 0}
+    upgradeType: 0
+    isUnique: 0
+    maxLevel: 5
+    statModifiers:
+    - field: 1
+      valuePerLevel: 10

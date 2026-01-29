@@ -163,3 +163,43 @@ MonoBehaviour:
     maxLevel: 5
     description: 
     icon: {fileID: 0}
+  - field: 15
+    displayName: "\uCDA9\uB3CC \uC800\uD56D"
+    category: Impact
+    defaultValue: 0
+    unit: 
+    isInteger: 0
+    incrementPerLevel: 1
+    maxLevel: 10
+    description: 
+    icon: {fileID: 0}
+  - field: 16
+    displayName: "\uC774\uB3D9 \uC18D\uB3C4"
+    category: Mobility
+    defaultValue: 0
+    unit: 
+    isInteger: 0
+    incrementPerLevel: 1
+    maxLevel: 10
+    description: 
+    icon: {fileID: 0}
+  - field: 17
+    displayName: "\uD68C\uC804 \uC18D\uB3C4"
+    category: Mobility
+    defaultValue: 0
+    unit: 
+    isInteger: 0
+    incrementPerLevel: 1
+    maxLevel: 10
+    description: 
+    icon: {fileID: 0}
+  - field: 18
+    displayName: "\uAE30\uCCB4 \uC9C8\uB7C9"
+    category: Mobility
+    defaultValue: 0
+    unit: 
+    isInteger: 0
+    incrementPerLevel: 1
+    maxLevel: 10
+    description: 
+    icon: {fileID: 0}

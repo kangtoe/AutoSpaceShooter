@@ -27,13 +27,6 @@ public class StatConfig
     [Tooltip("정수 타입 여부")]
     public bool isInteger;
 
-    [Header("=== 업그레이드 설정 ===")]
-    [Tooltip("레벨당 증가량 (음수 가능)")]
-    public float incrementPerLevel;
-
-    [Tooltip("최대 레벨")]
-    public int maxLevel;
-
     [Header("=== 추가 정보 (선택) ===")]
     [Tooltip("스탯 설명")]
     [TextArea(2, 4)]
