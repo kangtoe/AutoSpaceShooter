@@ -25,6 +25,9 @@ public struct BulletData
     public GameObject hitEffect;
     [Tooltip("이펙트 범위 데미지 반경 (0 = 단일 타겟)")]
     public float hitEffectRadius;
+    [Tooltip("폭발 피해 비율 (0 = 비활성화, 0.2 = 원본 피해의 20%를 범위 피해로)")]
+    [Range(0f, 1f)]
+    public float explosionDamageRatio;
     [Tooltip("충돌 사운드")]
     public AudioClip onHitSound;
 
@@ -102,6 +105,7 @@ public struct BulletData
             // Effects & Sounds
             hitEffect = null,
             hitEffectRadius = 0f,
+            explosionDamageRatio = 0f,
             onHitSound = null,
 
             // Transformation System (비활성화)
@@ -406,7 +410,19 @@ public class BulletBase : MonoBehaviour
                 return;  // 범위 데미지를 입혔으므로 개별 데미지는 생략
             }
 
-            Instantiate(bulletData.hitEffect, point, transform.rotation);
+            // 폭발 피해 처리 (explosionDamageRatio > 0)
+            if (bulletData.explosionDamageRatio > 0f)
+            {
+                float explosionRadius = 2f;  // 기본 폭발 반경
+                int explosionDamage = Mathf.RoundToInt(bulletData.damage * bulletData.explosionDamageRatio);
+                ApplyAreaDamage(point, explosionRadius, explosionDamage, bulletData.impact);
+                Instantiate(bulletData.hitEffect, point, transform.rotation);
+                // 폭발 피해 적용 후에도 직접 충돌 피해는 아래에서 처리됨
+            }
+            else
+            {
+                Instantiate(bulletData.hitEffect, point, transform.rotation);
+            }
         }
 
         if (hitColl)

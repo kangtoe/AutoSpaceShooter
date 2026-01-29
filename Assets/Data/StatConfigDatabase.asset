@@ -14,192 +14,154 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatConfigDatabase
   allStats:
   - field: 0
-    displayName: Max Durability
+    displayName: "\uCD5C\uB300 \uB0B4\uAD6C\uB3C4"
     category: Survival
     defaultValue: 100
     unit: 
     isInteger: 1
-    incrementPerLevel: 50
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 1
-    displayName: Max Shield
+    displayName: "\uCD5C\uB300 \uC2E4\uB4DC"
     category: Survival
     defaultValue: 100
     unit: 
     isInteger: 1
-    incrementPerLevel: 50
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 2
-    displayName: Shield Regen Rate
+    displayName: "\uC2E4\uB4DC \uC7AC\uC0DD \uC18D\uB3C4"
     category: Survival
     defaultValue: 20
     unit: /s
     isInteger: 0
-    incrementPerLevel: 5
-    maxLevel: 8
     description: 
     icon: {fileID: 0}
   - field: 3
-    displayName: Shield Regen Delay
+    displayName: "\uC2E4\uB4DC \uC7AC\uC0DD \uC9C0\uC5F0"
     category: Survival
     defaultValue: 2
     unit: s
     isInteger: 0
-    incrementPerLevel: -0.2
-    maxLevel: 5
     description: 
     icon: {fileID: 0}
   - field: 4
-    displayName: Durability Regen Rate
+    displayName: "\uB0B4\uAD6C\uB3C4 \uC7AC\uC0DD \uC18D\uB3C4"
     category: Survival
     defaultValue: 0
     unit: /s
     isInteger: 0
-    incrementPerLevel: 2
-    maxLevel: 8
     description: 
     icon: {fileID: 0}
   - field: 5
-    displayName: Durability Regen Delay
+    displayName: "\uB0B4\uAD6C\uB3C4 \uC7AC\uC0DD \uC9C0\uC5F0"
     category: Survival
     defaultValue: 5
     unit: s
     isInteger: 0
-    incrementPerLevel: -0.2
-    maxLevel: 5
     description: 
     icon: {fileID: 0}
   - field: 6
-    displayName: Fire Rate
+    displayName: "\uC5F0\uC0AC \uC18D\uB3C4"
     category: Shooting
     defaultValue: 1
     unit: /s
     isInteger: 0
-    incrementPerLevel: 0.2
-    maxLevel: 5
     description: 
     icon: {fileID: 0}
   - field: 7
-    displayName: Projectile Damage
+    displayName: "\uBC1C\uC0AC\uCCB4 \uD53C\uD574"
     category: Shooting
     defaultValue: 10
     unit: 
     isInteger: 1
-    incrementPerLevel: 5
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 8
-    displayName: Projectile Speed
+    displayName: "\uBC1C\uC0AC\uCCB4 \uC18D\uB3C4"
     category: Shooting
     defaultValue: 10
     unit: 
     isInteger: 0
-    incrementPerLevel: 2
-    maxLevel: 5
     description: 
     icon: {fileID: 0}
   - field: 9
-    displayName: Multi Shot
+    displayName: "\uBC1C\uC0AC\uCCB4 \uD06C\uAE30"
+    category: Shooting
+    defaultValue: 1
+    unit: "\uBC30"
+    isInteger: 0
+    description: 
+    icon: {fileID: 0}
+  - field: 10
+    displayName: "\uBA40\uD2F0\uC0F7"
     category: Shooting
     defaultValue: 1
     unit: 
     isInteger: 1
-    incrementPerLevel: 1
-    maxLevel: 4
     description: 
     icon: {fileID: 0}
-  - field: 10
-    displayName: On Impact
+  - field: 11
+    displayName: "\uBD84\uC0B0\uB3C4"
+    category: Shooting
+    defaultValue: 0
+    unit: "\xB0"
+    isInteger: 0
+    description: 
+    icon: {fileID: 0}
+  - field: 12
+    displayName: "\uC720\uB3C4 \uC131\uB2A5"
+    category: Shooting
+    defaultValue: 0
+    unit: "\xB0/s"
+    isInteger: 0
+    description: 
+    icon: {fileID: 0}
+  - field: 13
+    displayName: "\uD3ED\uBC1C \uD53C\uD574 \uBE44\uC728"
+    category: Shooting
+    defaultValue: 0
+    unit: '%'
+    isInteger: 0
+    description: 
+    icon: {fileID: 0}
+  - field: 14
+    displayName: "\uCDA9\uB3CC \uD53C\uD574"
     category: Impact
     defaultValue: 10
     unit: 
     isInteger: 0
-    incrementPerLevel: 5
-    maxLevel: 10
-    description: 
-    icon: {fileID: 0}
-  - field: 11
-    displayName: Impact Resist
-    category: Impact
-    defaultValue: 0
-    unit: '%'
-    isInteger: 0
-    incrementPerLevel: 5
-    maxLevel: 10
-    description: 
-    icon: {fileID: 0}
-  - field: 12
-    displayName: Move Speed
-    category: Mobility
-    defaultValue: 5
-    unit: 
-    isInteger: 0
-    incrementPerLevel: 1
-    maxLevel: 5
-    description: 
-    icon: {fileID: 0}
-  - field: 13
-    displayName: Rotate Speed
-    category: Mobility
-    defaultValue: 180
-    unit: "\xB0/s"
-    isInteger: 0
-    incrementPerLevel: 30
-    maxLevel: 5
-    description: 
-    icon: {fileID: 0}
-  - field: 14
-    displayName: Mass
-    category: Mobility
-    defaultValue: 9999
-    unit: 
-    isInteger: 0
-    incrementPerLevel: 0.5
-    maxLevel: 5
     description: 
     icon: {fileID: 0}
   - field: 15
     displayName: "\uCDA9\uB3CC \uC800\uD56D"
     category: Impact
     defaultValue: 0
-    unit: 
+    unit: '%'
     isInteger: 0
-    incrementPerLevel: 1
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 16
     displayName: "\uC774\uB3D9 \uC18D\uB3C4"
     category: Mobility
-    defaultValue: 0
+    defaultValue: 5
     unit: 
     isInteger: 0
-    incrementPerLevel: 1
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 17
     displayName: "\uD68C\uC804 \uC18D\uB3C4"
     category: Mobility
-    defaultValue: 0
-    unit: 
+    defaultValue: 180
+    unit: "\xB0/s"
     isInteger: 0
-    incrementPerLevel: 1
-    maxLevel: 10
     description: 
     icon: {fileID: 0}
   - field: 18
     displayName: "\uAE30\uCCB4 \uC9C8\uB7C9"
     category: Mobility
-    defaultValue: 0
+    defaultValue: 1
     unit: 
     isInteger: 0
-    incrementPerLevel: 1
-    maxLevel: 10
     description: 
     icon: {fileID: 0}

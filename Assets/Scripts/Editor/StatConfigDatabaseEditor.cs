@@ -406,10 +406,33 @@ public class StatConfigDatabaseEditor : Editor
     {
         switch (field)
         {
-            case UpgradeField.ProjectileSize: return 1.0f;
+            // 생존
+            case UpgradeField.MaxDurability: return 100f;
+            case UpgradeField.MaxShield: return 100f;
+            case UpgradeField.ShieldRegenRate: return 20f;
+            case UpgradeField.ShieldRegenDelay: return 2f;
+            case UpgradeField.DurabilityRegenRate: return 0f;
+            case UpgradeField.DurabilityRegenDelay: return 5f;
+
+            // 사격
+            case UpgradeField.FireRate: return 1f;
+            case UpgradeField.ProjectileDamage: return 10f;
+            case UpgradeField.ProjectileSpeed: return 10f;
+            case UpgradeField.ProjectileSize: return 1f;
+            case UpgradeField.MultiShot: return 1f;
             case UpgradeField.Spread: return 0f;
             case UpgradeField.HomingPower: return 0f;
             case UpgradeField.ExplosionDamageRatio: return 0f;
+
+            // 충돌
+            case UpgradeField.OnImpact: return 10f;
+            case UpgradeField.ImpactResist: return 0f;
+
+            // 이동
+            case UpgradeField.MoveSpeed: return 5f;
+            case UpgradeField.RotateSpeed: return 180f;
+            case UpgradeField.Mass: return 1f;
+
             default: return 0f;
         }
     }
@@ -418,17 +441,32 @@ public class StatConfigDatabaseEditor : Editor
     {
         switch (field)
         {
+            case UpgradeField.ShieldRegenRate: return "/s";
+            case UpgradeField.ShieldRegenDelay: return "s";
+            case UpgradeField.DurabilityRegenRate: return "/s";
+            case UpgradeField.DurabilityRegenDelay: return "s";
+            case UpgradeField.FireRate: return "/s";
             case UpgradeField.ProjectileSize: return "배";
             case UpgradeField.Spread: return "°";
             case UpgradeField.HomingPower: return "°/s";
             case UpgradeField.ExplosionDamageRatio: return "%";
+            case UpgradeField.ImpactResist: return "%";
+            case UpgradeField.RotateSpeed: return "°/s";
             default: return "";
         }
     }
 
     private bool GetDefaultIsInteger(UpgradeField field)
     {
-        // 대부분의 새 필드는 float
-        return false;
+        switch (field)
+        {
+            case UpgradeField.MaxDurability:
+            case UpgradeField.MaxShield:
+            case UpgradeField.ProjectileDamage:
+            case UpgradeField.MultiShot:
+                return true;
+            default:
+                return false;
+        }
     }
 }

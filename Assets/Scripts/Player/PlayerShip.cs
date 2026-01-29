@@ -62,6 +62,10 @@ public class PlayerShip : MonoBehaviour
         // Shooter의 발사체 데이터를 PlayerStats 값으로 초기화
         shooter.SetDamage(PlayerStatsManager.Instance.projectileDamage);
         shooter.SetSpeed(PlayerStatsManager.Instance.projectileSpeed);
+        shooter.SetSize(PlayerStatsManager.Instance.projectileSize);
+        shooter.SetSpread(PlayerStatsManager.Instance.spread);
+        shooter.SetHomingPower(PlayerStatsManager.Instance.homingPower);
+        shooter.SetExplosionDamageRatio(PlayerStatsManager.Instance.explosionDamageRatio);
 
         // 2. UI 게이지 초기화
         UiManager.Instance.InitializeDurabilityUI();
@@ -146,6 +150,18 @@ public class PlayerShip : MonoBehaviour
                 break;
             case UpgradeField.ProjectileSpeed:
                 shooter.SetSpeed(PlayerStatsManager.Instance.projectileSpeed);
+                break;
+            case UpgradeField.ProjectileSize:
+                shooter.SetSize(PlayerStatsManager.Instance.projectileSize);
+                break;
+            case UpgradeField.Spread:
+                shooter.SetSpread(PlayerStatsManager.Instance.spread);
+                break;
+            case UpgradeField.HomingPower:
+                shooter.SetHomingPower(PlayerStatsManager.Instance.homingPower);
+                break;
+            case UpgradeField.ExplosionDamageRatio:
+                shooter.SetExplosionDamageRatio(PlayerStatsManager.Instance.explosionDamageRatio);
                 break;
             case UpgradeField.MoveSpeed:
                 moveStandard.SetMovePower(PlayerStatsManager.Instance.moveSpeed);

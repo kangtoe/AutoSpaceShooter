@@ -4602,7 +4602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statDatabase: {fileID: 11400000, guid: 94f9e86bbf0218c44b80b70715d726d4, type: 2}
-  upgradeDatabase: {fileID: 0}
+  upgradeDatabase: {fileID: 11400000, guid: 93c4f14236916a048a969d0ff3d271b3, type: 2}
   upgradeSound: {fileID: 8300000, guid: 66d8309498b3a20459f0c959cfd73586, type: 3}
   upgradeFailSound: {fileID: 8300000, guid: eb8b85795fa4cfd4882479bbe3adb6df, type: 3}
   textHighlight: {r: 0, g: 1, b: 0, a: 1}
@@ -5051,6 +5051,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1770590138}
     m_Modifications:
+    - target: {fileID: 5361549171376910657, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5093,11 +5097,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -52098.234
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00000004371139
+      value: 0.95249325
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5109,15 +5113,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1
+      value: -0.3045598
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 122.04004
+      value: 57886.926
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 440
+      value: 57886.926
       objectReference: {fileID: 0}
     - target: {fileID: 8580578809224769312, guid: f751a6ba34ba8814a8cb18c48f477a7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

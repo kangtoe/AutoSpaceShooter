@@ -28,6 +28,10 @@ public class ShooterBase : MonoBehaviour
     public BulletData bulletData; // 발사체 설정 데이터
     public bool createBulletAsChild = false;
 
+    [Header("Upgrade Stats")]
+    public float spread = 0f; // 추가 분산도 (각도)
+    public float projectileSize = 1f; // 발사체 크기 배율
+
     [Button("Reset Bullet Data to Default")]
     private void ResetBulletDataToDefault()
     {
@@ -69,6 +73,26 @@ public class ShooterBase : MonoBehaviour
     public void SetSpeed(float speed)
     {
         bulletData.speed = speed;
+    }
+
+    public void SetSpread(float spreadAngle)
+    {
+        spread = spreadAngle;
+    }
+
+    public void SetSize(float size)
+    {
+        projectileSize = size;
+    }
+
+    public void SetHomingPower(float homingPower)
+    {
+        bulletData.homingTurnSpeed = homingPower;
+    }
+
+    public void SetExplosionDamageRatio(float ratio)
+    {
+        bulletData.explosionDamageRatio = ratio;
     }
 
     // 사격 시도
@@ -152,13 +176,18 @@ public class ShooterBase : MonoBehaviour
             float f = 0; // 얼마나 중앙에 있는가 나타냄 (-0.5: 왼쪽 끝,  1: 정중앙, 0.5: 오른쪽 끝)
             if (numberOfBullets > 1) f = -1 + 2f * i / (numberOfBullets - 1);
 
-            // 회전 구하기
-            float angle = f * shotAngle; // 중앙으로부터 멀수록 회전이 큼
+            // 회전 구하기 (기본 shotAngle + 추가 spread)
+            float baseAngle = f * shotAngle;
+            float spreadOffset = Random.Range(-spread, spread); // 분산도 적용
+            float angle = baseAngle + spreadOffset;
             rot = firePoint.rotation * Quaternion.Euler(0, 0, angle);
 
             // 발사체 생성
             GameObject go = Instantiate(projectilePrefab, pos, rot);
             if (createBulletAsChild) go.transform.SetParent(transform);
+
+            // 발사체 크기 적용
+            go.transform.localScale *= projectileSize;
 
             // 발사체 속도 구하기
             // 중앙으로부터 회전이 클수록 탄속도 느려진다.
