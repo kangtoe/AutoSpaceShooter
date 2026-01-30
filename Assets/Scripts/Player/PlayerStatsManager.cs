@@ -87,6 +87,12 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
         set => SetStat(UpgradeField.Spread, value);
     }
 
+    public float knockback
+    {
+        get => GetStat(UpgradeField.Knockback);
+        set => SetStat(UpgradeField.Knockback, value);
+    }
+
     public float homingPower
     {
         get => GetStat(UpgradeField.HomingPower);
@@ -97,6 +103,12 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
     {
         get => GetStat(UpgradeField.ExplosionDamageRatio);
         set => SetStat(UpgradeField.ExplosionDamageRatio, value);
+    }
+
+    public float explosionRadius
+    {
+        get => GetStat(UpgradeField.ExplosionRadius);
+        set => SetStat(UpgradeField.ExplosionRadius, value);
     }
 
     [Header("충돌 스탯")]
@@ -191,9 +203,14 @@ public class PlayerStatsManager : MonoSingleton<PlayerStatsManager>
         foreach (var config in statDatabase.allStats)
         {
             stats[config.field] = config.defaultValue;
+            if (config.field == UpgradeField.ExplosionRadius)
+            {
+                Debug.Log($"[PlayerStatsManager] ExplosionRadius initialized to: {config.defaultValue}");
+            }
         }
 
         Debug.Log($"[PlayerStatsManager] Initialized {stats.Count} stats from StatConfigDatabase");
+        Debug.Log($"[PlayerStatsManager] ExplosionRadius value: {GetStat(UpgradeField.ExplosionRadius)}");
         return true;
     }
 

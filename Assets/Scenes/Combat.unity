@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
   statDatabase: {fileID: 11400000, guid: 94f9e86bbf0218c44b80b70715d726d4, type: 2}
-  upgradePoint: 1
 --- !u!224 &76294939 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5265527620162307941, guid: 1bb5682a8bdcc9240970e7536c1b31dd, type: 3}
@@ -4606,6 +4605,7 @@ MonoBehaviour:
   upgradeSound: {fileID: 8300000, guid: 66d8309498b3a20459f0c959cfd73586, type: 3}
   upgradeFailSound: {fileID: 8300000, guid: eb8b85795fa4cfd4882479bbe3adb6df, type: 3}
   textHighlight: {r: 0, g: 1, b: 0, a: 1}
+  upgradePoint: 0
 --- !u!4 &1989466898
 Transform:
   m_ObjectHideFlags: 0
@@ -4905,6 +4905,10 @@ PrefabInstance:
     - target: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: bulletData.alphaEnd
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
+      propertyPath: bulletData.hitEffect
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1160230098051440518, guid: c04094610d02a7d40a907e9c7e5808ff, type: 3}
       propertyPath: bulletData.alphaStart

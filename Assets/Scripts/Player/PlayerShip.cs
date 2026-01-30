@@ -60,12 +60,16 @@ public class PlayerShip : MonoBehaviour
         impactable.TogglePlayerStatsReference(true);
 
         // Shooter의 발사체 데이터를 PlayerStats 값으로 초기화
+        Debug.Log($"[PlayerShip] Initializing explosionRadius: {PlayerStatsManager.Instance.explosionRadius}");
         shooter.bulletData.SetStats(
             damage: PlayerStatsManager.Instance.projectileDamage,
             speed: PlayerStatsManager.Instance.projectileSpeed,
+            knockback: PlayerStatsManager.Instance.knockback,
             homingPower: PlayerStatsManager.Instance.homingPower,
-            explosionDamageRatio: PlayerStatsManager.Instance.explosionDamageRatio
+            explosionDamageRatio: PlayerStatsManager.Instance.explosionDamageRatio,
+            explosionRadius: PlayerStatsManager.Instance.explosionRadius
         );
+        Debug.Log($"[PlayerShip] After SetStats, shooter.bulletData.explosionRadius: {shooter.bulletData.explosionRadius}");
         shooter.SetShooterStats(
             size: PlayerStatsManager.Instance.projectileSize,
             spread: PlayerStatsManager.Instance.spread
@@ -161,11 +165,17 @@ public class PlayerShip : MonoBehaviour
             case UpgradeField.Spread:
                 shooter.SetShooterStats(spread: PlayerStatsManager.Instance.spread);
                 break;
+            case UpgradeField.Knockback:
+                shooter.bulletData.SetStats(knockback: PlayerStatsManager.Instance.knockback);
+                break;
             case UpgradeField.HomingPower:
                 shooter.bulletData.SetStats(homingPower: PlayerStatsManager.Instance.homingPower);
                 break;
             case UpgradeField.ExplosionDamageRatio:
                 shooter.bulletData.SetStats(explosionDamageRatio: PlayerStatsManager.Instance.explosionDamageRatio);
+                break;
+            case UpgradeField.ExplosionRadius:
+                shooter.bulletData.SetStats(explosionRadius: PlayerStatsManager.Instance.explosionRadius);
                 break;
             case UpgradeField.MoveSpeed:
                 moveStandard.SetMovePower(PlayerStatsManager.Instance.moveSpeed);
@@ -210,6 +220,9 @@ public class PlayerShip : MonoBehaviour
                 break;
             case UpgradeField.ProjectileSpeed:
                 shooter.bulletData.SetStats(speed: amount);
+                break;
+            case UpgradeField.Knockback:
+                shooter.bulletData.SetStats(knockback: amount);
                 break;
 
             // 이동

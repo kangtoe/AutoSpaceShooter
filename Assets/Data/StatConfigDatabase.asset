@@ -110,6 +110,14 @@ MonoBehaviour:
     description: 
     icon: {fileID: 0}
   - field: 12
+    displayName: "\uB137\uBC31 \uD798"
+    category: Shooting
+    defaultValue: 5
+    unit: 
+    isInteger: 0
+    description: 
+    icon: {fileID: 0}
+  - field: 13
     displayName: "\uC720\uB3C4 \uC131\uB2A5"
     category: Shooting
     defaultValue: 0
@@ -117,7 +125,7 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 13
+  - field: 14
     displayName: "\uD3ED\uBC1C \uD53C\uD574 \uBE44\uC728"
     category: Shooting
     defaultValue: 0
@@ -125,7 +133,15 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 14
+  - field: 15
+    displayName: "\uD3ED\uBC1C \uBC18\uC9C0\uB984"
+    category: Shooting
+    defaultValue: 2
+    unit:
+    isInteger: 0
+    description:
+    icon: {fileID: 0}
+  - field: 16
     displayName: "\uCDA9\uB3CC \uD53C\uD574"
     category: Impact
     defaultValue: 10
@@ -133,7 +149,7 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 15
+  - field: 17
     displayName: "\uCDA9\uB3CC \uC800\uD56D"
     category: Impact
     defaultValue: 0
@@ -141,7 +157,7 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 16
+  - field: 18
     displayName: "\uC774\uB3D9 \uC18D\uB3C4"
     category: Mobility
     defaultValue: 5
@@ -149,7 +165,7 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 17
+  - field: 19
     displayName: "\uD68C\uC804 \uC18D\uB3C4"
     category: Mobility
     defaultValue: 180
@@ -157,7 +173,7 @@ MonoBehaviour:
     isInteger: 0
     description: 
     icon: {fileID: 0}
-  - field: 18
+  - field: 20
     displayName: "\uAE30\uCCB4 \uC9C8\uB7C9"
     category: Mobility
     defaultValue: 1

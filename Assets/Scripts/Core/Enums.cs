@@ -51,8 +51,10 @@ public enum UpgradeField
     ProjectileSize,   // 발사체 크기
     MultiShot,        // 멀티샷
     Spread,           // 분산도 (각도)
+    Knockback,        // 발사체 넉백 힘
     HomingPower,      // 유도 성능 (0: 없음)
-    ExplosionDamageRatio, // 폭발 피해 비율 (0: 비활성화, 0.2: 20% 폭발)
+    ExplosionDamageRatio, // 폭발 피해 비율 (0: 피해 없음, 0.2: 원본 피해의 20%)
+    ExplosionRadius,  // 폭발 반지름 (0: 폭발 없음)
 
     // 충돌
     OnImpact,         // 충돌 피해 (공격)

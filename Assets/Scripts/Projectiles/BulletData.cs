@@ -9,10 +9,21 @@ public struct BulletData
     [Header("=== Basic Stats ===")]
     [Tooltip("발사체 데미지")]
     public int damage;
-    [Tooltip("충돌 시 넉백 힘")]
-    public int impact;
     [Tooltip("발사체 속도")]
     public float speed;
+
+    [Header("=== Shooting ===")]
+    [Tooltip("발사체 충돌 시 넉백 힘 (Knockback force)")]
+    public float knockback;
+    [Tooltip("폭발 피해 비율 (Explosion damage ratio: 0 = disabled, 0.2 = 20% of original damage)")]
+    [Range(0f, 1f)]
+    public float explosionDamageRatio;
+    [Tooltip("폭발 반지름 (Explosion radius: 0 = no explosion)")]
+    public float explosionRadius;
+
+    [Header("=== Aircraft Collision ===")]
+    [Tooltip("기체 충돌 시 처리")]
+    public int impact;
 
     [Header("=== Behavior ===")]
     [Tooltip("충돌 시 발사체 파괴")]
@@ -23,11 +34,6 @@ public struct BulletData
     [Header("=== Effects & Sounds ===")]
     [Tooltip("충돌 이펙트 프리팹")]
     public GameObject hitEffect;
-    [Tooltip("이펙트 범위 데미지 반경 (0 = 단일 타겟)")]
-    public float hitEffectRadius;
-    [Tooltip("폭발 피해 비율 (0 = 비활성화, 0.2 = 원본 피해의 20%를 범위 피해로)")]
-    [Range(0f, 1f)]
-    public float explosionDamageRatio;
     [Tooltip("충돌 사운드")]
     public AudioClip onHitSound;
 
@@ -92,8 +98,15 @@ public struct BulletData
     public BulletData(
         // Basic Stats
         int damage = 10,
-        int impact = 5,
         float speed = 10f,
+
+        // Shooting
+        float knockback = 5f,
+        float explosionDamageRatio = 0f,
+        float explosionRadius = 2f,
+
+        // Aircraft Collision
+        int impact = 5,
 
         // Behavior
         bool destroyOnHit = true,
@@ -101,8 +114,6 @@ public struct BulletData
 
         // Effects & Sounds
         GameObject hitEffect = null,
-        float hitEffectRadius = 0f,
-        float explosionDamageRatio = 0f,
         AudioClip onHitSound = null,
 
         // Transformation System
@@ -129,8 +140,15 @@ public struct BulletData
     {
         // Basic Stats
         this.damage = damage;
-        this.impact = impact;
         this.speed = speed;
+
+        // Shooting
+        this.knockback = knockback;
+        this.explosionDamageRatio = explosionDamageRatio;
+        this.explosionRadius = explosionRadius;
+
+        // Aircraft Collision
+        this.impact = impact;
 
         // Behavior
         this.destroyOnHit = destroyOnHit;
@@ -138,8 +156,6 @@ public struct BulletData
 
         // Effects & Sounds
         this.hitEffect = hitEffect;
-        this.hitEffectRadius = hitEffectRadius;
-        this.explosionDamageRatio = explosionDamageRatio;
         this.onHitSound = onHitSound;
 
         // Transformation System
@@ -170,15 +186,19 @@ public struct BulletData
     public void SetStats(
         int? damage = null,
         float? speed = null,
+        float? knockback = null,
         float? homingPower = null,
         float? explosionDamageRatio = null,
+        float? explosionRadius = null,
         GameObject hitEffect = null,
         AudioClip onHitSound = null)
     {
         if (damage.HasValue) this.damage = damage.Value;
         if (speed.HasValue) this.speed = speed.Value;
+        if (knockback.HasValue) this.knockback = knockback.Value;
         if (homingPower.HasValue) this.homingTurnSpeed = homingPower.Value;
         if (explosionDamageRatio.HasValue) this.explosionDamageRatio = explosionDamageRatio.Value;
+        if (explosionRadius.HasValue) this.explosionRadius = explosionRadius.Value;
         if (hitEffect != null) this.hitEffect = hitEffect;
         if (onHitSound != null) this.onHitSound = onHitSound;
     }

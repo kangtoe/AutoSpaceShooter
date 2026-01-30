@@ -227,7 +227,7 @@ public class BulletBase : MonoBehaviour
         Destroy(bullet.gameObject);
     }
 
-    void ApplyAreaDamage(Vector2 center, float radius, int damage, int impact)
+    void ApplyAreaDamage(Vector2 center, float radius, int damage, float knockback)
     {
         // 범위 내 모든 Collider 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, targetLayer);
@@ -250,7 +250,7 @@ public class BulletBase : MonoBehaviour
             if (rbody)
             {
                 Vector2 dir = (hit.transform.position - (Vector3)center).normalized;
-                rbody.AddForce(dir * impact, ForceMode2D.Impulse);
+                rbody.AddForce(dir * knockback, ForceMode2D.Impulse);
             }
         }
     }
@@ -273,21 +273,17 @@ public class BulletBase : MonoBehaviour
             //Debug.Log("Instantiate hitEffect");
             Vector2 point = hitColl ? hitColl.ClosestPoint(transform.position) : transform.position;
 
-            // 히트 이펙트 범위 데미지 처리
-            if (bulletData.hitEffectRadius > 0f)
+            // 폭발 피해 처리 (explosionRadius > 0)
+            if (bulletData.explosionRadius > 0f)
             {
-                ApplyAreaDamage(point, bulletData.hitEffectRadius, bulletData.damage, bulletData.impact);
-                Instantiate(bulletData.hitEffect, point, transform.rotation);  // 시각 효과만 생성
-                return;  // 범위 데미지를 입혔으므로 개별 데미지는 생략
-            }
-
-            // 폭발 피해 처리 (explosionDamageRatio > 0)
-            if (bulletData.explosionDamageRatio > 0f)
-            {
-                float explosionRadius = 2f;  // 기본 폭발 반경
                 int explosionDamage = Mathf.RoundToInt(bulletData.damage * bulletData.explosionDamageRatio);
-                ApplyAreaDamage(point, explosionRadius, explosionDamage, bulletData.impact);
-                Instantiate(bulletData.hitEffect, point, transform.rotation);
+                ApplyAreaDamage(point, bulletData.explosionRadius, explosionDamage, bulletData.knockback);
+
+                // 이펙트 크기를 폭발 반지름에 맞춰 조정
+                GameObject effect = Instantiate(bulletData.hitEffect, point, transform.rotation);
+                float effectScale = bulletData.explosionRadius / 2f; // 기본 이펙트 크기가 반지름 2 기준
+                effect.transform.localScale = Vector3.one * effectScale;
+
                 // 폭발 피해 적용 후에도 직접 충돌 피해는 아래에서 처리됨
             }
             else
@@ -312,8 +308,8 @@ public class BulletBase : MonoBehaviour
             {
                 Vector2 dir = (hitColl.transform.position - transform.position).normalized;
                 //Vector2 dir = transform.up;
-                rbody.AddForce(dir * bulletData.impact, ForceMode2D.Impulse);
-                //Debug.Log(name + " to " + rbody.name + " || " + dir * impact);
+                rbody.AddForce(dir * bulletData.knockback, ForceMode2D.Impulse);
+                //Debug.Log(name + " to " + rbody.name + " || " + dir * knockback);
 
 
             }

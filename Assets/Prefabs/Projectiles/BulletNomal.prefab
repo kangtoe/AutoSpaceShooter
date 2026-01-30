@@ -74,27 +74,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97f8a26746045241a5f43bfda4960c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHitSound: {fileID: 0}
-  destoryOnHit: 1
-  removeOtherBullet: 0
-  isAreaDamageEffect: 0
-  hitEffect: {fileID: 2132495355240508640, guid: d322f38691a1c0e4ba9a403551aacfaa, type: 3}
+  bulletData:
+    damage: 0
+    impact: 0
+    speed: 0
+    destroyOnHit: 0
+    removeOtherBullet: 0
+    hitEffect: {fileID: 8453916313859941413, guid: 5e4b6492c6b73744fae7ab0efac0370f, type: 3}
+    hitEffectRadius: 0
+    explosionDamageRatio: 0
+    onHitSound: {fileID: 0}
+    transformStartTime: 0
+    transformDuration: 0
+    scaleMultiplierStart: 0
+    scaleMultiplierEnd: 0
+    alphaStart: 0
+    alphaEnd: 0
+    alphaFadeStartRatio: 0
+    damageMultiplierEnd: 0
+    speedMultiplierStart: 0
+    speedMultiplierEnd: 0
+    colliderDisableThreshold: 0
+    destroyOnComplete: 0
+    rotationSpeedStart: 0
+    rotationSpeedEnd: 0
+    homingTurnSpeed: 0
+    homingStartTime: 0
+    homingMaxDuration: 0
   targetLayer:
     serializedVersion: 2
     m_Bits: 0
-  damage: 0
-  impact: 0
-  movePower: 0
-  transformStartTime: 0
-  transformDuration: 2
-  scaleMultiplierStart: 1
-  scaleMultiplierEnd: 8
-  alphaStart: 1
-  alphaEnd: 1
-  alphaFadeStartRatio: 0
-  damageMultiplierEnd: 0.5
-  colliderDisableThreshold: 0.8
-  destroyOnComplete: 1
 --- !u!70 &4911936494565508056
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
