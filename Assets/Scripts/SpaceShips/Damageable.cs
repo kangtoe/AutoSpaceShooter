@@ -44,6 +44,9 @@ public class Damageable : MonoBehaviour
     [SerializeField] float shieldRegenRate = 20f;  // 초당 재생량
     [SerializeField] float shieldRegenDelay = 2f;  // 피해 후 재생 시작까지 지연
 
+    [Header("Hit Effect")]
+    const float FLASH_DURATION = 0.1f;  // 점멸 지속 시간
+
     [Header("Sounds")]
     public AudioClip deathSound;
     public AudioClip hitSound;
@@ -64,9 +67,21 @@ public class Damageable : MonoBehaviour
 
     float lastDamageTime;
 
+    SpriteRenderer spriteRenderer;
+    MaterialPropertyBlock materialPropertyBlock;
+    Coroutine flashCoroutine;
+    static readonly int FlashAmountID = Shader.PropertyToID("_FlashAmount");
+
 
     protected void Start()
     {
+        // SpriteRenderer 컴포넌트 가져오기
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            materialPropertyBlock = new MaterialPropertyBlock();
+        }
+
         // 사망 시 이벤트 체인 등록
         onDead.AddListener(delegate {
             if (diePrefab)
@@ -100,6 +115,22 @@ public class Damageable : MonoBehaviour
                 ModifyShield(regenAmount);
             }
         }
+    }
+
+    IEnumerator FlashEffect()
+    {
+        if (spriteRenderer == null || materialPropertyBlock == null) yield break;
+
+        // 점멸 효과 활성화 (_FlashAmount = 1)
+        materialPropertyBlock.SetFloat(FlashAmountID, 1f);
+        spriteRenderer.SetPropertyBlock(materialPropertyBlock);
+        yield return new WaitForSeconds(FLASH_DURATION);
+
+        // 점멸 효과 비활성화 (_FlashAmount = 0)
+        materialPropertyBlock.SetFloat(FlashAmountID, 0f);
+        spriteRenderer.SetPropertyBlock(materialPropertyBlock);
+
+        flashCoroutine = null;
     }
 
     // 실드 증감 (양수: 증가, 음수: 감소)
@@ -175,6 +206,13 @@ public class Damageable : MonoBehaviour
         if (isDead) return;
 
         float remainingDamage = damage;
+
+        // 점멸 효과 시작 (피격 시 항상)
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+        }
+        flashCoroutine = StartCoroutine(FlashEffect());
 
         // 실드가 먼저 피해를 받음
         if (currShield > 0)
